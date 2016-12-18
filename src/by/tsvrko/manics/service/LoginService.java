@@ -1,30 +1,41 @@
 package by.tsvrko.manics.service;
 
-import by.tsvrko.manics.dao.implementations.UserDAOImpl;
+import by.tsvrko.manics.dao.interfaces.SessionDAO;
 import by.tsvrko.manics.dao.interfaces.UserDAO;
+import by.tsvrko.manics.exceptions.InvalidUserInfoException;
 import by.tsvrko.manics.model.User;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import java.util.Date;
+
 
 /**
  * Created by irats on 11/23/2016.
  */
-@Path("/authentication")
 
+@Path("/login")
 public class LoginService {
-    public static   UserDAO userDAO = new UserDAOImpl();
-    @POST
+    private static ApplicationContext context =
+            new ClassPathXmlApplicationContext("Spring-Module.xml");
+    private static UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+    private static   SessionDAO sessionDAO = (SessionDAO) context.getBean("sessionDAO");
+
+   @POST
     @Produces("application/json")
-    @Consumes("")
-    public Response authenticateUser(@FormParam("login") String login,
-                                     @FormParam("password") String password) {
+    @Consumes("application/json")
+
+    public Response authenticateUser(User user) {
+       String login = user.getLogin();
+       String password = user.getPass();
 
 
         try {
             authenticate(login, password);
-            String token = issueToken(login);
+            String token = generateToken(login);
             return Response.ok(token).build();
 
         } catch (Exception e) {
@@ -32,19 +43,18 @@ public class LoginService {
         }
     }
 
-    private void authenticate(String login, String password) throws Exception {
-        if (checkPassword(login, password)) {
-           User user = userDAO.getUser(login);
-          } else throw new Exception("credentials are invalid");
+    private void authenticate(String login, String password) throws InvalidUserInfoException {
+        String dbpass = userDAO.getUser(login).getPass();
+        if (!dbpass.equals(password)) throw new InvalidUserInfoException("credentials are invalid");
        }
 
-    private String issueToken(String username) {
-
+    private String generateToken(String login) {
+        String session_id = (String.valueOf((new Date()).getTime()));
+        sessionDAO.addSession(session_id);
+        userDAO.addUserSession(session_id,login);
+        Response.ok().cookie(NewCookie.valueOf(session_id));
+        return session_id;
     }
 
-    public boolean checkPassword(String email, String password) {
-        String dbpass = userDAO.getUser(email).getPass();
-        return password.equals(dbpass);
-    }
 }
 

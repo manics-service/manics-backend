@@ -8,4 +8,6 @@ import by.tsvrko.manics.model.User;
 public interface UserDAO {
 
     User getUser(String login);
+
+    boolean addUserSession (String session_id, String login);
 }
