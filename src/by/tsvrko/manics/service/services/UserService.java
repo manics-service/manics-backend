@@ -1,21 +1,17 @@
 package by.tsvrko.manics.service.services;
 
-import by.tsvrko.manics.dao.interfaces.SessionDAO;
 import by.tsvrko.manics.dao.interfaces.UserDAO;
 import by.tsvrko.manics.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class SessionService {
-
+ class UserService {
     private static ApplicationContext context =
             new ClassPathXmlApplicationContext("Spring-Module.xml");
     private static UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-    private static SessionDAO sessionDAO = (SessionDAO) context.getBean("sessionDAO");
 
-    public String addSession(String token, User user) {
-        sessionDAO.addSession(token);
-        userDAO.addUserSession(token, user.getLogin());
-        return token;
+    User getUser(String login) {
+        return  userDAO.getUser(login);
 
-    }}
+    }
+}

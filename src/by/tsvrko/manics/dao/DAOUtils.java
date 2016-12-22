@@ -1,15 +1,11 @@
 package by.tsvrko.manics.dao;
 
-import by.tsvrko.manics.dao.implementations.UserDAOImpl;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Created by irats on 11/28/2016.
- */
 public class DAOUtils {
     private static Logger log = Logger.getLogger(DAOUtils.class.getName());
 

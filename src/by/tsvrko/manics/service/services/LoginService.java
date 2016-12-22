@@ -1,37 +1,18 @@
 package by.tsvrko.manics.service.services;
 
 import by.tsvrko.manics.dao.implementations.UserDAOImpl;
-import by.tsvrko.manics.dao.interfaces.SessionDAO;
-import by.tsvrko.manics.dao.interfaces.UserDAO;
 import by.tsvrko.manics.exceptions.InvalidUserInfoException;
-import by.tsvrko.manics.model.Status;
 import by.tsvrko.manics.model.User;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.Cookie;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.util.Date;
 
-
-/**
- * Created by irats on 11/23/2016.
- */
 
 @Path("/login")
 public class LoginService {
 
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static ApplicationContext context =
-            new ClassPathXmlApplicationContext("Spring-Module.xml");
-    private static UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-    private static   SessionDAO sessionDAO = (SessionDAO) context.getBean("sessionDAO");
 
     @POST
     public boolean authenticateUser(User user) {
@@ -50,7 +31,7 @@ public class LoginService {
     }
 
     private void authenticate(String login, String password) throws InvalidUserInfoException {
-          String dbpass = userDAO.getUser(login).getPass();
+          String dbpass = new UserService().getUser(login).getPass();
             if (!password.equals(dbpass)) throw new InvalidUserInfoException("credentials are invalid");
 
     }
