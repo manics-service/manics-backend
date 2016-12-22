@@ -1,7 +1,7 @@
 //package test;
 //
 //import by.tsvrko.manics.model.User;
-//import by.tsvrko.manics.service.LoginService;
+//import by.tsvrko.manics.service.services.LoginService;
 //import junit.framework.TestCase;
 //import org.junit.Test;
 //

@@ -1,4 +1,4 @@
-package by.tsvrko.manics.service;
+package by.tsvrko.manics.service.services;
 
 import by.tsvrko.manics.dao.interfaces.SessionDAO;
 import by.tsvrko.manics.dao.interfaces.UserDAO;

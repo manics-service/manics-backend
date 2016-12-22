@@ -1,4 +1,4 @@
-package by.tsvrko.manics.service;
+package by.tsvrko.manics.service.services;
 
 import by.tsvrko.manics.dao.implementations.UserDAOImpl;
 import by.tsvrko.manics.dao.interfaces.SessionDAO;
@@ -33,33 +33,29 @@ public class LoginService {
     private static UserDAO userDAO = (UserDAO) context.getBean("userDAO");
     private static   SessionDAO sessionDAO = (SessionDAO) context.getBean("sessionDAO");
 
-   @POST
-       public boolean authenticateUser(User user) {
-       String login = user.getLogin();
-       String password = user.getPass();
+    @POST
+    public boolean authenticateUser(User user) {
+        String login = user.getLogin();
+        String password = user.getPass();
 
 
-       try {
-           authenticate(login, password);
-           return true;
+        try {
+            authenticate(login, password);
+            return true;
 
-       } catch (InvalidUserInfoException e) {
-           log.debug("credentials are invalid", e);
-           return false;
-            }
-   }
+        } catch (InvalidUserInfoException e) {
+            log.debug("credentials are invalid", e);
+            return false;
+        }
+    }
 
     private void authenticate(String login, String password) throws InvalidUserInfoException {
-        String dbpass = userDAO.getUser(login).getPass();
-        if (!dbpass.equals(password)) throw new InvalidUserInfoException("credentials are invalid");
-       }
+          String dbpass = userDAO.getUser(login).getPass();
+            if (!password.equals(dbpass)) throw new InvalidUserInfoException("credentials are invalid");
 
-
-   //при добавлении сессии в контроллере вызывать UserService
-        //SessionService: добавление сессии, проверка сессии на валидность
-        //вызв в зависимости от статуса аутентификации
-        // если да, кладем в таблицу...
     }
+
+}
 
 
 

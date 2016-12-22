@@ -2,16 +2,12 @@ package by.tsvrko.manics.controller;
 
 import by.tsvrko.manics.model.Status;
 import by.tsvrko.manics.model.User;
-import by.tsvrko.manics.service.LoginService;
+import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.SessionService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import by.tsvrko.manics.service.services.SessionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
 
 @RestController
 public class AppController {
