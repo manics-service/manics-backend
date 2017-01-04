@@ -12,7 +12,6 @@ public class ServiceUtil {
 
     public static String generateToken() {
         String session_id = UUID.randomUUID().toString();
-
         return session_id;
     }
 }

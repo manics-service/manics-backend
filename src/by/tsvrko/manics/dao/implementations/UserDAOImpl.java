@@ -1,6 +1,6 @@
 package by.tsvrko.manics.dao.implementations;
 
-import by.tsvrko.manics.dao.DAOUtils;
+import static by.tsvrko.manics.dao.DAOUtils.*;
 import by.tsvrko.manics.dao.interfaces.UserDAO;
 import by.tsvrko.manics.model.User;
 import org.apache.log4j.Logger;
@@ -44,8 +44,8 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             log.debug("SQL exception",e);
         } finally {
-            DAOUtils.closeStatement(ps);
-            DAOUtils.closeConnection(conn);
+            closeStatement(ps);
+            closeConnection(conn);
         }
         return user;
     }
@@ -68,8 +68,8 @@ public class UserDAOImpl implements UserDAO {
             log.debug("dao exception", e);
             return false;
         } finally {
-            DAOUtils.closeStatement(statement);
-            DAOUtils.closeConnection(conn);
+            closeStatement(statement);
+            closeConnection(conn);
         }
         return true;
     }

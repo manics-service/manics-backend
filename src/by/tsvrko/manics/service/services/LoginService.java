@@ -1,20 +1,14 @@
 package by.tsvrko.manics.service.services;
 
-import by.tsvrko.manics.dao.implementations.UserDAOImpl;
 import by.tsvrko.manics.exceptions.InvalidUserInfoException;
 import by.tsvrko.manics.model.User;
 import org.apache.log4j.Logger;
 
-import javax.ws.rs.*;
-
-
-@Path("/login")
 public class LoginService {
 
 
-    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
+    private static Logger log = Logger.getLogger(LoginService.class.getName());
 
-    @POST
     public boolean authenticateUser(User user) {
         String login = user.getLogin();
         String password = user.getPass();

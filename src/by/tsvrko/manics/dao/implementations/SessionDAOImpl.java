@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 public class SessionDAOImpl implements SessionDAO{
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static final String SQL_QUERY_GET_USER = "select user.id, user.login, user.pass from user where user.login = ?";
     private static final String SQL_QUERY_ADD_SESSION = "insert into `session`(`session`.`session`) values (?)";
 
     private DataSource dataSource;

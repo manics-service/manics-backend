@@ -1,5 +1,7 @@
 package by.tsvrko.manics.controller;
 
+import by.tsvrko.manics.dao.implementations.ChatImportImplVK;
+import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Status;
 import by.tsvrko.manics.model.StatusEnum;
 import by.tsvrko.manics.model.User;
@@ -9,9 +11,18 @@ import by.tsvrko.manics.service.services.SessionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 @RestController
 public class AppController {
+
+    @RequestMapping(value = "/getChats",
+            method = RequestMethod.GET,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public ArrayList<Chat> getSimpleMessages() {
+        return new ChatImportImplVK().getChats();
+    }
 
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
@@ -33,8 +44,6 @@ public class AppController {
             responseStatus.setStatusCode("401");
             responseStatus.setDescription(StatusEnum.UNATHOURIZED);
             return responseStatus;
-
-
         }
 
 

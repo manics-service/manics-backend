@@ -6,7 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DAOUtils {
+public abstract class DAOUtils {
+
     private static Logger log = Logger.getLogger(DAOUtils.class.getName());
 
     public static void closeStatement(Statement statement) {
