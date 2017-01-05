@@ -7,7 +7,9 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.ArrayList;
-import static by.tsvrko.manics.dao.ContentImportUtils.*;
+import static by.tsvrko.manics.dao.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
+
 
 /**
  * Created by irats on 1/4/2017.
@@ -22,7 +24,7 @@ public class ChatImportImplVK implements ChatImport {
 
         ArrayList<Chat> chatList = new ArrayList<>();
 
-        int count = Integer.parseInt(parseToJSON(getCount()).get(0).toString());
+        int count = Integer.parseInt(parseJSONArrayCount(getCount()));
         int offset = 0;
 
         while (offset < count) {
@@ -39,10 +41,10 @@ public class ChatImportImplVK implements ChatImport {
 
             }
 
-            JSONArray jsonChatsArray = parseToJSON(text);
+            JSONArray jsonChatsArray = parseJSONArray(text);
 
-            for (int i = 1; i < jsonChatsArray.size(); i++) {
-                JSONObject jsonChat = (JSONObject) jsonChatsArray.get(i);
+            for (Object aJsonChatsArray : jsonChatsArray) {
+                JSONObject jsonChat = (JSONObject) aJsonChatsArray;
 
                 if (jsonChat.containsKey("chat_id")) {
                     Chat chat = new Chat();
@@ -53,6 +55,9 @@ public class ChatImportImplVK implements ChatImport {
             }
             offset += 200;
         }
+        System.out.println(count);
+        System.out.println(chatList.size());
+
         return chatList;
     }
 

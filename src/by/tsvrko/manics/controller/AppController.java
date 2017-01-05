@@ -1,10 +1,8 @@
 package by.tsvrko.manics.controller;
 
 import by.tsvrko.manics.dao.implementations.ChatImportImplVK;
-import by.tsvrko.manics.model.Chat;
-import by.tsvrko.manics.model.Status;
-import by.tsvrko.manics.model.StatusEnum;
-import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.dao.implementations.MessageImportImplVK;
+import by.tsvrko.manics.model.*;
 import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
 import by.tsvrko.manics.service.services.SessionService;
@@ -20,9 +18,23 @@ public class AppController {
             method = RequestMethod.GET,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public ArrayList<Chat> getSimpleMessages() {
+    public ArrayList<Chat> getChats() {
         return new ChatImportImplVK().getChats();
     }
+
+    @RequestMapping(value = "/getMessages",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public ArrayList<Message> getMessages(@RequestBody Chat chat) {
+
+        return new MessageImportImplVK().getMessages(chat);
+    }
+
+
+
+
+
 
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,

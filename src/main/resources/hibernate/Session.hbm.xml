@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="by.tsvrko.manics.model.Session" table="session" schema="manics">
+
+        <id name="id" >
+            <column name="id" />
+            <generator class="foreign">
+                <param name="property">user</param>
+            </generator></id>
+
+        <one-to-one name="user" class="by.tsvrko.manics.model.User"
+                    constrained="true"></one-to-one>
+
+
+        <property name="session_id">
+            <column name="session" sql-type="text" not-null="true"/>
+        </property>
+
+      </class>
+</hibernate-mapping>

@@ -20,11 +20,11 @@ import java.net.URISyntaxException;
 /**
  * Created by irats on 1/4/2017.
  */
-public abstract class ContentImportUtils {
+public abstract class ContentImportUtil {
 
 
     public static String readContent(URIBuilder uriBuilder){
-        HttpResponse response = ContentImportUtils.connectResponse(uriBuilder);
+        HttpResponse response = ContentImportUtil.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
 
         String text = "";
@@ -66,19 +66,8 @@ public abstract class ContentImportUtils {
         return response;
     }
 
-    public static JSONArray parseToJSON(String text) {
-        JSONArray jsonArray = null;
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp = (JSONObject) parser.parse(text);
-            jsonArray = (JSONArray) jsonResp.get("response");
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return jsonArray;
 
-    }
 
 }
 

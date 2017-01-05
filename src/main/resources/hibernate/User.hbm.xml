@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="by.tsvrko.manics.model.User" table="user" schema="manics">
+
+        <id name="id">
+            <column name="id" />
+            <generator class="identity"/>
+        </id>
+        <property name="login">
+            <column name="login" length="20" not-null="true"/>
+        </property>
+
+        <property name="pass">
+            <column name="pass" length="10" not-null="true"/>
+        </property>
+
+        <one-to-one name="session" class="by.tsvrko.manics.model.Session"
+                    cascade="save-update"></one-to-one>
+       </class>
+</hibernate-mapping>
