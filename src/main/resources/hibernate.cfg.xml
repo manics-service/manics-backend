@@ -8,12 +8,11 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
         <property name="connection.password">123</property>
-         <property name="show_sql">true</property>
+        <property name="show_sql">true</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-
-        <mapping resource="hibernate.User.hbm.xml"/>
-        <mapping resource="hibernate.Session.hbm.xml"/>
+        <property name="hibernate.id.new_generator_mappings">false</property>
         <mapping class="by.tsvrko.manics.model.User"/>
-        <mapping class="by.tsvrko.manics.model.Session"/>
+        <mapping class="by.tsvrko.manics.model.UserSession"/>
     </session-factory>
+
 </hibernate-configuration>

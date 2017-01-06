@@ -1,15 +1,16 @@
 package by.tsvrko.manics.dao.implementations;
 
-import static by.tsvrko.manics.dao.DAOUtils.*;
+import by.tsvrko.manics.dao.HibernateUtil;
 import by.tsvrko.manics.dao.interfaces.UserDAO;
 import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.model.UserSession;
 import org.apache.log4j.Logger;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Created by irats on 11/22/2016.
@@ -17,60 +18,37 @@ import java.sql.SQLException;
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static final String SQL_QUERY_GET_USER = "select user.id, user.login, user.pass from user where user.login = ?";
-    private static final String  SQL_QUERY_ADD_USER_SESSION = "update user set user.`session` = ? where user.login = ?";
-
-    private DataSource dataSource;
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
-    public User getUser(String login) {
-        Connection conn = null;
-        PreparedStatement  ps = null;
+    public User getUser(String login)  {
+        Session session = null;
         User user = new User();
-        try {
-            conn = dataSource.getConnection();
-            ps = conn.prepareStatement(SQL_QUERY_GET_USER);
-            ps.setString(1, login);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                user.setId(rs.getInt(1));
-                user.setLogin(rs.getString(2));
-                user.setPass(rs.getString(3));
-            }
 
-        } catch (SQLException e) {
-            log.debug("SQL exception",e);
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteria = builder.createQuery(User.class);
+            Root<User> from = criteria.from(User.class);
+
+            criteria.select(from);
+            criteria.where(builder.equal(from.get("login"),login));
+
+            user = session.createQuery(criteria).getSingleResult();
+            session.getTransaction().commit();
+
+        } catch (HibernateException e) {
+            log.debug("can't get user from DB", e);
+        }catch(NoResultException e){
+            log.debug("user not found", e);
+
         } finally {
-            closeStatement(ps);
-            closeConnection(conn);
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return user;
-    }
-
-    @Override
-    public boolean addUserSession(String session_id, String login) {
-
-        Connection conn = null;
-        PreparedStatement statement= null;
-
-
-        try {
-            conn = dataSource.getConnection();
-            statement = conn.prepareStatement(SQL_QUERY_ADD_USER_SESSION);
-            statement.setString(1, session_id);
-            statement.setString(2, login);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            log.debug("dao exception", e);
-            return false;
-        } finally {
-            closeStatement(statement);
-            closeConnection(conn);
-        }
-        return true;
     }
 }

@@ -26,11 +26,11 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <session-config>
+    <userSession-config>
         <cookie-config>
             <http-only>true</http-only>
         </cookie-config>
-    </session-config>
+    </userSession-config>
 
     <context:component-scan base-package="by.tsvrko.manics.common" />
 

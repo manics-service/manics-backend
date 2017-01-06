@@ -31,11 +31,6 @@ public class AppController {
         return new MessageImportImplVK().getMessages(chat);
     }
 
-
-
-
-
-
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
