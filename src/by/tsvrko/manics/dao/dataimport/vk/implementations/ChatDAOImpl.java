@@ -1,22 +1,22 @@
-package by.tsvrko.manics.dao.implementations;
+package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
-import by.tsvrko.manics.dao.interfaces.ChatImport;
+import by.tsvrko.manics.dao.dataimport.vk.interfaces.ChatDAO;
 import by.tsvrko.manics.model.Chat;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.ArrayList;
-import static by.tsvrko.manics.dao.ContentImportUtil.*;
-import static by.tsvrko.manics.dao.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
 
 
 /**
  * Created by irats on 1/4/2017.
  */
-public class ChatImportImplVK implements ChatImport {
+public class ChatDAOImpl implements ChatDAO {
 
-    private static Logger log = Logger.getLogger(ChatImportImplVK.class.getName());
+    private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
     private static final String ACCESS_TOKEN = "25b606be4db7e217d255d818bd3cdaca8c8a6eb91ab055d4a816d4e71a213153cd7707648f8d29bc92c37";
 
     @Override

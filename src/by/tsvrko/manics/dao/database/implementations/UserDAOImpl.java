@@ -1,9 +1,8 @@
-package by.tsvrko.manics.dao.implementations;
+package by.tsvrko.manics.dao.database.implementations;
 
-import by.tsvrko.manics.dao.HibernateUtil;
-import by.tsvrko.manics.dao.interfaces.UserDAO;
+import by.tsvrko.manics.dao.database.HibernateUtil;
+import by.tsvrko.manics.dao.database.interfaces.UserDAO;
 import by.tsvrko.manics.model.User;
-import by.tsvrko.manics.model.UserSession;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -40,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
             session.getTransaction().commit();
 
         } catch (HibernateException e) {
-            log.debug("can't get user from DB", e);
+            log.debug("can't get user from database", e);
         }catch(NoResultException e){
             log.debug("user not found", e);
 

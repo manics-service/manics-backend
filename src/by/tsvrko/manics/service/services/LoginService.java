@@ -2,6 +2,7 @@ package by.tsvrko.manics.service.services;
 
 import by.tsvrko.manics.exceptions.InvalidUserInfoException;
 import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.service.services.daoservice.UserService;
 import org.apache.log4j.Logger;
 
 public class LoginService {

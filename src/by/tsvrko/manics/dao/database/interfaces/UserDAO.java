@@ -1,8 +1,6 @@
-package by.tsvrko.manics.dao.interfaces;
+package by.tsvrko.manics.dao.database.interfaces;
 
 import by.tsvrko.manics.model.User;
-
-import java.util.List;
 
 /**
  * Created by irats on 11/22/2016.

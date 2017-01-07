@@ -1,11 +1,11 @@
 package by.tsvrko.manics.controller;
 
-import by.tsvrko.manics.dao.implementations.ChatImportImplVK;
-import by.tsvrko.manics.dao.implementations.MessageImportImplVK;
+import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatDAOImpl;
+import by.tsvrko.manics.dao.dataimport.vk.implementations.MessageDAOImpl;
 import by.tsvrko.manics.model.*;
 import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.services.SessionService;
+import by.tsvrko.manics.service.services.daoservice.SessionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class AppController {
             headers = {"Content-type=application/json"})
     @ResponseBody
     public ArrayList<Chat> getChats() {
-        return new ChatImportImplVK().getChats();
+        return new ChatDAOImpl().getChats();
     }
 
     @RequestMapping(value = "/getMessages",
@@ -28,7 +28,7 @@ public class AppController {
     @ResponseBody
     public ArrayList<Message> getMessages(@RequestBody Chat chat) {
 
-        return new MessageImportImplVK().getMessages(chat);
+        return new MessageDAOImpl().getMessages(chat);
     }
 
     @RequestMapping(value = "/login",

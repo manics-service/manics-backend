@@ -53,5 +53,12 @@ public class UserSession implements Serializable {
         this.user = user;
     }
 
-
+    @Override
+    public String toString() {
+        return "UserSession{" +
+                "id=" + id +
+                ", session_id='" + session_id + '\'' +
+                ", user=" + user +
+                '}';
+    }
 }

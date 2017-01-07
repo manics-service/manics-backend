@@ -1,4 +1,4 @@
-package by.tsvrko.manics.dao;
+package by.tsvrko.manics.dao.dataimport.vk;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

@@ -1,4 +1,4 @@
-package by.tsvrko.manics.dao;
+package by.tsvrko.manics.dao.database;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.implementations;
+package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
-import by.tsvrko.manics.dao.interfaces.MessageImport;
+import by.tsvrko.manics.dao.dataimport.vk.interfaces.MessageDAO;
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Message;
 import org.apache.http.client.utils.URIBuilder;
@@ -10,16 +10,16 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 
-import static by.tsvrko.manics.dao.ContentImportUtil.*;
-import static by.tsvrko.manics.dao.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
 
 /**
  * Created by irats on 1/5/2017.
  */
-public class MessageImportImplVK implements MessageImport {
+public class MessageDAOImpl implements MessageDAO {
 
 
-    private static Logger log = Logger.getLogger(ChatImportImplVK.class.getName());
+    private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
     private static final String ACCESS_TOKEN = "25b606be4db7e217d255d818bd3cdaca8c8a6eb91ab055d4a816d4e71a213153cd7707648f8d29bc92c37";
 
     @Override

@@ -1,4 +1,4 @@
-package by.tsvrko.manics.dao;
+package by.tsvrko.manics.dao.dataimport.vk;
 
 import by.tsvrko.manics.exceptions.VKApiException;
 import org.apache.http.HttpResponse;
@@ -6,10 +6,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
