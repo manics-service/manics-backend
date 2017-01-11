@@ -1,35 +1,55 @@
 package by.tsvrko.manics.controller;
 
-import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatDAOImpl;
-import by.tsvrko.manics.dao.dataimport.vk.implementations.MessageDAOImpl;
 import by.tsvrko.manics.model.*;
 import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.services.daoservice.SessionService;
+import by.tsvrko.manics.service.services.dbdaoservice.SessionService;
+import by.tsvrko.manics.service.services.importdaoservice.ChatImportService;
+import by.tsvrko.manics.service.services.importdaoservice.MessageImportService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
 @RestController
 public class AppController {
 
+    private static SessionService sessionService = new SessionService();
+    private static ChatImportService chatImportService = new ChatImportService();
+    private static MessageImportService messageImportService = new MessageImportService();
+    private static LoginService loginService = new LoginService();
+
+
     @RequestMapping(value = "/getChats",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public ArrayList<Chat> getChats() {
-        return new ChatDAOImpl().getChats();
+    public ArrayList<Chat> getChats(@CookieValue("session") String token) {
+        return chatImportService.getChats(token);
     }
+
 
     @RequestMapping(value = "/getMessages",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public ArrayList<Message> getMessages(@RequestBody Chat chat) {
+    public Status getMessages(@RequestBody Chat chat) {
+        Status responseStatus = new Status();
+         if (messageImportService.getMessages(chat)){
+             responseStatus.setStatusCode("200");
+             responseStatus.setDescription(StatusEnum.OK);
+             return responseStatus;
+         }
+         else {
+             responseStatus.setStatusCode("999");
+             responseStatus.setDescription(StatusEnum.VK_API_ERROR);
+             return responseStatus;
+         }
 
-        return new MessageDAOImpl().getMessages(chat);
     }
+
 
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
@@ -37,19 +57,18 @@ public class AppController {
     @ResponseBody
     public Status authenticateUser(@RequestBody User user, HttpServletResponse response) {
 
-        boolean auth =  new LoginService().authenticateUser(user);
         Status responseStatus = new Status();
-        if (auth){
+        if (loginService.authenticateUser(user)){
             String token = ServiceUtil.generateToken();
-            new SessionService().addSession(token,user);
+            sessionService.addSession(token,user);
             responseStatus.setStatusCode("200");
             responseStatus.setDescription(StatusEnum.OK);
-            response.setHeader("Set-Cookie","session=" + token + "; Path=/");
+            response.addCookie(new Cookie("session", token));
             return responseStatus;
         }
         else{
             responseStatus.setStatusCode("401");
-            responseStatus.setDescription(StatusEnum.UNATHOURIZED);
+            responseStatus.setDescription(StatusEnum.UNAUTHORIZED);
             return responseStatus;
         }
 

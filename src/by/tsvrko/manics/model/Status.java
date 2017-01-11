@@ -1,7 +1,7 @@
 package by.tsvrko.manics.model;
 
 /**
- * Created by irats on 12/23/2016.
+ * Created by tsvrko on 12/23/2016.
  */
 public class Status {
     private String statusCode;

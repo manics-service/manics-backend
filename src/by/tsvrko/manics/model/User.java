@@ -1,39 +1,45 @@
 package by.tsvrko.manics.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
- * Created by irats on 11/22/2016.
+ * Created by tsvrko on 11/22/2016.
  */
 
 @Entity
 @Table(name = "user", catalog = "manics", uniqueConstraints = {
         @UniqueConstraint(columnNames = "id"),
         @UniqueConstraint(columnNames = "login") })
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityReference(alwaysAsId = true)
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "login")
     private String login;
+
+    @Column(name = "pass")
     private String pass;
+
+    @OneToOne(fetch = FetchType.EAGER,mappedBy = "user")
     private UserSession userSession;
 
-    public User() {
-    }
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Chat> list;
 
-    public User(int id, String login, String pass, UserSession userSession) {
-        this.id = id;
-        this.login = login;
-        this.pass = pass;
-        this.userSession = userSession;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -42,7 +48,6 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "login")
     public String getLogin() {
         return login;
     }
@@ -51,7 +56,6 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    @Column(name = "pass")
     public String getPass() {
         return pass;
     }
@@ -60,7 +64,6 @@ public class User implements Serializable {
         this.pass = pass;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     public UserSession getUserSession() {
         return userSession;
     }
@@ -69,13 +72,20 @@ public class User implements Serializable {
         this.userSession = userSession;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", pass='" + pass + '\'' +
-                ", userSession=" + userSession +
-                '}';
+    public List<Chat> getList() {
+        return list;
     }
+
+    public void setList(List<Chat> list) {
+        this.list = list;
+    }
+
+    public User(String login, String pass) {
+        this.login = login;
+        this.pass = pass;
+    }
+
+    public User() {
+    }
+
 }

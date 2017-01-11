@@ -1,19 +1,54 @@
 package by.tsvrko.manics.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Created by irats on 1/4/2017.
+ * Created by tsvrko on 1/4/2017.
  */
+
+@Entity
+@Table(name = "chat", catalog = "manics", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "id")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Chat implements Serializable{
-    private String chat_id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "chat_id")
+    private Long chat_id;
+
+    @Column(name = "name")
     private String title;
 
-    public String getChat_id() {
+    @ManyToOne(fetch = FetchType.EAGER )
+    private User user;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
+    private List<Message> messageList;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Long getChat_id() {
         return chat_id;
     }
 
-    public void setChat_id(String chat_id) {
+    public void setChat_id(Long chat_id) {
         this.chat_id = chat_id;
     }
 
@@ -25,21 +60,33 @@ public class Chat implements Serializable{
         this.title = title;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public User getUser() {
+        return user;
+    }
 
-        Chat chat = (Chat) o;
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-        if (!chat_id.equals(chat.chat_id)) return false;
-        return title.equals(chat.title);
+    public List<Message> getMessageList() {
+        return messageList;
+    }
+
+    public void setMessageList(List<Message> messageList) {
+        this.messageList = messageList;
+    }
+
+    public Chat() {
     }
 
     @Override
-    public int hashCode() {
-        int result = chat_id.hashCode();
-        result = 31 * result + title.hashCode();
-        return result;
+    public String toString() {
+        return "Chat{" +
+                "id=" + id +
+                ", chat_id=" + chat_id +
+                ", title='" + title + '\'' +
+                ", user=" + user +
+                ", messageList=" + messageList +
+                '}';
     }
 }

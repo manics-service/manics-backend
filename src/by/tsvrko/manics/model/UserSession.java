@@ -1,31 +1,39 @@
 package by.tsvrko.manics.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.hibernate.annotations.Parameter;
-
 import java.io.Serializable;
 
 /**
- * Created by irats on 11/30/2016.
+ * Created by tsvrko on 11/30/2016.
  */
+
 @Entity
 @Table(name = "session", catalog = "manics")
-
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityReference(alwaysAsId = true)
 public class UserSession implements Serializable {
 
+    @Id
+    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(generator="gen")
+    @GenericGenerator(name="gen", strategy="foreign", parameters=@Parameter(name="property", value="user"))
     private int id;
-    private String session_id;
+
+    @Column(name = "session")
+    private String session;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @PrimaryKeyJoinColumn
     private User user;
 
-    @GenericGenerator(name = "generator", strategy = "foreign",
-            parameters = @Parameter(name = "property", value = "user"))
-    @Id
-    @GeneratedValue(generator = "generator")
-    @Column(name = "id")
     public int getId() {
         return id;
     }
@@ -34,17 +42,14 @@ public class UserSession implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "session")
-    public String getSession_id() {
-        return session_id;
+    public String getSession() {
+        return session;
     }
 
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
+    public void setSession(String session_id) {
+        this.session = session_id;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
     public User getUser() {
         return user;
     }
@@ -53,12 +58,10 @@ public class UserSession implements Serializable {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "UserSession{" +
-                "id=" + id +
-                ", session_id='" + session_id + '\'' +
-                ", user=" + user +
-                '}';
+    public UserSession(String session) {
+        this.session = session;
+    }
+
+    public UserSession() {
     }
 }

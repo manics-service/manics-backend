@@ -12,14 +12,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
- * Created by irats on 11/22/2016.
+ * Created by tsvrko on 11/22/2016.
  */
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 
     @Override
-    public User getUser(String login)  {
+    public User getUserByLogin(String login)  {
         Session session = null;
         User user = new User();
 
@@ -50,4 +50,5 @@ public class UserDAOImpl implements UserDAO {
         }
         return user;
     }
-}
+
+   }

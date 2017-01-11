@@ -8,8 +8,8 @@ import java.util.ArrayList;
 /**
  * Created by irats on 1/5/2017.
  */
-public interface MessageDAO {
+public interface MessageDAOImport {
 
-    public ArrayList<Message> getMessages(Chat chat);
+    boolean getMessages(Chat chat);
 
 }

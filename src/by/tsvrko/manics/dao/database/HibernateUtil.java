@@ -3,7 +3,7 @@ package by.tsvrko.manics.dao.database;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 /**
- * Created by irats on 1/5/2017.
+ * Created by tsvrko on 1/5/2017.
  */
 public class HibernateUtil {
 
@@ -13,9 +13,9 @@ public class HibernateUtil {
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        } catch (Throwable ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (Throwable e) {
+            System.err.println("Initial SessionFactory creation failed." + e);
+            throw new ExceptionInInitializerError(e);
         }
     }
 

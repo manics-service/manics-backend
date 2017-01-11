@@ -1,11 +1,13 @@
 package by.tsvrko.manics.dao.dataimport.vk;
 
+import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatDAOImportImpl;
 import by.tsvrko.manics.exceptions.VKApiException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,12 +16,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Created by irats on 1/4/2017.
+ * Created by tsvrko on 1/4/2017.
  */
 public abstract class ContentImportUtil {
 
+    private static Logger log = Logger.getLogger(ChatDAOImportImpl.class.getName());
 
     public static String readContent(URIBuilder uriBuilder){
+
         HttpResponse response = ContentImportUtil.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
 
@@ -31,7 +35,7 @@ public abstract class ContentImportUtil {
                 text = reader.readLine();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                log.debug("ioexception in reading json");
             }
         }
         else {
@@ -39,6 +43,7 @@ public abstract class ContentImportUtil {
         }
         return text;
     }
+
     private static HttpResponse connectResponse(URIBuilder uriBuilder) {
 
         URI uri = null;
@@ -56,7 +61,7 @@ public abstract class ContentImportUtil {
         try {
             response = client.execute(request);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.debug("request on this uri can't be executed");
         }
 
         return response;
