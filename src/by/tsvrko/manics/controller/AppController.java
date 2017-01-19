@@ -9,7 +9,6 @@ import by.tsvrko.manics.service.services.importdaoservice.MessageImportService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 
@@ -35,9 +34,9 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public Status getMessages(@RequestBody Chat chat) {
+    public Status getMessages(@RequestBody Chat chat, @CookieValue("session") String token) {
         Status responseStatus = new Status();
-         if (messageImportService.getMessages(chat)){
+         if (messageImportService.getMessages(chat, token)){
              responseStatus.setStatusCode("200");
              responseStatus.setDescription(StatusEnum.OK);
              return responseStatus;

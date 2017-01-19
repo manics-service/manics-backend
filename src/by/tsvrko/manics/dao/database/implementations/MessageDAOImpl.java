@@ -4,10 +4,17 @@ import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Message;
+import by.tsvrko.manics.model.UserSession;
 import by.tsvrko.manics.service.services.dbdaoservice.ChatService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import static by.tsvrko.manics.dao.database.EncodingUtil.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,20 +37,19 @@ public class MessageDAOImpl implements MessageDAO{
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
+            List<Message> dbMessageList = getMessages(localChat);
 
-            if (localChat.getMessageList().size()!=0) {
-                deleteMessages(localChat);
-            }
+                for(int i=0;i<list.size();i++){
+                    Message message = list.get(i);
 
-            Iterator iterator = list.iterator();
-            while (iterator.hasNext())
-            {
-                Message message = (Message)iterator.next();
-                message.setChat(localChat);
-                message.setBody(encodeMessages(message.getBody()));
-                session.save(message);
+                    if(dbMessageList.size()==0||dbMessageList.size()!=0&&message.getDate()>dbMessageList.get(dbMessageList.size()-1).getDate()){
+                        message.setChat(localChat);
+                        message.setBody(encodeText(message.getBody()));
+                        session.save(message);
+                    }
+                    chat.setMessageList(list);
+                }
 
-            }
             session.getTransaction().commit();
 
         } catch (HibernateException e) {
@@ -85,5 +91,68 @@ public class MessageDAOImpl implements MessageDAO{
         return true;
     }
 
+    //@Override
+    public List<Message> getMessages(Chat chat) {
+        Session session = null;
+        List<Message> list = new ArrayList();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
 
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
+            Root<Message> from = criteria.from(Message.class);
+
+            criteria.select(from);
+            criteria.where(builder.equal(from.get("chat"),chat.getId()));
+
+            list = session.createQuery(criteria).getResultList();
+            session.getTransaction().commit();
+
+        } catch (HibernateException e) {
+            log.debug("can't get user from database", e);
+        }catch(NoResultException e){
+            log.debug("user not found", e);
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return list;
+    }
+    @Override
+    public Message getMessage(long date) {
+        Session session = null;
+        Message message = new Message();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
+            Root<Message> from = criteria.from(Message.class);
+
+            criteria.select(from);
+            criteria.where(builder.equal(from.get("date"),date));
+
+            message = session.createQuery(criteria).getSingleResult();
+            session.getTransaction().commit();
+
+        } catch (HibernateException e) {
+            log.debug("can't get user from database", e);
+        }catch(NoResultException e){
+            log.debug("user not found", e);
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return message;
+    }
 }
+
+
+
+

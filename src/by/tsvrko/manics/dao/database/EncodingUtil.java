@@ -13,7 +13,7 @@ public abstract class EncodingUtil {
 
    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 
-    public static String encodeMessages(String messageBody) {
+    public static String encodeText(String messageBody) {
 
         byte[] data = new byte[0];
         try {
@@ -25,7 +25,7 @@ public abstract class EncodingUtil {
         return Base64.getEncoder().encodeToString(data);
     }
 
-    public static String decodeMessages(String messageBody) {
+    public static String decodeText(String messageBody) {
 
     byte[] data = Base64.getDecoder().decode(messageBody);
         String newStringWithEmojis = null;

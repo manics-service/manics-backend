@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by tsvrko on 1/5/2017.
@@ -16,7 +18,7 @@ import java.io.Serializable;
         @UniqueConstraint(columnNames = "id")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonIdentityReference(alwaysAsId = true)
-public class Message implements Serializable{
+public class Message implements Comparable<Message>, Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,13 +82,29 @@ public class Message implements Serializable{
     }
 
     @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", user_id='" + user_id + '\'' +
-                ", body='" + body + '\'' +
-                ", date=" + date +
-                ", chat=" + chat +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message = (Message) o;
+
+        if (date != message.date) return false;
+        if (!user_id.equals(message.user_id)) return false;
+        return body.equals(message.body);
     }
+
+    @Override
+    public int hashCode() {
+        int result = user_id.hashCode();
+        result = 31 * result + body.hashCode();
+        result = 31 * result + (int) (date ^ (date >>> 32));
+        return result;
+    }
+
+
+    @Override
+    public int compareTo(Message message) {
+        return Long.compare(this.getDate(), message.getDate());
+    }
+
 }

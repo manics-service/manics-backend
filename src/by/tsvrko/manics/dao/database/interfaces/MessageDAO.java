@@ -12,4 +12,6 @@ import java.util.List;
 public interface MessageDAO {
 
    boolean addMessages(ArrayList<Message> list, Chat chat);
+
+   Message getMessage(long date);
 }

@@ -60,7 +60,6 @@ public class ChatDAOImportImpl implements ChatDAOImport {
             }
             offset += 200;
         }
-        chatService.addChats(chatList,token);
         return chatList;
     }
 

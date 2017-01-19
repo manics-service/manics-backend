@@ -10,10 +10,10 @@ import java.util.ArrayList;
  */
 public interface ChatDAO {
 
-     boolean addChats(ArrayList<Chat> list, String token);
+     boolean addChat(Chat chat, String token);
 
      Chat getChatById(Chat chat);
 
-     boolean deleteChats(User user);
+     boolean deleteChat(Chat chat);
 
 }

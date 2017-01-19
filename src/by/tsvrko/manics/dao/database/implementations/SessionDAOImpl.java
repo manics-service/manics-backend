@@ -25,20 +25,18 @@ public class SessionDAOImpl implements SessionDAO {
         Session session = null;
 
         try {
-            UserSession userSession = new UserSession();
+
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             User user = userService.getUserByLogin(login);
-
-            if (user.getUserSession()==null){
-                userSession.setSession(session_id);
+            UserSession userSession = user.getUserSession();
+            if(userSession==null){
+                userSession = new UserSession();
                 userSession.setUser(user);
-                session.save(userSession);}
-            else {
-               user.getUserSession().setSession(session_id);
+            }
                 userSession.setSession(session_id);
-                session.update(user);
-           }
+                session.saveOrUpdate(userSession);
+
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.debug("can't add user to database", e);

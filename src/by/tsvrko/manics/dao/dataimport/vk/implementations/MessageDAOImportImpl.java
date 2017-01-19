@@ -3,6 +3,7 @@ package by.tsvrko.manics.dao.dataimport.vk.implementations;
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.MessageDAOImport;
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Message;
+import by.tsvrko.manics.service.services.dbdaoservice.ChatService;
 import by.tsvrko.manics.service.services.dbdaoservice.MessageService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -24,22 +25,25 @@ public class MessageDAOImportImpl implements MessageDAOImport {
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(MessageDAOImportImpl.class.getName());
     private static MessageService messageService = new MessageService();
+    private static ChatService chatService = new ChatService();
+
 
     @Override
-    public boolean getMessages(Chat chat) {
+    public boolean getMessages(Chat chat, String token) {
 
+        chatService.addChat(chat,token);
         String peer_id = String.valueOf(chat.getChat_id()+2000000000);
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
-        int count = Integer.parseInt(parseJSONObjectCount(getChats(peer_id,offset)));
+        int count = Integer.parseInt(parseJSONObjectCount(getChat(peer_id,offset)));
 
         while (offset < count) {
             String text;
             while (true) {
-                text = getChats(peer_id, offset);
+                text = getChat(peer_id, offset);
                 if (!text.contains("Too many requests per second")) break;
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     log.debug("InterruptedException in current thread", e);
                     Thread.currentThread().interrupt();
@@ -59,14 +63,13 @@ public class MessageDAOImportImpl implements MessageDAOImport {
             }
             offset += 200;
         }
-
-        System.out.println("counterImport"+messagesList.size());
+        messagesList.sort(Message::compareTo);
         messageService.addMessages(messagesList,chat);
         return true;
     }
 
 
-    private String getChats(String peer_id, int offset) {
+    private String getChat(String peer_id, int offset) {
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")

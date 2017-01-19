@@ -10,6 +10,6 @@ import java.util.ArrayList;
  */
 public interface MessageDAOImport {
 
-    boolean getMessages(Chat chat);
+    boolean getMessages(Chat chat, String token);
 
 }

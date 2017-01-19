@@ -4,7 +4,6 @@ import by.tsvrko.manics.dao.database.HibernateFactory;
 import by.tsvrko.manics.dao.database.interfaces.ChatDAO;
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.User;
-import by.tsvrko.manics.model.UserSession;
 
 import java.util.ArrayList;
 
@@ -15,8 +14,8 @@ public class ChatService {
 
     private static ChatDAO chatDAOInstance = HibernateFactory.getInstance().getChatDAO();
 
-    public boolean addChats(ArrayList<Chat> list, String token) {
-        chatDAOInstance.addChats(list, token);
+    public boolean addChat(Chat chat, String token) {
+        chatDAOInstance.addChat(chat, token);
         return true;
     }
 
@@ -25,8 +24,8 @@ public class ChatService {
 
     }
 
-    public boolean deleteChats(User user){
-        chatDAOInstance.deleteChats(user);
+    public boolean deleteChats(Chat chat){
+        chatDAOInstance.deleteChat(chat);
         return true;
 
     }

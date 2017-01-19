@@ -14,9 +14,9 @@ public class MessageImportService {
 
     private static MessageDAOImport messageDAOImport = new MessageDAOImportImpl();
 
-    public static boolean getMessages(Chat chat) {
+    public static boolean getMessages(Chat chat, String token) {
 
-        return messageDAOImport.getMessages(chat);
+        return messageDAOImport.getMessages(chat, token);
 
     }
 }
