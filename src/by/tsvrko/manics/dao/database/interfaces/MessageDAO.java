@@ -2,6 +2,7 @@ package by.tsvrko.manics.dao.database.interfaces;
 
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Message;
+import by.tsvrko.manics.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,5 +14,7 @@ public interface MessageDAO {
 
    boolean addMessages(ArrayList<Message> list, Chat chat);
 
-   Message getMessage(long date);
+   List<Message> getMessages(Chat chat);
+
+   List<Message> getMessagesByUser(UserInfo userInfo, Chat chat);
 }

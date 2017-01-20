@@ -4,8 +4,8 @@ import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
 import by.tsvrko.manics.model.Chat;
 import by.tsvrko.manics.model.Message;
-import by.tsvrko.manics.model.UserSession;
-import by.tsvrko.manics.service.services.dbdaoservice.ChatService;
+import by.tsvrko.manics.model.UserInfo;
+import by.tsvrko.manics.service.services.dbservice.ChatService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -14,10 +14,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import static by.tsvrko.manics.dao.database.EncodingUtil.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -64,34 +62,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
 
-    public boolean deleteMessages(Chat chat){
-
-        Session session = null;
-
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            List<Message> chatMessages= chat.getMessageList();
-
-            Iterator iterator = chatMessages.iterator();
-            while(iterator.hasNext()){
-                Message message = (Message)iterator.next();
-                session.delete(message);
-            }
-            session.getTransaction().commit();
-
-        } catch (HibernateException e) {
-            log.debug("can't add user to database", e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return true;
-    }
-
-    //@Override
+    @Override
     public List<Message> getMessages(Chat chat) {
         Session session = null;
         List<Message> list = new ArrayList();
@@ -121,10 +92,12 @@ public class MessageDAOImpl implements MessageDAO{
         }
         return list;
     }
+
     @Override
-    public Message getMessage(long date) {
+    public List<Message> getMessagesByUser(UserInfo userInfo, Chat chat) {
+        Chat dbcht= chatService.getChatById(chat);
         Session session = null;
-        Message message = new Message();
+        List <Message> messageList = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -133,10 +106,11 @@ public class MessageDAOImpl implements MessageDAO{
             CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
             Root<Message> from = criteria.from(Message.class);
 
-            criteria.select(from);
-            criteria.where(builder.equal(from.get("date"),date));
 
-            message = session.createQuery(criteria).getSingleResult();
+            criteria.select(from);
+            criteria.where(builder.equal(from.get("user_id"), userInfo.getId()),builder.equal(from.get("chat"),dbcht.getId()));
+
+            messageList = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();
 
         } catch (HibernateException e) {
@@ -149,8 +123,10 @@ public class MessageDAOImpl implements MessageDAO{
                 session.close();
             }
         }
-        return message;
+        return messageList;
     }
+
+
 }
 
 

@@ -4,7 +4,7 @@ import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.SessionDAO;
 import by.tsvrko.manics.model.User;
 import by.tsvrko.manics.model.UserSession;
-import by.tsvrko.manics.service.services.dbdaoservice.UserService;
+import by.tsvrko.manics.service.services.dbservice.UserService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

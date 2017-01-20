@@ -1,6 +1,6 @@
 package by.tsvrko.manics.dao.dataimport.vk;
 
-import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatDAOImportImpl;
+import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatImportVKImpl;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,9 +12,9 @@ import org.json.simple.parser.ParseException;
  */
 public abstract class ParseJSONUtil {
 
-    private static Logger log = Logger.getLogger(ChatDAOImportImpl.class.getName());
+    private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
-    public static JSONArray parseJSONArray(String text) {
+    public static JSONArray parseChatsJSON(String text) {
         JSONArray jsonArray = null;
         try {
             JSONParser parser = new JSONParser();
@@ -28,7 +28,22 @@ public abstract class ParseJSONUtil {
 
     }
 
-    public static JSONArray parseJSONObject(String text) {
+    public static JSONArray parseUserJSON(String text) {
+        JSONArray jsonArray = null;
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonResp = (JSONObject) parser.parse(text);
+            jsonArray = (JSONArray) jsonResp.get("response");
+        } catch (ParseException e) {
+            log.debug("json can't be parsed",e);
+        }
+        return jsonArray;
+
+    }
+
+
+
+    public static JSONArray parseMessageJSON(String text) {
         JSONArray jsonArray = null;
         try {
             JSONParser parser = new JSONParser();
@@ -42,6 +57,22 @@ public abstract class ParseJSONUtil {
         return jsonArray;
 
     }
+
+    public static JSONArray parseUserCountJSON(String text) {
+        JSONArray jsonArray = null;
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject jsonResp1 = (JSONObject) parser.parse(text);
+            JSONObject jsonResp2 = (JSONObject) jsonResp1.get("response");
+            jsonArray = (JSONArray) jsonResp2.get("users");
+
+        } catch (ParseException e) {
+            log.debug("json can't be parsed",e);
+        }
+        return jsonArray;
+
+    }
+
 
     public static String parseJSONArrayCount(String text) {
         String messageCount="";

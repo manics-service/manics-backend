@@ -1,6 +1,6 @@
 package by.tsvrko.manics.dao.dataimport.vk;
 
-import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatDAOImportImpl;
+import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatImportVKImpl;
 import by.tsvrko.manics.exceptions.VKApiException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
  */
 public abstract class ContentImportUtil {
 
-    private static Logger log = Logger.getLogger(ChatDAOImportImpl.class.getName());
+    private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
     public static String readContent(URIBuilder uriBuilder){
 

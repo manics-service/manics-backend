@@ -3,13 +3,14 @@ package by.tsvrko.manics.dao.database.implementations;
 import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.ChatDAO;
 import by.tsvrko.manics.model.Chat;
-import by.tsvrko.manics.model.Message;
 import by.tsvrko.manics.model.User;
-import by.tsvrko.manics.service.services.dbdaoservice.SessionService;
+import by.tsvrko.manics.service.services.dbservice.SessionService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import static by.tsvrko.manics.dao.database.EncodingUtil.*;
+
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -17,7 +18,6 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by tsvrko on 1/8/2017.
@@ -25,8 +25,10 @@ import java.util.Objects;
 public class ChatDAOImpl implements ChatDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static SessionService sessionService = new SessionService();
 
+    //    @Resource(name="sessionService")
+//    private SessionService sessionService;
+    private static SessionService sessionService = new SessionService();
     @Override
     public boolean addChat(Chat chat, String token){
 
@@ -62,7 +64,7 @@ public class ChatDAOImpl implements ChatDAO {
         return true;
     }
 
-
+    @Override
     public boolean deleteChat(Chat chat){
 
         Session session = null;
@@ -82,6 +84,8 @@ public class ChatDAOImpl implements ChatDAO {
         }
         return true;
     }
+
+    @Override
     public Chat getChatById(Chat chat) {
         Session session = null;
         try {
@@ -111,9 +115,11 @@ public class ChatDAOImpl implements ChatDAO {
         return chat;
     }
 
+    @Override
     public List<Chat> getChats(User user) {
         Session session = null;
-        List<Chat> list = new ArrayList();
+        List<Chat> list = new ArrayList<>();
+
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -123,7 +129,7 @@ public class ChatDAOImpl implements ChatDAO {
             Root<Chat> from = criteria.from(Chat.class);
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("user"),user.getId()));
+            criteria.where(builder.equal(from.get("user"), user.getId()));
 
             list = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();

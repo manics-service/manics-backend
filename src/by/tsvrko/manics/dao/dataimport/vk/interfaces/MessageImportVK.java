@@ -8,8 +8,10 @@ import java.util.ArrayList;
 /**
  * Created by irats on 1/5/2017.
  */
-public interface MessageDAOImport {
+public interface MessageImportVK {
 
     boolean getMessages(Chat chat, String token);
+
+    public int getMessageCount(Chat chat);
 
 }

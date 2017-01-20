@@ -26,13 +26,6 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
-    <userSession-config>
-        <cookie-config>
-            <http-only>true</http-only>
-        </cookie-config>
-    </userSession-config>
-
-    <context:component-scan base-package="by.tsvrko.manics.common" />
 
     <mvc:annotation-driven />
 

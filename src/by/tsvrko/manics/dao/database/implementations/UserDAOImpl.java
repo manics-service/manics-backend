@@ -6,6 +6,10 @@ import by.tsvrko.manics.model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Repository;
+
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,6 +18,8 @@ import javax.persistence.criteria.Root;
 /**
  * Created by tsvrko on 11/22/2016.
  */
+@Repository("userDao")
+@Configurable(autowire=Autowire.BY_NAME,dependencyCheck=true)
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
@@ -51,4 +57,4 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
-   }
+}

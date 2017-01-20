@@ -1,31 +1,52 @@
 package by.tsvrko.manics.controller;
 
 import by.tsvrko.manics.model.*;
+import by.tsvrko.manics.service.services.UserMessageCountService;
 import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.services.dbdaoservice.SessionService;
-import by.tsvrko.manics.service.services.importdaoservice.ChatImportService;
-import by.tsvrko.manics.service.services.importdaoservice.MessageImportService;
+import by.tsvrko.manics.service.services.dbservice.SessionService;
+import by.tsvrko.manics.service.services.importservice.ChatImportService;
+import by.tsvrko.manics.service.services.importservice.MessageImportService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class AppController {
+    @Resource(name="sessionService")
+    private SessionService sessionService;
+    @Resource(name="chatImportService")
+    private ChatImportService chatImportService;
+    @Resource(name="messageImportService")
+    private  MessageImportService messageImportService;
+    @Resource(name="loginService")
+    private LoginService loginService;
+    @Resource(name="countStatisticsService")
+    private UserMessageCountService userMessageCountService;
 
-    private static SessionService sessionService = new SessionService();
-    private static ChatImportService chatImportService = new ChatImportService();
-    private static MessageImportService messageImportService = new MessageImportService();
-    private static LoginService loginService = new LoginService();
+
+
+
+    @RequestMapping(value = "/getMessageCountStatistics",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public List<UserMessageCount> getChats(@RequestBody Chat chat) {
+        return userMessageCountService.getChatStatistics(chat);
+    }
+
+
+
 
 
     @RequestMapping(value = "/getChats",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public ArrayList<Chat> getChats(@CookieValue("session") String token) {
+    public List<Chat> getChats(@CookieValue("session") String token) {
         return chatImportService.getChats(token);
     }
 
@@ -36,16 +57,16 @@ public class AppController {
     @ResponseBody
     public Status getMessages(@RequestBody Chat chat, @CookieValue("session") String token) {
         Status responseStatus = new Status();
-         if (messageImportService.getMessages(chat, token)){
-             responseStatus.setStatusCode("200");
-             responseStatus.setDescription(StatusEnum.OK);
-             return responseStatus;
-         }
-         else {
-             responseStatus.setStatusCode("999");
-             responseStatus.setDescription(StatusEnum.VK_API_ERROR);
-             return responseStatus;
-         }
+        if (messageImportService.getMessages(chat, token)){
+            responseStatus.setStatusCode("200");
+            responseStatus.setDescription(StatusEnum.OK);
+            return responseStatus;
+        }
+        else {
+            responseStatus.setStatusCode("999");
+            responseStatus.setDescription(StatusEnum.VK_API_ERROR);
+            return responseStatus;
+        }
 
     }
 
@@ -59,7 +80,7 @@ public class AppController {
         Status responseStatus = new Status();
         if (loginService.authenticateUser(user)){
             String token = ServiceUtil.generateToken();
-            sessionService.addSession(token,user);
+            sessionService.addSession(token, user);
             responseStatus.setStatusCode("200");
             responseStatus.setDescription(StatusEnum.OK);
             response.addCookie(new Cookie("session", token));
