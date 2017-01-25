@@ -6,9 +6,11 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.stereotype.Repository;
 
 import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,6 +19,9 @@ import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.readContent;
 /**
  * Created by tsvrko on 1/20/2017.
  */
+
+
+@Repository("userImportVkDAO")
 public class UserImportVKImpl implements UserImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
@@ -29,15 +34,14 @@ public class UserImportVKImpl implements UserImportVK {
         for(Integer i:list){
             String text = getUserName(i);
             JSONArray jsonUserInfoArray = parseUserJSON(text);
-
-            for (Object ajsonUserInfoArray : jsonUserInfoArray) {
-                JSONObject jsonMessage = (JSONObject) ajsonUserInfoArray;
+            Iterator iterator = jsonUserInfoArray.iterator();
+            while (iterator.hasNext()) {
+                JSONObject jsonMessage = (JSONObject)iterator.next();
                 UserInfo userInfo = new UserInfo();
 
                 userInfo.setId(Integer.valueOf(jsonMessage.get("id").toString()));
                 userInfo.setFirst_name(jsonMessage.get("first_name").toString());
                 userInfo.setLast_name(jsonMessage.get("last_name").toString());
-
                 userList.add(userInfo);
             }
 
@@ -48,7 +52,7 @@ public class UserImportVKImpl implements UserImportVK {
 
 
 
-            return userList;
+        return userList;
     }
 
     private String getUserName(int user_id) {

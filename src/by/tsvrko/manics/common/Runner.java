@@ -9,9 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ComponentScan("by.tsvrko.manics")
-@EnableAutoConfiguration
-@EnableSpringConfigured
-@EnableTransactionManagement
 public class Runner {
 
     public static void main( String[] args ){

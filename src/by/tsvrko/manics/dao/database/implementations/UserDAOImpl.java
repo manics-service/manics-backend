@@ -1,13 +1,12 @@
 package by.tsvrko.manics.dao.database.implementations;
 
-import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.UserDAO;
-import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.model.hibernate.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -19,19 +18,27 @@ import javax.persistence.criteria.Root;
  * Created by tsvrko on 11/22/2016.
  */
 @Repository("userDao")
-@Configurable(autowire=Autowire.BY_NAME,dependencyCheck=true)
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 
+    @Autowired
+    private SessionFactory sessionFactory;
+    private Session openSession() {
+        return sessionFactory.openSession();
+    }
+
+
+
     @Override
     public User getUserByLogin(String login)  {
+
         Session session = null;
         User user = new User();
 
 
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();

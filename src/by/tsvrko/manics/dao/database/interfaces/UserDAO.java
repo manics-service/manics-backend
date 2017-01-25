@@ -1,6 +1,6 @@
 package by.tsvrko.manics.dao.database.interfaces;
 
-import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.model.hibernate.User;
 
 /**
  * Created by tsvrko on 11/22/2016.

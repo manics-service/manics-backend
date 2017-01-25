@@ -1,34 +1,45 @@
 package by.tsvrko.manics.dao.database.implementations;
 
-import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.SessionDAO;
-import by.tsvrko.manics.model.User;
-import by.tsvrko.manics.model.UserSession;
-import by.tsvrko.manics.service.services.dbservice.UserService;
+import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.model.hibernate.UserSession;
+import by.tsvrko.manics.service.services.dao.db.UserService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+@Repository("sessionDAO")
 public class SessionDAOImpl implements SessionDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static UserService userService = new UserService();
+
+
+    @Autowired
+    private SessionFactory sessionFactory;
+    private Session openSession() {
+        return sessionFactory.openSession();
+    }
+    @Autowired
+    private UserService userService;
 
     @Override
-    public boolean addUserSession(String session_id, String login) {
+    public boolean addUserSession(String session_id, User newUser) {
 
         Session session = null;
 
         try {
 
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
-            User user = userService.getUserByLogin(login);
+            User user = userService.getUserByLogin(newUser.getLogin());
             UserSession userSession = user.getUserSession();
             if(userSession==null){
                 userSession = new UserSession();
@@ -54,7 +65,7 @@ public class SessionDAOImpl implements SessionDAO {
         Session session = null;
         UserSession userSession = new UserSession();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();

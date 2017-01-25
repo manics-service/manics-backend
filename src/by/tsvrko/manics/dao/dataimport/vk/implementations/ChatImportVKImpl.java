@@ -1,11 +1,14 @@
 package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.ChatImportVK;
-import by.tsvrko.manics.model.Chat;
+import by.tsvrko.manics.model.ChatInfo;
+import by.tsvrko.manics.model.hibernate.Chat;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,6 +20,7 @@ import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
 /**
  * Created by tsvrko on 1/4/2017.
  */
+@Repository("chatImportVkDAO")
 public class ChatImportVKImpl implements ChatImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
@@ -24,9 +28,9 @@ public class ChatImportVKImpl implements ChatImportVK {
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
     @Override
-    public List<Chat> getChats(String token) {
+    public List<ChatInfo> getChats(String token) {
 
-        List<Chat> chatList = new ArrayList<>();
+        List<ChatInfo> chatList = new ArrayList<>();
         int offset = 0;
         int count = Integer.parseInt(parseJSONArrayCount(getChats(offset)));
 
@@ -50,7 +54,7 @@ public class ChatImportVKImpl implements ChatImportVK {
                 JSONObject jsonChat = (JSONObject) aJsonChatsArray;
 
                 if (jsonChat.containsKey("chat_id")) {
-                    Chat chat = new Chat();
+                    ChatInfo chat = new ChatInfo();
                     chat.setChat_id(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chat.setTitle(jsonChat.get("title").toString());
                     chatList.add(chat);

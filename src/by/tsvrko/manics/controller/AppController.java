@@ -1,12 +1,14 @@
 package by.tsvrko.manics.controller;
 
 import by.tsvrko.manics.model.*;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.service.services.UserMessageCountService;
 import by.tsvrko.manics.service.services.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.services.dbservice.SessionService;
-import by.tsvrko.manics.service.services.importservice.ChatImportService;
-import by.tsvrko.manics.service.services.importservice.MessageImportService;
+import by.tsvrko.manics.service.services.dao.db.SessionService;
+import by.tsvrko.manics.service.services.dao.dataimport.ChatImportService;
+import by.tsvrko.manics.service.services.dao.dataimport.MessageImportService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,8 +30,6 @@ public class AppController {
     private UserMessageCountService userMessageCountService;
 
 
-
-
     @RequestMapping(value = "/getMessageCountStatistics",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
@@ -38,15 +38,11 @@ public class AppController {
         return userMessageCountService.getChatStatistics(chat);
     }
 
-
-
-
-
     @RequestMapping(value = "/getChats",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<Chat> getChats(@CookieValue("session") String token) {
+    public List<ChatInfo> getChats(@CookieValue("session") String token) {
         return chatImportService.getChats(token);
     }
 

@@ -1,4 +1,4 @@
-package by.tsvrko.manics.model;
+package by.tsvrko.manics.model.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by tsvrko on 1/5/2017.

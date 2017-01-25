@@ -6,6 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by tsvrko on 1/6/2017.
@@ -14,95 +15,59 @@ public abstract class ParseJSONUtil {
 
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
-    public static JSONArray parseChatsJSON(String text) {
-        JSONArray jsonArray = null;
+    private static JSONParser parser;
+
+    static {
+        parser = new JSONParser();
+    }
+
+    private static JSONObject parseText(String text){
+        JSONObject jsonResp = null;
         try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp = (JSONObject) parser.parse(text);
-            jsonArray = (JSONArray) jsonResp.get("response");
-            jsonArray.remove(0);
+            jsonResp =(JSONObject)parser.parse(text);
         } catch (ParseException e) {
             log.debug("json can't be parsed",e);
         }
-        return jsonArray;
+        return jsonResp; }
 
+
+    public static JSONArray parseChatsJSON(String text) {
+        JSONArray jsonArray;
+        jsonArray = (JSONArray) parseText(text).get("response");
+        jsonArray.remove(0);
+        return jsonArray;
     }
 
     public static JSONArray parseUserJSON(String text) {
-        JSONArray jsonArray = null;
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp = (JSONObject) parser.parse(text);
-            jsonArray = (JSONArray) jsonResp.get("response");
-        } catch (ParseException e) {
-            log.debug("json can't be parsed",e);
-        }
-        return jsonArray;
-
+        return (JSONArray) parseText(text).get("response");
     }
 
-
-
     public static JSONArray parseMessageJSON(String text) {
-        JSONArray jsonArray = null;
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp1 = (JSONObject) parser.parse(text);
-            JSONObject jsonResp2 = (JSONObject) jsonResp1.get("response");
-            jsonArray = (JSONArray) jsonResp2.get("items");
-
-        } catch (ParseException e) {
-            log.debug("json can't be parsed",e);
-        }
-        return jsonArray;
-
+        JSONObject jsonResp2 = (JSONObject) parseText(text).get("response");
+        return (JSONArray) jsonResp2.get("items");
     }
 
     public static JSONArray parseUserCountJSON(String text) {
-        JSONArray jsonArray = null;
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp1 = (JSONObject) parser.parse(text);
-            JSONObject jsonResp2 = (JSONObject) jsonResp1.get("response");
-            jsonArray = (JSONArray) jsonResp2.get("users");
-
-        } catch (ParseException e) {
-            log.debug("json can't be parsed",e);
-        }
-        return jsonArray;
+        JSONObject jsonResp2 = (JSONObject) parseText(text).get("response");
+        return (JSONArray) jsonResp2.get("users");
 
     }
 
 
     public static String parseJSONArrayCount(String text) {
-        String messageCount="";
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp = (JSONObject)parser.parse(text);
-            JSONArray jsonArray = (JSONArray)jsonResp.get("response");
-            messageCount = (jsonArray.get(0)).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return messageCount;
+        JSONArray jsonArray = (JSONArray)parseText(text).get("response");
+        return (jsonArray.get(0)).toString();
 
     }
 
     public static String parseJSONObjectCount(String text) {
-        String messageCount="";
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonResp1 = (JSONObject) parser.parse(text);
-            JSONObject jsonResp2 = (JSONObject)jsonResp1.get("response");
-            try{
+        String messageCount;
+        JSONObject jsonResp2 = (JSONObject)parseText(text).get("response");
+        try{
             messageCount = (jsonResp2.get("count")).toString();}
-            catch (NullPointerException e){
-                log.debug("chat contains no messages", e);
-                messageCount = "0";
-
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        catch (NullPointerException e){
+            log.debug("chat contains no messages", e);
+            messageCount = "0";
         }
         return messageCount;
 

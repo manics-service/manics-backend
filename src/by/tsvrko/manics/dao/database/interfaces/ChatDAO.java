@@ -1,7 +1,7 @@
 package by.tsvrko.manics.dao.database.interfaces;
 
-import by.tsvrko.manics.model.Chat;
-import by.tsvrko.manics.model.User;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.User;
 
 import java.util.List;
 

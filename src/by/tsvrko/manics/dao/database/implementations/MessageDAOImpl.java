@@ -1,14 +1,16 @@
 package by.tsvrko.manics.dao.database.implementations;
 
-import by.tsvrko.manics.dao.database.HibernateUtil;
 import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
-import by.tsvrko.manics.model.Chat;
-import by.tsvrko.manics.model.Message;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.UserInfo;
-import by.tsvrko.manics.service.services.dbservice.ChatService;
+import by.tsvrko.manics.service.services.dao.db.ChatService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,11 +23,20 @@ import java.util.List;
 /**
  * Created by tsvrko on 1/7/2017.
  */
+
+
+@Repository("messageDAO")
 public class MessageDAOImpl implements MessageDAO{
 
+    private static Logger log = Logger.getLogger(MessageDAOImpl.class.getName());
 
-    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-    private static ChatService chatService = new ChatService();
+    @Autowired
+    private SessionFactory sessionFactory;
+    private Session openSession() {
+        return sessionFactory.openSession();
+    }
+    @Autowired
+    private ChatService chatService;
 
     public boolean addMessages(ArrayList<Message> list, Chat chat){
 
@@ -33,7 +44,7 @@ public class MessageDAOImpl implements MessageDAO{
         Chat localChat = chatService.getChatById(chat);
 
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
             List<Message> dbMessageList = getMessages(localChat);
 
@@ -67,7 +78,7 @@ public class MessageDAOImpl implements MessageDAO{
         Session session = null;
         List<Message> list = new ArrayList();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -95,11 +106,12 @@ public class MessageDAOImpl implements MessageDAO{
 
     @Override
     public List<Message> getMessagesByUser(UserInfo userInfo, Chat chat) {
-        Chat dbcht= chatService.getChatById(chat);
+
+        Chat dbChat= chatService.getChatById(chat);
         Session session = null;
         List <Message> messageList = new ArrayList<>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = openSession();
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -108,7 +120,7 @@ public class MessageDAOImpl implements MessageDAO{
 
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("user_id"), userInfo.getId()),builder.equal(from.get("chat"),dbcht.getId()));
+            criteria.where(builder.equal(from.get("user_id"), userInfo.getId()),builder.equal(from.get("chat"),dbChat.getId()));
 
             messageList = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();

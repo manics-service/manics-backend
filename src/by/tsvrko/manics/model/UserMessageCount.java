@@ -6,6 +6,7 @@ package by.tsvrko.manics.model;
 public class UserMessageCount {
 
     private UserInfo userInfo;
+
     private int messageCount;
 
     public UserInfo getUserInfo() {
