@@ -24,7 +24,6 @@ public class LoginService {
         String login = user.getLogin();
         String password = user.getPass();
 
-
         try {
             return authenticate(login, password);
 

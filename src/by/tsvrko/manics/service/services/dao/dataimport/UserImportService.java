@@ -15,9 +15,9 @@ import java.util.List;
 public class UserImportService {
 
     @Autowired
-    private UserImportVK userImportVkDAO;
+    private UserImportVK userImportDAO;
 
     public  List<UserInfo> getUsers(List<Integer> list) {
-        return userImportVkDAO.getUsers(list);
+        return userImportDAO.getUsers(list);
     }
 }

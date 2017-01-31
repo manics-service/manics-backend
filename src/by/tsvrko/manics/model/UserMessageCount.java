@@ -1,9 +1,13 @@
 package by.tsvrko.manics.model;
 
+import by.tsvrko.manics.model.hibernate.Message;
+
+import java.io.Serializable;
+
 /**
  * Created by tsvrko on 1/20/2017.
  */
-public class UserMessageCount {
+public class UserMessageCount implements Comparable<UserMessageCount>, Serializable {
 
     private UserInfo userInfo;
 
@@ -24,4 +28,11 @@ public class UserMessageCount {
     public void setMessageCount(int messageCount) {
         this.messageCount = messageCount;
     }
+
+
+    @Override
+    public int compareTo(UserMessageCount userMessageCount) {
+        return userMessageCount.getMessageCount()-this.getMessageCount();
+    }
+
 }

@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by tsvrko on 1/6/2017.
@@ -39,6 +38,7 @@ public abstract class ParseJSONUtil {
     }
 
     public static JSONArray parseUserJSON(String text) {
+
         return (JSONArray) parseText(text).get("response");
     }
 

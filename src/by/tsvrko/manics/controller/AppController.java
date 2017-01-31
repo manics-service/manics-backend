@@ -66,7 +66,6 @@ public class AppController {
 
     }
 
-
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})

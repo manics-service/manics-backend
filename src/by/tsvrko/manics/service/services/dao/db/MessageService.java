@@ -6,6 +6,7 @@ import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 
 @Service("messageService")
+@Transactional
 public class MessageService {
 
     @Autowired

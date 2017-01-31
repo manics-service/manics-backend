@@ -26,31 +26,33 @@ public class UserImportVKImpl implements UserImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
-    private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
+    private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
     @Override
     public List<UserInfo> getUsers(List<Integer> list) {
         List<UserInfo> userList = new ArrayList<>();
+        String text;
         for(Integer i:list){
-            String text = getUserName(i);
-            JSONArray jsonUserInfoArray = parseUserJSON(text);
-            Iterator iterator = jsonUserInfoArray.iterator();
-            while (iterator.hasNext()) {
-                JSONObject jsonMessage = (JSONObject)iterator.next();
-                UserInfo userInfo = new UserInfo();
+            while (true) {
+                text = getUserName(i);
+                if (!text.contains("Too many requests per second")) break;
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    log.debug("InterruptedException in current thread", e);
+                    Thread.currentThread().interrupt();
+                }
+            }
 
+            JSONArray jsonUserInfoArray = parseUserJSON(text);
+            for(Object object:jsonUserInfoArray)   {
+                JSONObject jsonMessage = (JSONObject)object;
+                UserInfo userInfo = new UserInfo();
                 userInfo.setId(Integer.valueOf(jsonMessage.get("id").toString()));
                 userInfo.setFirst_name(jsonMessage.get("first_name").toString());
                 userInfo.setLast_name(jsonMessage.get("last_name").toString());
                 userList.add(userInfo);
-            }
-
-
-
-        }
-
-
-
+            }}
 
         return userList;
     }

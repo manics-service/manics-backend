@@ -16,13 +16,13 @@ import java.util.List;
 public class ChatImportService {
 
     @Autowired
-    private ChatImportVK chatImportVkDAO;
+    private ChatImportVK chatImportDAO;
 
     public  List<ChatInfo> getChats(String token) {
-        return chatImportVkDAO.getChats(token);
+        return chatImportDAO.getChats(token);
     }
 
     public  List<Integer> getChatUserIds(Chat chat) {
-        return chatImportVkDAO.getChatUserIds(chat);
+        return chatImportDAO.getChatUserIds(chat);
     }
 }

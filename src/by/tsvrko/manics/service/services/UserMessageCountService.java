@@ -29,7 +29,9 @@ public class UserMessageCountService {
     public List <UserMessageCount> getChatStatistics (Chat chat){
 
         List <UserMessageCount> statList = new ArrayList<>();
-        List<UserInfo> userInfoList = userImportService.getUsers(chatImportService.getChatUserIds(chat));
+        List<Integer> chatUserIds= chatImportService.getChatUserIds(chat);
+        List<UserInfo> userInfoList = userImportService.getUsers(chatUserIds);
+
         for(UserInfo userInfo : userInfoList){
 
             UserMessageCount userMessageCount = new UserMessageCount();
@@ -38,6 +40,7 @@ public class UserMessageCountService {
             statList.add(userMessageCount);
 
         }
+        statList.sort(UserMessageCount::compareTo);
         return statList;
     }
 }

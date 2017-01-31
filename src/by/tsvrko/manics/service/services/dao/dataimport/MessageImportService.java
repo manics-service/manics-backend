@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class MessageImportService {
 
     @Autowired
-    private MessageImportVK messageImportVkDAO;
+    private MessageImportVK messageImportDAO;
 
     public boolean getMessages(Chat chat, String token) {
 
-        return messageImportVkDAO.getMessages(chat, token);
+        return messageImportDAO.getMessages(chat, token);
     }
 
 }
