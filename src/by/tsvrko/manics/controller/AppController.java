@@ -30,7 +30,7 @@ public class AppController {
     private UserMessageCountService userMessageCountService;
 
 
-    @RequestMapping(value = "/getMessageCountStatistics",
+    @RequestMapping(value = "/api/v1/chats/statistic/countofmessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -38,8 +38,8 @@ public class AppController {
         return userMessageCountService.getChatStatistics(chat);
     }
 
-    @RequestMapping(value = "/getChats",
-            method = RequestMethod.POST,
+    @RequestMapping(value = "/api/v1/chats.json",
+            method = RequestMethod.GET,
             headers = {"Content-type=application/json"})
     @ResponseBody
     public List<ChatInfo> getChats(@CookieValue("session") String token) {
@@ -47,7 +47,7 @@ public class AppController {
     }
 
 
-    @RequestMapping(value = "/getMessages",
+    @RequestMapping(value = "/api/v1/chats/messages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -66,7 +66,7 @@ public class AppController {
 
     }
 
-    @RequestMapping(value = "/login",
+    @RequestMapping(value = "/api/v1/login",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
