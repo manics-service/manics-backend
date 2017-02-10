@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.dataimport.vk;
+package by.tsvrko.manics.dao;
 
-import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatImportVKImpl;
+import by.tsvrko.manics.dao.implementations.dataimport.ChatImportVKImpl;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,11 +14,8 @@ public final class ParseJSONUtil {
 
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
-    private static JSONParser parser;
+    private static JSONParser parser = new JSONParser();
 
-    static {
-        parser = new JSONParser();
-    }
 
     private static JSONObject parseText(String text){
         JSONObject jsonResp = null;

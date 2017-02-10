@@ -1,6 +1,6 @@
 package by.tsvrko.manics.service.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.ChatDAO;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.User;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by tsvrko on 1/8/2017.
  */
-@Service("chatService")
+@Service
 @Transactional
 public class ChatServiceImpl implements ChatService{
 

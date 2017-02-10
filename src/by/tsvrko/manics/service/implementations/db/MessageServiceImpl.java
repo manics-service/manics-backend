@@ -1,6 +1,6 @@
 package by.tsvrko.manics.service.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
+import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.dataimport.UserInfo;
@@ -16,7 +16,7 @@ import java.util.List;
  * Created by tsvrko on 1/7/2017.
  */
 
-@Service("messageService")
+@Service
 @Transactional
 public class MessageServiceImpl implements MessageService{
 

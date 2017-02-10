@@ -1,10 +1,10 @@
-package by.tsvrko.manics.dao.database.implementations;
+package by.tsvrko.manics.dao.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
+import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.service.implementations.db.ChatServiceImpl;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -16,7 +16,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import static by.tsvrko.manics.dao.database.EncodingUtil.*;
+import static by.tsvrko.manics.dao.EncodingUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +25,15 @@ import java.util.List;
  */
 
 
-@Repository("messageDAO")
+@Repository
 public class MessageDAOImpl implements MessageDAO{
 
-    private ChatServiceImpl chatServiceImpl;
+    private ChatService chatService;
     private SessionFactory sessionFactory;
 
     @Autowired
-    public MessageDAOImpl(ChatServiceImpl chatServiceImpl, SessionFactory sessionFactory) {
-        this.chatServiceImpl = chatServiceImpl;
+    public MessageDAOImpl(ChatService chatService, SessionFactory sessionFactory) {
+        this.chatService = chatService;
         this.sessionFactory = sessionFactory;
     }
 
@@ -45,7 +45,7 @@ public class MessageDAOImpl implements MessageDAO{
     public boolean addMessages(ArrayList<Message> list, int chatId){
 
         Session session = null;
-        Chat chat = chatServiceImpl.getChatById(chatId);
+        Chat chat = chatService.getChatById(chatId);
 
         try {
             session = openSession();
@@ -111,7 +111,7 @@ public class MessageDAOImpl implements MessageDAO{
     @Override
     public List<Message> getMessagesByUser(UserInfo userInfo, int chatId) {
 
-        Chat dbChat= chatServiceImpl.getChatById(chatId);
+        Chat dbChat= chatService.getChatById(chatId);
         Session session = null;
         List <Message> messageList = new ArrayList<>();
         try {

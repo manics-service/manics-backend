@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.database.implementations;
+package by.tsvrko.manics.dao.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.UserDAO;
+import by.tsvrko.manics.dao.interfaces.db.UserDAO;
 import by.tsvrko.manics.model.hibernate.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -17,7 +17,7 @@ import javax.persistence.criteria.Root;
 /**
  * Created by tsvrko on 11/22/2016.
  */
-@Repository("userDao")
+@Repository
 public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());

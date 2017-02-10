@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.dataimport.vk.implementations;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
-import by.tsvrko.manics.dao.dataimport.vk.interfaces.ChatImportVK;
+import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.*;
-import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 
 
 /**
  * Created by tsvrko on 1/4/2017.
  */
-@Repository("chatImportVkDAO")
+@Repository
 public class ChatImportVKImpl implements ChatImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");

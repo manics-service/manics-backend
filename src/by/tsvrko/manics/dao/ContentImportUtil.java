@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.dataimport.vk;
+package by.tsvrko.manics.dao;
 
-import by.tsvrko.manics.dao.dataimport.vk.implementations.ChatImportVKImpl;
+import by.tsvrko.manics.dao.implementations.dataimport.ChatImportVKImpl;
 import by.tsvrko.manics.exceptions.VKApiException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

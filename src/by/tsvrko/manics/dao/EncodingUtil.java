@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.database;
+package by.tsvrko.manics.dao;
 
-import by.tsvrko.manics.dao.database.implementations.UserDAOImpl;
+import by.tsvrko.manics.dao.implementations.db.UserDAOImpl;
 import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -9,7 +9,7 @@ import java.util.Base64;
 /**
  * Created by tsvrko on 1/11/2017.
  */
-public abstract class EncodingUtil {
+public final class EncodingUtil {
 
    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 

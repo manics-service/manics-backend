@@ -1,6 +1,6 @@
-package by.tsvrko.manics.dao.dataimport.vk.implementations;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
-import by.tsvrko.manics.dao.dataimport.vk.interfaces.UserImportVK;
+import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -8,19 +8,19 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Repository;
 
-import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.readContent;
+import static by.tsvrko.manics.dao.ContentImportUtil.readContent;
 
 /**
  * Created by tsvrko on 1/20/2017.
  */
 
 
-@Repository("userImportVkDAO")
+@Repository
 public class UserImportVKImpl implements UserImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");

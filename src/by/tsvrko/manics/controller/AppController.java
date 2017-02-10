@@ -11,9 +11,9 @@ import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
 import by.tsvrko.manics.service.interfaces.db.SessionService;
 import by.tsvrko.manics.service.interfaces.statistics.UserMessageCountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -21,19 +21,34 @@ import java.util.List;
 @RestController
 public class AppController {
 
-    @Resource(name="sessionService")
     private SessionService sessionService;
-    @Resource(name="chatImportService")
     private ChatImportService chatImportService;
-    @Resource(name="messageImportService")
     private MessageImportService messageImportService;
-    @Resource(name="loginService")
     private LoginService loginService;
-    @Resource(name="countStatisticsService")
     private UserMessageCountService userMessageCountService;
 
+    @Autowired
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
+    @Autowired
+    public void setChatImportService(ChatImportService chatImportService) {
+        this.chatImportService = chatImportService;
+    }
+    @Autowired
+    public void setMessageImportService(MessageImportService messageImportService) {
+        this.messageImportService = messageImportService;
+    }
+    @Autowired
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
+    }
+    @Autowired
+    public void setUserMessageCountService(UserMessageCountService userMessageCountService) {
+        this.userMessageCountService = userMessageCountService;
+    }
 
-    @RequestMapping(value = "/api/v1/chats/messages/statistics/countofusermessages.json",
+    @RequestMapping(value = "/api/v1/statistics/countofusermessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -41,7 +56,7 @@ public class AppController {
         return userMessageCountService.getChatStatistics(chat);
     }
 
-    @RequestMapping(value = "/api/v1/chats.json",
+    @RequestMapping(value = "/api/v1/data/chats.json",
             method = RequestMethod.GET,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -50,7 +65,7 @@ public class AppController {
     }
 
 
-    @RequestMapping(value = "/api/v1/chats/messages.json",
+    @RequestMapping(value = "/api/v1/data/messages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody

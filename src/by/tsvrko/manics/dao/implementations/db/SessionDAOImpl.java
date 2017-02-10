@@ -1,9 +1,9 @@
-package by.tsvrko.manics.dao.database.implementations;
+package by.tsvrko.manics.dao.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.SessionDAO;
+import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
 import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
-import by.tsvrko.manics.service.implementations.db.UserServiceImpl;
+import by.tsvrko.manics.service.interfaces.db.UserService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -16,17 +16,18 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-@Repository("sessionDAO")
+@Repository
 public class SessionDAOImpl implements SessionDAO {
 
     private SessionFactory sessionFactory;
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     @Autowired
-    public SessionDAOImpl(SessionFactory sessionFactory, UserServiceImpl userServiceImpl) {
+    public SessionDAOImpl(SessionFactory sessionFactory, UserService userService) {
         this.sessionFactory = sessionFactory;
-        this.userServiceImpl = userServiceImpl;
+        this.userService = userService;
     }
+
     private Session openSession() {
         return sessionFactory.openSession();
     }
@@ -41,7 +42,7 @@ public class SessionDAOImpl implements SessionDAO {
 
             session = openSession();
             session.beginTransaction();
-            User user = userServiceImpl.getUserByLogin(userInfo.getLogin());
+            User user = userService.getUserByLogin(userInfo.getLogin());
             UserSession userSession = user.getUserSession();
             if(userSession==null){
                 userSession = new UserSession();

@@ -1,4 +1,4 @@
-package by.tsvrko.manics.dao.database.interfaces;
+package by.tsvrko.manics.dao.interfaces.db;
 
 import by.tsvrko.manics.model.hibernate.User;
 

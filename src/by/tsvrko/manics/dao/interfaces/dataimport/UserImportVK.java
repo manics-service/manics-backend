@@ -1,4 +1,4 @@
-package by.tsvrko.manics.dao.dataimport.vk.interfaces;
+package by.tsvrko.manics.dao.interfaces.dataimport;
 
 import by.tsvrko.manics.model.dataimport.UserInfo;
 

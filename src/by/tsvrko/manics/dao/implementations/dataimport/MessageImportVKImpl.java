@@ -1,10 +1,10 @@
-package by.tsvrko.manics.dao.dataimport.vk.implementations;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
-import by.tsvrko.manics.dao.dataimport.vk.interfaces.MessageImportVK;
+import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.service.implementations.db.ChatServiceImpl;
-import by.tsvrko.manics.service.implementations.db.MessageServiceImpl;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
+import by.tsvrko.manics.service.interfaces.db.MessageService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -15,33 +15,33 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static by.tsvrko.manics.dao.dataimport.vk.ContentImportUtil.*;
-import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 
 /**
  * Created by tsvrko on 1/5/2017.
  */
 
-@Repository("messageImportVkDAO")
+@Repository
 public class MessageImportVKImpl implements MessageImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
-    private MessageServiceImpl messageServiceImpl;
-    private ChatServiceImpl chatServiceImpl;
+    private MessageService messageService;
+    private ChatService chatService;
 
     @Autowired
-    public MessageImportVKImpl(MessageServiceImpl messageServiceImpl, ChatServiceImpl chatServiceImpl) {
-        this.messageServiceImpl = messageServiceImpl;
-        this.chatServiceImpl = chatServiceImpl;
+    public MessageImportVKImpl(MessageService messageService, ChatService chatService) {
+        this.messageService = messageService;
+        this.chatService = chatService;
     }
 
-    @Override
+   @Override
     public boolean getMessages(ChatInfo chat, String token) {
 
-        chatServiceImpl.addChat(chat,token);
+        chatService.addChat(chat,token);
 
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
@@ -75,7 +75,7 @@ public class MessageImportVKImpl implements MessageImportVK {
             offset += 200;
         }
         messagesList.sort(Message::compareTo);
-        messageServiceImpl.addMessages(messagesList,chatId);
+        messageService.addMessages(messagesList,chatId);
         return true;
     }
 

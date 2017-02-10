@@ -2,18 +2,22 @@ package by.tsvrko.manics.service;
 
 import by.tsvrko.manics.exceptions.InvalidUserInfoException;
 import by.tsvrko.manics.model.hibernate.User;
-import by.tsvrko.manics.service.implementations.db.UserServiceImpl;
+import by.tsvrko.manics.service.interfaces.db.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("loginService")
+@Service
 public class LoginService {
 
     private static Logger log = Logger.getLogger(LoginService.class.getName());
 
+    private UserService userService;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    public LoginService(UserService userService) {
+        this.userService = userService;
+    }
+
 
     public boolean authenticateUser(User user) {
         String login = user.getLogin();
@@ -30,7 +34,7 @@ public class LoginService {
 
 
     private boolean authenticate(String login, String password) throws InvalidUserInfoException {
-        User user = userServiceImpl.getUserByLogin(login);
+        User user = userService.getUserByLogin(login);
         String dbPass  = user.getPass();
         if (password.equals(dbPass)){
             return true;

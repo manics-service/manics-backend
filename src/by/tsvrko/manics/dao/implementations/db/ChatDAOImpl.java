@@ -1,10 +1,10 @@
-package by.tsvrko.manics.dao.database.implementations;
+package by.tsvrko.manics.dao.implementations.db;
 
-import by.tsvrko.manics.dao.database.interfaces.ChatDAO;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.User;
-import by.tsvrko.manics.service.implementations.db.SessionServiceImpl;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import static by.tsvrko.manics.dao.database.EncodingUtil.*;
+import static by.tsvrko.manics.dao.EncodingUtil.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,30 +26,28 @@ import java.util.List;
  * Created by tsvrko on 1/8/2017.
  */
 
-@Repository("chatDAO")
+@Repository
 public class ChatDAOImpl implements ChatDAO {
 
     private SessionFactory sessionFactory;
-    private SessionServiceImpl sessionServiceImpl;
+    private SessionService sessionService;
 
     @Autowired
-    public ChatDAOImpl(SessionFactory sessionFactory, SessionServiceImpl sessionServiceImpl) {
+    public ChatDAOImpl(SessionFactory sessionFactory, SessionService sessionService) {
         this.sessionFactory = sessionFactory;
-        this.sessionServiceImpl = sessionServiceImpl;
+        this.sessionService = sessionService;
     }
 
-    private Session openSession() {
+   private Session openSession() {
         return sessionFactory.openSession();
     }
     private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
-
-
 
     @Override
     public boolean addChat(ChatInfo chatInfo, String token){
 
         Session session = null;
-        User user = sessionServiceImpl.getUserSessionByToken(token).getUser();
+        User user = sessionService.getUserSessionByToken(token).getUser();
 
         try {
             session = openSession();
