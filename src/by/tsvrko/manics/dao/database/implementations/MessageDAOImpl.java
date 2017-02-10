@@ -1,10 +1,10 @@
 package by.tsvrko.manics.dao.database.implementations;
 
 import by.tsvrko.manics.dao.database.interfaces.MessageDAO;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.model.UserInfo;
-import by.tsvrko.manics.service.services.dao.db.ChatService;
+import by.tsvrko.manics.service.implementations.db.ChatServiceImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -28,36 +28,40 @@ import java.util.List;
 @Repository("messageDAO")
 public class MessageDAOImpl implements MessageDAO{
 
-    private static Logger log = Logger.getLogger(MessageDAOImpl.class.getName());
+    private ChatServiceImpl chatServiceImpl;
+    private SessionFactory sessionFactory;
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public MessageDAOImpl(ChatServiceImpl chatServiceImpl, SessionFactory sessionFactory) {
+        this.chatServiceImpl = chatServiceImpl;
+        this.sessionFactory = sessionFactory;
+    }
+
     private Session openSession() {
         return sessionFactory.openSession();
     }
-    @Autowired
-    private ChatService chatService;
+    private static Logger log = Logger.getLogger(MessageDAOImpl.class.getName());
 
-    public boolean addMessages(ArrayList<Message> list, Chat chat){
+    public boolean addMessages(ArrayList<Message> list, int chatId){
 
         Session session = null;
-        Chat localChat = chatService.getChatById(chat);
+        Chat chat = chatServiceImpl.getChatById(chatId);
 
         try {
             session = openSession();
             session.beginTransaction();
-            List<Message> dbMessageList = getMessages(localChat);
+            List<Message> dbMessageList = getMessages(chat);
 
-                for(int i=0;i<list.size();i++){
-                    Message message = list.get(i);
+            for(int i=0;i<list.size();i++){
+                Message message = list.get(i);
 
-                    if(dbMessageList.size()==0||dbMessageList.size()!=0&&message.getDate()>dbMessageList.get(dbMessageList.size()-1).getDate()){
-                        message.setChat(localChat);
-                        message.setBody(encodeText(message.getBody()));
-                        session.save(message);
-                    }
-                    chat.setMessageList(list);
+                if(dbMessageList.size()==0||dbMessageList.size()!=0&&message.getDate()>dbMessageList.get(dbMessageList.size()-1).getDate()){
+                    message.setChat(chat);
+                    message.setBody(encodeText(message.getBody()));
+                    session.save(message);
                 }
+                chat.setMessageList(list);
+            }
 
             session.getTransaction().commit();
 
@@ -76,7 +80,7 @@ public class MessageDAOImpl implements MessageDAO{
     @Override
     public List<Message> getMessages(Chat chat) {
         Session session = null;
-        List<Message> list = new ArrayList();
+        List<Message> list = new ArrayList<>();
         try {
             session = openSession();
             session.beginTransaction();
@@ -105,9 +109,9 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public List<Message> getMessagesByUser(UserInfo userInfo, Chat chat) {
+    public List<Message> getMessagesByUser(UserInfo userInfo, int chatId) {
 
-        Chat dbChat= chatService.getChatById(chat);
+        Chat dbChat= chatServiceImpl.getChatById(chatId);
         Session session = null;
         List <Message> messageList = new ArrayList<>();
         try {
@@ -120,15 +124,15 @@ public class MessageDAOImpl implements MessageDAO{
 
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("user_id"), userInfo.getId()),builder.equal(from.get("chat"),dbChat.getId()));
+            criteria.where(builder.equal(from.get("userId"), userInfo.getId()),builder.equal(from.get("chat"),dbChat.getId()));
 
             messageList = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();
 
         } catch (HibernateException e) {
-            log.debug("can't get user from database", e);
+            log.debug("can't get userInfo from database", e);
         }catch(NoResultException e){
-            log.debug("user not found", e);
+            log.debug("userInfo not found", e);
 
         } finally {
             if (session != null && session.isOpen()) {

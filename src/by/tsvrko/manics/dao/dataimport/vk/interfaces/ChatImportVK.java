@@ -1,7 +1,6 @@
 package by.tsvrko.manics.dao.dataimport.vk.interfaces;
 
-import by.tsvrko.manics.model.ChatInfo;
-import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 
 import java.util.List;
 
@@ -12,5 +11,5 @@ public interface ChatImportVK {
 
     List<ChatInfo> getChats(String token);
 
-    List getChatUserIds(Chat chat);
+    List <Integer> getUsers(ChatInfo chatInfo);
 }

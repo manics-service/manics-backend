@@ -22,20 +22,22 @@ public class UserDAOImpl implements UserDAO {
 
     private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public UserDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     private Session openSession() {
         return sessionFactory.openSession();
     }
-
-
 
     @Override
     public User getUserByLogin(String login)  {
 
         Session session = null;
         User user = new User();
-
 
         try {
             session = openSession();

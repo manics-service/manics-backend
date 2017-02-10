@@ -24,7 +24,7 @@ public class Message implements Comparable<Message>, Serializable{
     private int id;
 
     @Column(name = "user_id")
-    private String user_id;
+    private String userId;
 
     @Column(name = "body")
     private String body;
@@ -32,7 +32,7 @@ public class Message implements Comparable<Message>, Serializable{
     @Column(name = "date")
     private long date;
 
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne (fetch = FetchType.LAZY)
     private Chat chat;
 
 
@@ -44,12 +44,12 @@ public class Message implements Comparable<Message>, Serializable{
         this.id = id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String user_id) {
+        this.userId = user_id;
     }
 
     public String getBody() {
@@ -87,13 +87,13 @@ public class Message implements Comparable<Message>, Serializable{
         Message message = (Message) o;
 
         if (date != message.date) return false;
-        if (!user_id.equals(message.user_id)) return false;
+        if (!userId.equals(message.userId)) return false;
         return body.equals(message.body);
     }
 
     @Override
     public int hashCode() {
-        int result = user_id.hashCode();
+        int result = userId.hashCode();
         result = 31 * result + body.hashCode();
         result = 31 * result + (int) (date ^ (date >>> 32));
         return result;

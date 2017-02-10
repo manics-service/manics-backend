@@ -2,7 +2,7 @@ package by.tsvrko.manics.dao.database.interfaces;
 
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.model.UserInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface MessageDAO {
 
-   boolean addMessages(ArrayList<Message> list, Chat chat);
+   boolean addMessages(ArrayList<Message> list, int chatId);
 
    List<Message> getMessages(Chat chat);
 
-   List<Message> getMessagesByUser(UserInfo userInfo, Chat chat);
+   List<Message> getMessagesByUser(UserInfo userInfo, int chatId);
 }

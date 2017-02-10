@@ -1,5 +1,6 @@
 package by.tsvrko.manics.dao.database.interfaces;
 
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.User;
 
@@ -10,9 +11,9 @@ import java.util.List;
  */
 public interface ChatDAO {
 
-     boolean addChat(Chat chat, String token);
+     boolean addChat(ChatInfo chatInfo, String token);
 
-     Chat getChatById(Chat chat);
+     Chat getChatById(int chatId);
 
      boolean deleteChat(Chat chat);
 

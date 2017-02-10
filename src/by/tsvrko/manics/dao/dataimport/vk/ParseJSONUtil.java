@@ -10,7 +10,7 @@ import org.json.simple.parser.ParseException;
 /**
  * Created by tsvrko on 1/6/2017.
  */
-public abstract class ParseJSONUtil {
+public final class ParseJSONUtil {
 
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 

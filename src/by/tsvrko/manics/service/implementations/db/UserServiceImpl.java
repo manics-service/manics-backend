@@ -1,20 +1,26 @@
-package by.tsvrko.manics.service.services.dao.db;
+package by.tsvrko.manics.service.implementations.db;
 
 import by.tsvrko.manics.dao.database.interfaces.UserDAO;
 import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.service.interfaces.db.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
 @Transactional
-public class UserService {
+public class UserServiceImpl implements UserService{
+
+    private UserDAO userDAO;
 
     @Autowired
-    private UserDAO userDao ;
+    public UserServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
+    @Override
     public User getUserByLogin(String login) {
-        return userDao.getUserByLogin(login);
+        return userDAO.getUserByLogin(login);
     }
 
 }

@@ -1,5 +1,6 @@
 package by.tsvrko.manics.dao.dataimport.vk.interfaces;
 
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 
 /**
@@ -7,8 +8,8 @@ import by.tsvrko.manics.model.hibernate.Chat;
  */
 public interface MessageImportVK {
 
-    boolean getMessages(Chat chat, String token);
+    boolean getMessages(ChatInfo chat, String token);
 
-    public int getMessageCount(Chat chat);
+    int getMessageCount(int chatId);
 
 }

@@ -18,11 +18,11 @@ import java.net.URISyntaxException;
 /**
  * Created by tsvrko on 1/4/2017.
  */
-public abstract class ContentImportUtil {
+public final class ContentImportUtil {
 
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
-    public static String readContent(URIBuilder uriBuilder){
+    public static String readContent(URIBuilder uriBuilder) {
 
         HttpResponse response = ContentImportUtil.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
@@ -33,12 +33,10 @@ public abstract class ContentImportUtil {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 text = reader.readLine();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 log.debug("ioexception in reading json");
             }
-        }
-        else {
+        } else {
             throw new VKApiException();
         }
         return text;
@@ -66,9 +64,6 @@ public abstract class ContentImportUtil {
 
         return response;
     }
-
-
-
 
 }
 

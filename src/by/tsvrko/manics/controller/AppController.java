@@ -1,14 +1,16 @@
 package by.tsvrko.manics.controller;
 
-import by.tsvrko.manics.model.*;
-import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.controller.Status;
+import by.tsvrko.manics.model.controller.StatusEnum;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.User;
-import by.tsvrko.manics.service.services.UserMessageCountService;
-import by.tsvrko.manics.service.services.LoginService;
+import by.tsvrko.manics.model.statistics.UserMessageCount;
+import by.tsvrko.manics.service.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
-import by.tsvrko.manics.service.services.dao.db.SessionService;
-import by.tsvrko.manics.service.services.dao.dataimport.ChatImportService;
-import by.tsvrko.manics.service.services.dao.dataimport.MessageImportService;
+import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
+import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
+import by.tsvrko.manics.service.interfaces.statistics.UserMessageCountService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,23 +20,24 @@ import java.util.List;
 
 @RestController
 public class AppController {
+
     @Resource(name="sessionService")
     private SessionService sessionService;
     @Resource(name="chatImportService")
     private ChatImportService chatImportService;
     @Resource(name="messageImportService")
-    private  MessageImportService messageImportService;
+    private MessageImportService messageImportService;
     @Resource(name="loginService")
     private LoginService loginService;
     @Resource(name="countStatisticsService")
     private UserMessageCountService userMessageCountService;
 
 
-    @RequestMapping(value = "/api/v1/chats/statistic/countofmessages.json",
+    @RequestMapping(value = "/api/v1/chats/messages/statistics/countofusermessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<UserMessageCount> getChats(@RequestBody Chat chat) {
+    public List<UserMessageCount> getChats(@RequestBody ChatInfo chat) {
         return userMessageCountService.getChatStatistics(chat);
     }
 
@@ -43,7 +46,7 @@ public class AppController {
             headers = {"Content-type=application/json"})
     @ResponseBody
     public List<ChatInfo> getChats(@CookieValue("session") String token) {
-        return chatImportService.getChats(token);
+        return chatImportService.getListOfChats(token);
     }
 
 
@@ -51,15 +54,15 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public Status getMessages(@RequestBody Chat chat, @CookieValue("session") String token) {
+    public Status getMessages(@RequestBody ChatInfo chat, @CookieValue("session") String token) {
         Status responseStatus = new Status();
-        if (messageImportService.getMessages(chat, token)){
+        if (messageImportService.getChatMessages(chat, token)){
             responseStatus.setStatusCode("200");
             responseStatus.setDescription(StatusEnum.OK);
             return responseStatus;
         }
         else {
-            responseStatus.setStatusCode("999");
+            responseStatus.setStatusCode("841");
             responseStatus.setDescription(StatusEnum.VK_API_ERROR);
             return responseStatus;
         }

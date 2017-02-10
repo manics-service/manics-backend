@@ -1,3 +1,3 @@
-package by.tsvrko.manics.model;
+package by.tsvrko.manics.model.controller;
 
 public enum StatusEnum {OK, UNAUTHORIZED, VK_API_ERROR}

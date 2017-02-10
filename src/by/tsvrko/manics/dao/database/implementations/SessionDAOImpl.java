@@ -3,7 +3,7 @@ package by.tsvrko.manics.dao.database.implementations;
 import by.tsvrko.manics.dao.database.interfaces.SessionDAO;
 import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
-import by.tsvrko.manics.service.services.dao.db.UserService;
+import by.tsvrko.manics.service.implementations.db.UserServiceImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -19,19 +19,21 @@ import javax.persistence.criteria.Root;
 @Repository("sessionDAO")
 public class SessionDAOImpl implements SessionDAO {
 
-    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
-
+    private SessionFactory sessionFactory;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public SessionDAOImpl(SessionFactory sessionFactory, UserServiceImpl userServiceImpl) {
+        this.sessionFactory = sessionFactory;
+        this.userServiceImpl = userServiceImpl;
+    }
     private Session openSession() {
         return sessionFactory.openSession();
     }
-    @Autowired
-    private UserService userService;
+    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 
     @Override
-    public boolean addUserSession(String session_id, User newUser) {
+    public boolean addUserSession(String session_id, User userInfo) {
 
         Session session = null;
 
@@ -39,14 +41,14 @@ public class SessionDAOImpl implements SessionDAO {
 
             session = openSession();
             session.beginTransaction();
-            User user = userService.getUserByLogin(newUser.getLogin());
+            User user = userServiceImpl.getUserByLogin(userInfo.getLogin());
             UserSession userSession = user.getUserSession();
             if(userSession==null){
                 userSession = new UserSession();
                 userSession.setUser(user);
             }
-                userSession.setSession(session_id);
-                session.saveOrUpdate(userSession);
+            userSession.setSession(session_id);
+            session.saveOrUpdate(userSession);
 
             session.getTransaction().commit();
         } catch (HibernateException e) {

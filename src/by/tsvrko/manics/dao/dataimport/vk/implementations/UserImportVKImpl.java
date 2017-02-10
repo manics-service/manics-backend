@@ -1,7 +1,7 @@
 package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.UserImportVK;
-import by.tsvrko.manics.model.UserInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import static by.tsvrko.manics.dao.dataimport.vk.ParseJSONUtil.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -30,7 +29,7 @@ public class UserImportVKImpl implements UserImportVK {
 
     @Override
     public List<UserInfo> getUsers(List<Integer> list) {
-        List<UserInfo> userList = new ArrayList<>();
+        List<UserInfo> userInfoList = new ArrayList<>();
         String text;
         for(Integer i:list){
             while (true) {
@@ -49,12 +48,12 @@ public class UserImportVKImpl implements UserImportVK {
                 JSONObject jsonMessage = (JSONObject)object;
                 UserInfo userInfo = new UserInfo();
                 userInfo.setId(Integer.valueOf(jsonMessage.get("id").toString()));
-                userInfo.setFirst_name(jsonMessage.get("first_name").toString());
-                userInfo.setLast_name(jsonMessage.get("last_name").toString());
-                userList.add(userInfo);
+                userInfo.setFirstName(jsonMessage.get("first_name").toString());
+                userInfo.setLastName(jsonMessage.get("last_name").toString());
+                userInfoList.add(userInfo);
             }}
 
-        return userList;
+        return userInfoList;
     }
 
     private String getUserName(int user_id) {

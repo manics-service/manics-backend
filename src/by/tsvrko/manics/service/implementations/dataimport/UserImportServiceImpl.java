@@ -1,7 +1,8 @@
-package by.tsvrko.manics.service.services.dao.dataimport;
+package by.tsvrko.manics.service.implementations.dataimport;
 
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.UserImportVK;
-import by.tsvrko.manics.model.UserInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.service.interfaces.dataimport.UserImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,14 @@ import java.util.List;
  */
 
 @Service("userImportService")
-public class UserImportService {
+public class UserImportServiceImpl implements UserImportService{
+
+    private UserImportVK userImportDAO;
 
     @Autowired
-    private UserImportVK userImportDAO;
+    public UserImportServiceImpl(UserImportVK userImportDAO) {
+        this.userImportDAO = userImportDAO;
+    }
 
     public  List<UserInfo> getUsers(List<Integer> list) {
         return userImportDAO.getUsers(list);

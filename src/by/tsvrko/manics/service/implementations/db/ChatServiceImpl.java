@@ -1,8 +1,10 @@
-package by.tsvrko.manics.service.services.dao.db;
+package by.tsvrko.manics.service.implementations.db;
 
 import by.tsvrko.manics.dao.database.interfaces.ChatDAO;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,25 +16,32 @@ import java.util.List;
  */
 @Service("chatService")
 @Transactional
-public class ChatService {
+public class ChatServiceImpl implements ChatService{
+
+    private ChatDAO chatDAO ;
 
     @Autowired
-    ChatDAO chatDAO ;
+    public ChatServiceImpl(ChatDAO chatDAO) {
+        this.chatDAO = chatDAO;
+    }
 
-    public boolean addChat(Chat chat, String token) {
+    @Override
+    public boolean addChat(ChatInfo chat, String token) {
         chatDAO.addChat(chat, token);
         return true;
     }
 
-    public Chat getChatById(Chat chat){
-        return chatDAO.getChatById(chat);
+    @Override
+    public Chat getChatById(int chatId){
+        return chatDAO.getChatById(chatId);
 
     }
-
+    @Override
     public boolean deleteChat(Chat chat) {
         return chatDAO.deleteChat(chat);
     }
 
+    @Override
     public List<Chat> getChats(User user) {
         return chatDAO.getChats(user);
     }

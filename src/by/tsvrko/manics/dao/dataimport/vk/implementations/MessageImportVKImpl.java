@@ -1,10 +1,10 @@
 package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.MessageImportVK;
-import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.service.services.dao.db.ChatService;
-import by.tsvrko.manics.service.services.dao.db.MessageService;
+import by.tsvrko.manics.service.implementations.db.ChatServiceImpl;
+import by.tsvrko.manics.service.implementations.db.MessageServiceImpl;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -29,25 +29,29 @@ public class MessageImportVKImpl implements MessageImportVK {
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
-    @Autowired
-    private  MessageService messageService;
-    @Autowired
-    private  ChatService chatService;
+    private MessageServiceImpl messageServiceImpl;
+    private ChatServiceImpl chatServiceImpl;
 
+    @Autowired
+    public MessageImportVKImpl(MessageServiceImpl messageServiceImpl, ChatServiceImpl chatServiceImpl) {
+        this.messageServiceImpl = messageServiceImpl;
+        this.chatServiceImpl = chatServiceImpl;
+    }
 
     @Override
-    public boolean getMessages(Chat chat, String token) {
+    public boolean getMessages(ChatInfo chat, String token) {
 
-        chatService.addChat(chat,token);
+        chatServiceImpl.addChat(chat,token);
 
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
-        int count = getMessageCount(chat);
+        int chatId = chat.getChatId();
+        int count = getMessageCount(chatId);
 
         while (offset < count) {
             String text;
-            while (true) {
-                text = getChat(chat, offset);
+             while (true) {
+                text = getChat(chatId, offset);
                 if (!text.contains("Too many requests per second")) break;
                 try {
                     Thread.sleep(300);
@@ -64,26 +68,27 @@ public class MessageImportVKImpl implements MessageImportVK {
                 Message message = new Message();
                 message.setId(Integer.valueOf(jsonMessage.get("id").toString()));
                 message.setBody((String)jsonMessage.get("body"));
-                message.setUser_id(jsonMessage.get("user_id").toString());
+                message.setUserId(jsonMessage.get("user_id").toString());
                 message.setDate(Long.valueOf(jsonMessage.get("date").toString()));
                 messagesList.add(message);
             }
             offset += 200;
         }
         messagesList.sort(Message::compareTo);
-        messageService.addMessages(messagesList,chat);
+        messageServiceImpl.addMessages(messagesList,chatId);
         return true;
     }
+
     @Override
-    public int getMessageCount(Chat chat){
+    public int getMessageCount(int chatId){
         int offset =0;
-        return Integer.parseInt(parseJSONObjectCount(getChat(chat,offset)));
+        return Integer.parseInt(parseJSONObjectCount(getChat(chatId,offset)));
 
     }
 
-    private String getChat(Chat chat, int offset) {
+    private String getChat(int chatId, int offset) {
 
-        String peer_id = String.valueOf(chat.getChat_id()+2000000000);
+        String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
                 .setParameter("peer_id", peer_id)

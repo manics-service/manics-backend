@@ -1,6 +1,6 @@
-package by.tsvrko.manics.model;
+package by.tsvrko.manics.model.statistics;
 
-import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 
 import java.io.Serializable;
 
@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class UserMessageCount implements Comparable<UserMessageCount>, Serializable {
 
     private UserInfo userInfo;
-
     private int messageCount;
 
     public UserInfo getUserInfo() {

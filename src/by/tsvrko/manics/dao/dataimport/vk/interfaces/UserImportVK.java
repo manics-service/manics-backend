@@ -1,6 +1,6 @@
 package by.tsvrko.manics.dao.dataimport.vk.interfaces;
 
-import by.tsvrko.manics.model.UserInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 
 import java.util.List;
 

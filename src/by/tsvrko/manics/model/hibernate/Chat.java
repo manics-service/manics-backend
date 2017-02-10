@@ -23,15 +23,15 @@ public class Chat implements Serializable{
     private int id;
 
     @Column(name = "chat_id")
-    private long chat_id;
+    private int chatId;
 
     @Column(name = "name")
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.LAZY )
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messageList;
 
 
@@ -43,12 +43,12 @@ public class Chat implements Serializable{
         this.id = id;
     }
 
-    public long getChat_id() {
-        return chat_id;
+    public int getChatId() {
+        return chatId;
     }
 
-    public void setChat_id(long chat_id) {
-        this.chat_id = chat_id;
+    public void setChatId(int chat_id) {
+        this.chatId = chat_id;
     }
 
     public String getTitle() {
@@ -86,7 +86,7 @@ public class Chat implements Serializable{
         Chat chat = (Chat) o;
 
         if (id != chat.id) return false;
-        if (chat_id != chat.chat_id) return false;
+        if (chatId != chat.chatId) return false;
         if (!title.equals(chat.title)) return false;
         if (!user.equals(chat.user)) return false;
         return messageList.equals(chat.messageList);
@@ -95,7 +95,7 @@ public class Chat implements Serializable{
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (int) (chat_id ^ (chat_id >>> 32));
+        result = 31 * result + (int) (chatId ^ (chatId >>> 32));
         result = 31 * result + title.hashCode();
         result = 31 * result + user.hashCode();
         result = 31 * result + messageList.hashCode();
@@ -104,9 +104,9 @@ public class Chat implements Serializable{
 
     @Override
     public String toString() {
-        return "Chat{" +
+        return "ChatInfo{" +
                 "id=" + id +
-                ", chat_id=" + chat_id +
+                ", chat_id=" + chatId +
                 ", title='" + title + '\'' +
                 ", user=" + user +
                 ", messageList=" + messageList +

@@ -1,8 +1,7 @@
 package by.tsvrko.manics.dao.dataimport.vk.implementations;
 
 import by.tsvrko.manics.dao.dataimport.vk.interfaces.ChatImportVK;
-import by.tsvrko.manics.model.ChatInfo;
-import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -30,12 +29,13 @@ public class ChatImportVKImpl implements ChatImportVK {
     @Override
     public List<ChatInfo> getChats(String token) {
 
-        List<ChatInfo> chatList = new ArrayList<>();
+        List<ChatInfo> chatInfoList = new ArrayList<>();
         int offset = 0;
         int count = Integer.parseInt(parseJSONArrayCount(getChats(offset)));
 
         while (offset < count) {
             String text;
+
             while (true) {
                 text = getChats(offset);
                 if (!text.contains("Too many requests per second")) break;
@@ -47,31 +47,30 @@ public class ChatImportVKImpl implements ChatImportVK {
                 }
 
             }
-
             JSONArray jsonChatsArray = parseChatsJSON(text);
 
             for (Object aJsonChatsArray : jsonChatsArray) {
                 JSONObject jsonChat = (JSONObject) aJsonChatsArray;
 
                 if (jsonChat.containsKey("chat_id")) {
-                    ChatInfo chat = new ChatInfo();
-                    chat.setChat_id(Long.valueOf(jsonChat.get("chat_id").toString()));
-                    chat.setTitle(jsonChat.get("title").toString());
-                    chatList.add(chat);
+                    ChatInfo chatInfo = new ChatInfo();
+                    chatInfo.setChatId(Integer.valueOf(jsonChat.get("chat_id").toString()));
+                    chatInfo.setTitle(jsonChat.get("title").toString());
+                    chatInfoList.add(chatInfo);
                 }
             }
             offset += 200;
         }
-        return chatList;
+        return chatInfoList;
     }
 
     @Override
-    public List getChatUserIds(Chat chat) {
-        List<Integer> list = new ArrayList();
-        String text  = getUsers(chat.getChat_id());
+    public List<Integer> getUsers(ChatInfo chatInfo) {
+        List<Integer> list = new ArrayList<>();
+        String text  = getUsers(chatInfo.getChatId());
         JSONArray jsonUsersArray = parseUserCountJSON(text);
-        for (Object ajsonUsersArray : jsonUsersArray) {
-            list.add(Integer.valueOf(ajsonUsersArray.toString()));
+        for (Object aJsonUsersArray : jsonUsersArray) {
+            list.add(Integer.valueOf(aJsonUsersArray.toString()));
         }
         return list;
     }
