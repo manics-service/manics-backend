@@ -10,6 +10,6 @@ public interface MessageImportVK {
 
     boolean getMessages(ChatInfo chat, String token);
 
-    int getMessageCount(int chatId);
+    int getMessageCount(long chatId);
 
 }

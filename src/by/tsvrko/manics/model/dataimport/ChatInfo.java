@@ -7,14 +7,14 @@ import java.io.Serializable;
  */
 public class ChatInfo implements Serializable {
 
-    private int chatId;
+    private long chatId;
     private String title;
 
-    public int getChatId() {
+    public long getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chatId) {
+    public void setChatId(long chatId) {
         this.chatId = chatId;
     }
 

@@ -45,7 +45,7 @@ public class MessageImportVKImpl implements MessageImportVK {
 
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
-        int chatId = chat.getChatId();
+        long chatId = chat.getChatId();
         int count = getMessageCount(chatId);
 
         while (offset < count) {
@@ -80,13 +80,13 @@ public class MessageImportVKImpl implements MessageImportVK {
     }
 
     @Override
-    public int getMessageCount(int chatId){
+    public int getMessageCount(long chatId){
         int offset =0;
         return Integer.parseInt(parseJSONObjectCount(getChat(chatId,offset)));
 
     }
 
-    private String getChat(int chatId, int offset) {
+    private String getChat(long chatId, int offset) {
 
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();

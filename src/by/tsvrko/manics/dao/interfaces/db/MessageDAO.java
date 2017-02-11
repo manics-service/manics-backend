@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface MessageDAO {
 
-   boolean addMessages(ArrayList<Message> list, int chatId);
+   boolean addMessages(ArrayList<Message> list, long chatId);
 
    List<Message> getMessages(Chat chat);
 
-   List<Message> getMessagesByUser(UserInfo userInfo, int chatId);
+   List<Message> getMessagesByUser(UserInfo userInfo, long chatId);
 }

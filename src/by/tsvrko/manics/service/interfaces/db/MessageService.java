@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface MessageService {
 
-    List<Message> getMessages(UserInfo userInfo, int chatId);
+    List<Message> getMessages(UserInfo userInfo, long chatId);
 
     List<Message> getMessages(Chat chat);
 
-    boolean addMessages(ArrayList<Message> list, int chatId);
+    boolean addMessages(ArrayList<Message> list, long chatId);
 }

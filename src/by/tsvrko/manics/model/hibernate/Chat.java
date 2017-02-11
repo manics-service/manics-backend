@@ -23,7 +23,7 @@ public class Chat implements Serializable{
     private int id;
 
     @Column(name = "chat_id")
-    private int chatId;
+    private long chatId;
 
     @Column(name = "name")
     private String title;
@@ -43,11 +43,11 @@ public class Chat implements Serializable{
         this.id = id;
     }
 
-    public int getChatId() {
+    public long getChatId() {
         return chatId;
     }
 
-    public void setChatId(int chat_id) {
+    public void setChatId(long chat_id) {
         this.chatId = chat_id;
     }
 

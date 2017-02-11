@@ -13,7 +13,7 @@ public interface ChatService {
 
     boolean addChat(ChatInfo chat, String token);
 
-    Chat getChatById(int chatId);
+    Chat getChatById(long chatId);
 
     boolean deleteChat(Chat chat);
 

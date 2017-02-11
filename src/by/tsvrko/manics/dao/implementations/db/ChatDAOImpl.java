@@ -99,7 +99,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public Chat getChatById(int chatId) {
+    public Chat getChatById(long chatId) {
         Session session = null;
         Chat chat=null;
         try {

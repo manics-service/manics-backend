@@ -32,7 +32,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public Chat getChatById(int chatId){
+    public Chat getChatById(long chatId){
         return chatDAO.getChatById(chatId);
 
     }

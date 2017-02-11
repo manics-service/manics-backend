@@ -54,7 +54,7 @@ public class ChatImportVKImpl implements ChatImportVK {
 
                 if (jsonChat.containsKey("chat_id")) {
                     ChatInfo chatInfo = new ChatInfo();
-                    chatInfo.setChatId(Integer.valueOf(jsonChat.get("chat_id").toString()));
+                    chatInfo.setChatId(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chatInfo.setTitle(jsonChat.get("title").toString());
                     chatInfoList.add(chatInfo);
                 }

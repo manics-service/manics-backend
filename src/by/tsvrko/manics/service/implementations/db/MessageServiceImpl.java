@@ -28,7 +28,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public List<Message> getMessages(UserInfo userInfo, int chatId) {
+    public List<Message> getMessages(UserInfo userInfo, long chatId) {
         return messageDAO.getMessagesByUser(userInfo,chatId);
     }
 
@@ -38,7 +38,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public boolean addMessages(ArrayList<Message> list, int chatId) {
+    public boolean addMessages(ArrayList<Message> list, long chatId) {
         messageDAO.addMessages(list, chatId);
         return true;
     }
