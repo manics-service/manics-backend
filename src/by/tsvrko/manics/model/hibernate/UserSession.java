@@ -30,7 +30,7 @@ public class UserSession implements Serializable {
     @Column(name = "session")
     private String session;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @PrimaryKeyJoinColumn
     private User user;
 

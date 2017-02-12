@@ -34,10 +34,10 @@ public class User implements Serializable {
     @Column(name = "pass")
     private String pass;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "user")
+    @OneToOne(fetch = FetchType.EAGER,mappedBy = "user")
     private UserSession userSession;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",cascade = CascadeType.ALL)
     private List<Chat> list;
 
     public int getId() {

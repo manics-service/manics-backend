@@ -16,5 +16,5 @@ public interface MessageDAO {
 
    List<Message> getMessages(Chat chat);
 
-   List<Message> getMessagesByUser(UserInfo userInfo, long chatId);
+   List<Message> getMessagesByUser(UserInfo userInfo, long chatId) ;
 }

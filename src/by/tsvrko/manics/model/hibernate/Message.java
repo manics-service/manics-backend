@@ -3,6 +3,7 @@ package by.tsvrko.manics.model.hibernate;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class Message implements Comparable<Message>, Serializable{
     @Column(name = "date")
     private long date;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER)
     private Chat chat;
 
 
@@ -102,7 +103,7 @@ public class Message implements Comparable<Message>, Serializable{
 
 
     @Override
-    public int compareTo(Message message) {
+    public int compareTo(@NotNull Message message) {
         return Long.compare(this.getDate(), message.getDate());
     }
 

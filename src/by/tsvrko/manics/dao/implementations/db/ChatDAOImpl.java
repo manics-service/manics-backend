@@ -66,6 +66,7 @@ public class ChatDAOImpl implements ChatDAO {
             if (!marker){
                 Chat chat = new Chat();
                 chat.setUser(user);
+                chat.setChatId(chatInfo.getChatId());
                 chat.setTitle(encodeText(chatInfo.getTitle()));
                 session.save(chat);}
             session.getTransaction().commit();

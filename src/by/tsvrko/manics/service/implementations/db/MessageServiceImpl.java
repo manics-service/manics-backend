@@ -1,10 +1,12 @@
 package by.tsvrko.manics.service.implementations.db;
 
+import by.tsvrko.manics.dao.implementations.dataimport.MessageImportVKImpl;
 import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.service.interfaces.db.MessageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import java.util.List;
 @Service
 @Transactional
 public class MessageServiceImpl implements MessageService{
+    private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
     private MessageDAO messageDAO;
 
