@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by tsvrko on 1/4/2017.
+ * Created main.by tsvrko on 1/4/2017.
  */
 
 @Entity
@@ -34,6 +34,10 @@ public class Chat implements Serializable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messageList;
 
+    public Chat(long chatId, String title) {
+        this.chatId = chatId;
+        this.title = title;
+    }
 
     public int getId() {
         return id;

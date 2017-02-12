@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * Created by tsvrko on 11/22/2016.
+ * Created main.by tsvrko on 11/22/2016.
  */
 
 @Entity
@@ -88,4 +88,9 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(String login, String pass, UserSession userSession) {
+        this.login = login;
+        this.pass = pass;
+        this.userSession = userSession;
+    }
 }

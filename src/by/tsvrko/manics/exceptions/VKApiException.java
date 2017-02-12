@@ -1,7 +1,7 @@
 package by.tsvrko.manics.exceptions;
 
 /**
- * Created by irats on 1/4/2017.
+ * Created main.by irats on 1/4/2017.
  */
 public class VKApiException extends RuntimeException {
     public VKApiException() {

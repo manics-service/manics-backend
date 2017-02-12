@@ -28,31 +28,40 @@ public class AppController {
     private UserMessageCountService userMessageCountService;
 
     @Autowired
-    public void setSessionService(SessionService sessionService) {
+    public AppController(SessionService sessionService, ChatImportService chatImportService, MessageImportService messageImportService, LoginService loginService, UserMessageCountService userMessageCountService) {
         this.sessionService = sessionService;
-    }
-    @Autowired
-    public void setChatImportService(ChatImportService chatImportService) {
         this.chatImportService = chatImportService;
-    }
-    @Autowired
-    public void setMessageImportService(MessageImportService messageImportService) {
         this.messageImportService = messageImportService;
-    }
-    @Autowired
-    public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
-    }
-    @Autowired
-    public void setUserMessageCountService(UserMessageCountService userMessageCountService) {
         this.userMessageCountService = userMessageCountService;
     }
+
+//    @Autowired
+//    public void setSessionService(SessionService sessionService) {
+//        this.sessionService = sessionService;
+//    }
+//    @Autowired
+//    public void setChatImportService(ChatImportService chatImportService) {
+//        this.chatImportService = chatImportService;
+//    }
+//    @Autowired
+//    public void setMessageImportService(MessageImportService messageImportService) {
+//        this.messageImportService = messageImportService;
+//    }
+//    @Autowired
+//    public void setLoginService(LoginService loginService) {
+//        this.loginService = loginService;
+//    }
+//    @Autowired
+//    public void setUserMessageCountService(UserMessageCountService userMessageCountService) {
+//        this.userMessageCountService = userMessageCountService;
+//    }
 
     @RequestMapping(value = "/api/v1/statistics/countofusermessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<UserMessageCount> getChats(@RequestBody ChatInfo chat) {
+    public List<UserMessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat) {
         return userMessageCountService.getChatStatistics(chat);
     }
 

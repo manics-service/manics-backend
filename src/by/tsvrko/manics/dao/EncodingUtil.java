@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
 /**
- * Created by tsvrko on 1/11/2017.
+ * Created main.by tsvrko on 1/11/2017.
  */
 public final class EncodingUtil {
 

@@ -7,8 +7,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by tsvrko on 1/6/2017.
+ * Created main.by tsvrko on 1/6/2017.
  */
 public final class ParseJSONUtil {
 
@@ -57,7 +60,7 @@ public final class ParseJSONUtil {
 
     }
 
-    public static String parseJSONObjectCount(String text) {
+    public static String parseMessageCount(String text) {
         String messageCount;
         JSONObject jsonResp2 = (JSONObject)parseText(text).get("response");
         try{
@@ -69,5 +72,27 @@ public final class ParseJSONUtil {
         return messageCount;
 
     }
+
+    public static List <String> parseChatInfo(String text) {
+        List<String> chatInfo = new ArrayList<>();
+        String messageCount;
+        String lastMessageDate;
+        JSONObject jsonResp2 = (JSONObject)parseText(text).get("response");
+        try{
+            messageCount = (jsonResp2.get("count")).toString();
+            JSONArray itemsArray =  (JSONArray) jsonResp2.get("items");
+            JSONObject lastMessage = (JSONObject)itemsArray.get(0);
+            lastMessageDate = (lastMessage.get("date")).toString();
+            chatInfo.add(messageCount);
+            chatInfo.add(lastMessageDate);
+        }
+        catch (NullPointerException e){
+            log.debug("chat contains no messages", e);
+            messageCount = "0";
+            lastMessageDate = "0";
+        }
+        return chatInfo;
+    }
+
 
 }

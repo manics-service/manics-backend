@@ -1,7 +1,7 @@
 package by.tsvrko.manics.model.controller;
 
 /**
- * Created by tsvrko on 12/23/2016.
+ * Created main.by tsvrko on 12/23/2016.
  */
 public class Status {
 

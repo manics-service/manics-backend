@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static by.tsvrko.manics.dao.ContentImportUtil.*;
 import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 
 /**
- * Created by tsvrko on 1/5/2017.
+ * Created main.by tsvrko on 1/5/2017.
  */
 
 @Repository
@@ -82,8 +83,25 @@ public class MessageImportVKImpl implements MessageImportVK {
     @Override
     public int getMessageCount(long chatId){
         int offset =0;
-        return Integer.parseInt(parseJSONObjectCount(getChat(chatId,offset)));
+        return Integer.parseInt(parseMessageCount(getChat(chatId,offset)));
+    }
 
+    @Override
+    public List <String> getChatInfo(long chatId) {
+        int offset =0;
+        String text;
+        while (true) {
+            text = getChat(chatId,offset);
+            if (!text.contains("Too many requests per second")) break;
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                log.debug("InterruptedException in current thread", e);
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        return parseChatInfo(text);
     }
 
     private String getChat(long chatId, int offset) {

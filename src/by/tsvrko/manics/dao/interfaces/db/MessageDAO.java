@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by tsvrko on 1/7/2017.
+ * Created main.by tsvrko on 1/7/2017.
  */
 public interface MessageDAO {
 

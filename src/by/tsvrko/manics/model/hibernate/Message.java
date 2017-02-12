@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by tsvrko on 1/5/2017.
+ * Created main.by tsvrko on 1/5/2017.
  */
 
 @Entity
@@ -17,6 +17,7 @@ import java.io.Serializable;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonIdentityReference(alwaysAsId = true)
 public class Message implements Comparable<Message>, Serializable{
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,7 +7,7 @@ import by.tsvrko.manics.model.hibernate.User;
 import java.util.List;
 
 /**
- * Created by tsvrko on 1/8/2017.
+ * Created main.by tsvrko on 1/8/2017.
  */
 public interface ChatDAO {
 

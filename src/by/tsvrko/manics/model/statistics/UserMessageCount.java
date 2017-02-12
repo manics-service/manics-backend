@@ -5,7 +5,7 @@ import by.tsvrko.manics.model.dataimport.UserInfo;
 import java.io.Serializable;
 
 /**
- * Created by tsvrko on 1/20/2017.
+ * Created main.by tsvrko on 1/20/2017.
  */
 public class UserMessageCount implements Comparable<UserMessageCount>, Serializable {
 

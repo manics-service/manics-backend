@@ -2,6 +2,7 @@ package by.tsvrko.manics.service;
 
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * Created by tsvrko on 1/25/2017.
+ * Created main.by tsvrko on 1/25/2017.
  */
 @Configuration
 @EnableTransactionManagement

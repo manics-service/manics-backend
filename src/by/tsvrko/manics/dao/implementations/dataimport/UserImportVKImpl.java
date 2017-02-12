@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 import static by.tsvrko.manics.dao.ContentImportUtil.readContent;
 
 /**
- * Created by tsvrko on 1/20/2017.
+ * Created main.by tsvrko on 1/20/2017.
  */
 
 

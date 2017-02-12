@@ -1,11 +1,13 @@
 package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
+import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 
 
 /**
- * Created by tsvrko on 1/4/2017.
+ * Created main.by tsvrko on 1/4/2017.
  */
 @Repository
 public class ChatImportVKImpl implements ChatImportVK {
@@ -26,16 +28,23 @@ public class ChatImportVKImpl implements ChatImportVK {
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
 
+    private MessageImportVK messageImportVK;
+
+    @Autowired
+    public ChatImportVKImpl(MessageImportVK messageImportVK) {
+        this.messageImportVK = messageImportVK;
+    }
+
     @Override
     public List<ChatInfo> getChats(String token) {
 
         List<ChatInfo> chatInfoList = new ArrayList<>();
+
         int offset = 0;
         int count = Integer.parseInt(parseJSONArrayCount(getChats(offset)));
 
         while (offset < count) {
             String text;
-
             while (true) {
                 text = getChats(offset);
                 if (!text.contains("Too many requests per second")) break;
@@ -45,17 +54,23 @@ public class ChatImportVKImpl implements ChatImportVK {
                     log.debug("InterruptedException in current thread", e);
                     Thread.currentThread().interrupt();
                 }
-
             }
             JSONArray jsonChatsArray = parseChatsJSON(text);
-
             for (Object aJsonChatsArray : jsonChatsArray) {
                 JSONObject jsonChat = (JSONObject) aJsonChatsArray;
 
                 if (jsonChat.containsKey("chat_id")) {
+
                     ChatInfo chatInfo = new ChatInfo();
                     chatInfo.setChatId(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chatInfo.setTitle(jsonChat.get("title").toString());
+
+
+
+                    List <String> list = messageImportVK.getChatInfo(chatInfo.getChatId());
+                    chatInfo.setMessageCount(Integer.parseInt(list.get(0)));
+                    chatInfo.setLastMessageDate(Long.parseLong(list.get(1)));
+
                     chatInfoList.add(chatInfo);
                 }
             }

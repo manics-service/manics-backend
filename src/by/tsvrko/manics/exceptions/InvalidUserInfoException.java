@@ -1,7 +1,7 @@
 package by.tsvrko.manics.exceptions;
 
 /**
- * Created by irats on 11/24/2016.
+ * Created main.by irats on 11/24/2016.
  */
 public class InvalidUserInfoException extends Exception{
     public InvalidUserInfoException() {

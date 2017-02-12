@@ -3,7 +3,7 @@ package by.tsvrko.manics.model.dataimport;
 import java.io.Serializable;
 
 /**
- * Created by tsvrko on 1/20/2017.
+ * Created main.by tsvrko on 1/20/2017.
  */
 public class UserInfo implements Serializable{
 

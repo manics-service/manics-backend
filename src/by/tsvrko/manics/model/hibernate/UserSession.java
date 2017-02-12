@@ -12,7 +12,7 @@ import org.hibernate.annotations.Parameter;
 import java.io.Serializable;
 
 /**
- * Created by tsvrko on 11/30/2016.
+ * Created main.by tsvrko on 11/30/2016.
  */
 
 @Entity
