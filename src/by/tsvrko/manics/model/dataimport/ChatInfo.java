@@ -9,7 +9,7 @@ public class ChatInfo implements Serializable {
 
     private long chatId;
     private String title;
-    private int messageCount;
+    private long messageCount;
     private long lastMessageDate;
 
     public long getChatId() {
@@ -28,11 +28,11 @@ public class ChatInfo implements Serializable {
         this.title = title;
     }
 
-    public int getMessageCount() {
+    public long getMessageCount() {
         return messageCount;
     }
 
-    public void setMessageCount(int messageCount) {
+    public void setMessageCount(long messageCount) {
         this.messageCount = messageCount;
     }
 

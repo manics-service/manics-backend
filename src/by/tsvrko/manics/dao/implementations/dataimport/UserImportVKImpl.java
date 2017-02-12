@@ -1,6 +1,7 @@
 package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
+import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -33,13 +34,16 @@ public class UserImportVKImpl implements UserImportVK {
         String text;
         for(Integer i:list){
             while (true) {
-                text = getUserName(i);
-                if (!text.contains("Too many requests per second")) break;
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    log.debug("InterruptedException in current thread", e);
-                    Thread.currentThread().interrupt();
+                try{
+                    text = getUserName(i);
+                    if (!text.contains("Too many requests per second")) break;}
+                catch (TooManyRequestsToApiException e1) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        log.debug("InterruptedException in current thread", e);
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
 
@@ -56,7 +60,7 @@ public class UserImportVKImpl implements UserImportVK {
         return userInfoList;
     }
 
-    private String getUserName(int user_id) {
+    private String getUserName(int user_id) throws TooManyRequestsToApiException {
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/users.get")
@@ -65,6 +69,5 @@ public class UserImportVKImpl implements UserImportVK {
                 .setParameter("v","5.62");
         return readContent(uriBuilder);
     }
-
 
 }

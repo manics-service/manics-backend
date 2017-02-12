@@ -1,6 +1,7 @@
 package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
+import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.service.interfaces.db.ChatService;
@@ -39,7 +40,7 @@ public class MessageImportVKImpl implements MessageImportVK {
         this.chatService = chatService;
     }
 
-   @Override
+    @Override
     public boolean getMessages(ChatInfo chat, String token) {
 
         chatService.addChat(chat,token);
@@ -47,22 +48,24 @@ public class MessageImportVKImpl implements MessageImportVK {
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
         long chatId = chat.getChatId();
-        int count = getMessageCount(chatId);
+        long count = parseMessageCount(getCountOfMessages(chatId));
 
         while (offset < count) {
             String text;
-             while (true) {
-                text = getChat(chatId, offset);
-                if (!text.contains("Too many requests per second")) break;
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    log.debug("InterruptedException in current thread", e);
-                    Thread.currentThread().interrupt();
-                }
+            while (true) {
+                try{
+                    text = getChatMessages(chatId, offset);
+                    if (!text.contains("Too many requests per second")) break;}
+                catch (TooManyRequestsToApiException e){
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e1) {
+                        log.debug("InterruptedException in current thread", e1);
+                        Thread.currentThread().interrupt();
+                    }}
             }
 
-            JSONArray jsonMessagesArray = parseMessageJSON(text);
+            JSONArray jsonMessagesArray = parseMessagesJSON(text);
 
             for (Object aJsonMessagesArray : jsonMessagesArray) {
                 JSONObject jsonMessage = (JSONObject) aJsonMessagesArray;
@@ -81,30 +84,40 @@ public class MessageImportVKImpl implements MessageImportVK {
     }
 
     @Override
-    public int getMessageCount(long chatId){
-        int offset =0;
-        return Integer.parseInt(parseMessageCount(getChat(chatId,offset)));
-    }
-
-    @Override
-    public List <String> getChatInfo(long chatId) {
+    public List <Number> getChatInfo(long chatId) {
         int offset =0;
         String text;
+
         while (true) {
-            text = getChat(chatId,offset);
-            if (!text.contains("Too many requests per second")) break;
             try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                log.debug("InterruptedException in current thread", e);
-                Thread.currentThread().interrupt();
+                text = getChatMessages(chatId, offset);
+                if (!text.contains("Too many requests per second")) break;
+            }
+            catch (TooManyRequestsToApiException e) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e1) {
+                    log.debug("InterruptedException in current thread", e1);
+                    Thread.currentThread().interrupt();
+                }
             }
         }
 
         return parseChatInfo(text);
     }
 
-    private String getChat(long chatId, int offset) {
+    private String getCountOfMessages(long chatId) {
+
+        String peer_id = String.valueOf(chatId+2000000000);
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
+                .setParameter("peer_id", peer_id)
+                .setParameter("access_token", ACCESS_TOKEN)
+                .setParameter("v", "5.60");
+        return readContent(uriBuilder);
+    }
+
+    private String getChatMessages(long chatId, int offset) throws TooManyRequestsToApiException {
 
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
@@ -115,5 +128,6 @@ public class MessageImportVKImpl implements MessageImportVK {
                 .setParameter("v", "5.60");
         return readContent(uriBuilder);
     }
+
 }
 

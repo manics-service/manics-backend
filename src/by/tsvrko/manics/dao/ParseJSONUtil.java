@@ -20,6 +20,58 @@ public final class ParseJSONUtil {
     private static JSONParser parser = new JSONParser();
 
 
+    public static JSONArray parseUserJSON(String text) {
+        return getJSONArrayResponse(text);
+    }
+
+    public static JSONArray parseMessagesJSON(String text) {
+        JSONObject jsonResp = getJSONObjectResponse(text);
+        return (JSONArray) jsonResp.get("items");
+    }
+
+    public static JSONArray parseChatsJSON(String text) {
+        JSONArray jsonResp = getJSONArrayResponse(text);
+        jsonResp.remove(0);
+        return jsonResp;
+    }
+
+    public static JSONArray parseUsersJSON(String text) {
+        JSONObject jsonResp = getJSONObjectResponse(text);
+        return (JSONArray) jsonResp.get("users");
+    }
+
+    public static long parseMessageCount(String text) {
+        JSONObject jsonResp = getJSONObjectResponse(text);
+        return (long)jsonResp.get("count");
+    }
+
+    public static long parseChatsCount(String text) {
+        JSONArray jsonResp = getJSONArrayResponse(text);
+        return (long)jsonResp.get(0);
+    }
+
+    public static List<Number> parseChatInfo(String text) {
+
+        List<Number> chatInfo = new ArrayList<>();
+        long messageCount;
+        long lastMessageDate;
+
+        try{
+            messageCount = parseMessageCount(text);
+            JSONArray itemsArray =  parseMessagesJSON(text);
+            JSONObject lastMessage = (JSONObject)itemsArray.get(0);
+            lastMessageDate = (long)(lastMessage.get("date"));
+            chatInfo.add(messageCount);
+            chatInfo.add(lastMessageDate);
+        }
+        catch (NullPointerException e){
+            log.debug("chat contains no messages", e);
+            messageCount = 0;
+            lastMessageDate = 0;
+        }
+        return chatInfo;
+    }
+
     private static JSONObject parseText(String text){
         JSONObject jsonResp = null;
         try {
@@ -29,70 +81,12 @@ public final class ParseJSONUtil {
         }
         return jsonResp; }
 
-
-    public static JSONArray parseChatsJSON(String text) {
-        JSONArray jsonArray;
-        jsonArray = (JSONArray) parseText(text).get("response");
-        jsonArray.remove(0);
-        return jsonArray;
+    private static JSONObject getJSONObjectResponse (String text)  {
+        return (JSONObject) parseText(text).get("response");
     }
 
-    public static JSONArray parseUserJSON(String text) {
-
+    private static JSONArray getJSONArrayResponse (String text)  {
         return (JSONArray) parseText(text).get("response");
     }
-
-    public static JSONArray parseMessageJSON(String text) {
-        JSONObject jsonResp2 = (JSONObject) parseText(text).get("response");
-        return (JSONArray) jsonResp2.get("items");
-    }
-
-    public static JSONArray parseUserCountJSON(String text) {
-        JSONObject jsonResp2 = (JSONObject) parseText(text).get("response");
-        return (JSONArray) jsonResp2.get("users");
-
-    }
-
-
-    public static String parseJSONArrayCount(String text) {
-        JSONArray jsonArray = (JSONArray)parseText(text).get("response");
-        return (jsonArray.get(0)).toString();
-
-    }
-
-    public static String parseMessageCount(String text) {
-        String messageCount;
-        JSONObject jsonResp2 = (JSONObject)parseText(text).get("response");
-        try{
-            messageCount = (jsonResp2.get("count")).toString();}
-        catch (NullPointerException e){
-            log.debug("chat contains no messages", e);
-            messageCount = "0";
-        }
-        return messageCount;
-
-    }
-
-    public static List <String> parseChatInfo(String text) {
-        List<String> chatInfo = new ArrayList<>();
-        String messageCount;
-        String lastMessageDate;
-        JSONObject jsonResp2 = (JSONObject)parseText(text).get("response");
-        try{
-            messageCount = (jsonResp2.get("count")).toString();
-            JSONArray itemsArray =  (JSONArray) jsonResp2.get("items");
-            JSONObject lastMessage = (JSONObject)itemsArray.get(0);
-            lastMessageDate = (lastMessage.get("date")).toString();
-            chatInfo.add(messageCount);
-            chatInfo.add(lastMessageDate);
-        }
-        catch (NullPointerException e){
-            log.debug("chat contains no messages", e);
-            messageCount = "0";
-            lastMessageDate = "0";
-        }
-        return chatInfo;
-    }
-
 
 }

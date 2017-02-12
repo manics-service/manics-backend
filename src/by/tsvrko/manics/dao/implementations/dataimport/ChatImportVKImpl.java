@@ -2,6 +2,7 @@ package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
 import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
+import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -41,18 +42,22 @@ public class ChatImportVKImpl implements ChatImportVK {
         List<ChatInfo> chatInfoList = new ArrayList<>();
 
         int offset = 0;
-        int count = Integer.parseInt(parseJSONArrayCount(getChats(offset)));
+        long count = parseChatsCount(getChatsCount());
 
         while (offset < count) {
             String text;
             while (true) {
-                text = getChats(offset);
-                if (!text.contains("Too many requests per second")) break;
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    log.debug("InterruptedException in current thread", e);
-                    Thread.currentThread().interrupt();
+                    text = getChats(offset);
+                    if (!text.contains("Too many requests per second")) break;
+                }
+                catch (TooManyRequestsToApiException e1){
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        log.debug("InterruptedException in current thread", e);
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
             JSONArray jsonChatsArray = parseChatsJSON(text);
@@ -64,13 +69,9 @@ public class ChatImportVKImpl implements ChatImportVK {
                     ChatInfo chatInfo = new ChatInfo();
                     chatInfo.setChatId(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chatInfo.setTitle(jsonChat.get("title").toString());
-
-
-
-                    List <String> list = messageImportVK.getChatInfo(chatInfo.getChatId());
-                    chatInfo.setMessageCount(Integer.parseInt(list.get(0)));
-                    chatInfo.setLastMessageDate(Long.parseLong(list.get(1)));
-
+                    List <Number> list = messageImportVK.getChatInfo(chatInfo.getChatId());
+                    chatInfo.setMessageCount((long)list.get(0));
+                    chatInfo.setLastMessageDate((long)(list.get(1)));
                     chatInfoList.add(chatInfo);
                 }
             }
@@ -80,17 +81,27 @@ public class ChatImportVKImpl implements ChatImportVK {
     }
 
     @Override
+
     public List<Integer> getUsers(ChatInfo chatInfo) {
         List<Integer> list = new ArrayList<>();
         String text  = getUsers(chatInfo.getChatId());
-        JSONArray jsonUsersArray = parseUserCountJSON(text);
+        JSONArray jsonUsersArray = parseUsersJSON(text);
         for (Object aJsonUsersArray : jsonUsersArray) {
             list.add(Integer.valueOf(aJsonUsersArray.toString()));
         }
         return list;
     }
 
-    private String getChats(int offset) {
+    private String getChatsCount() {
+
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getDialogs")
+                .setParameter("access_token", ACCESS_TOKEN)
+                .setParameter("count", "200");
+        return readContent(uriBuilder);
+    }
+
+    private String getChats(int offset) throws TooManyRequestsToApiException {
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getDialogs")
@@ -99,7 +110,7 @@ public class ChatImportVKImpl implements ChatImportVK {
         return readContent(uriBuilder);
     }
 
-    private String getUsers(long chat_id) {
+    private String getUsers(long chat_id){
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getChat")

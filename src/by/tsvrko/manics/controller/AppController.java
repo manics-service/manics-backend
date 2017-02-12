@@ -36,27 +36,6 @@ public class AppController {
         this.userMessageCountService = userMessageCountService;
     }
 
-//    @Autowired
-//    public void setSessionService(SessionService sessionService) {
-//        this.sessionService = sessionService;
-//    }
-//    @Autowired
-//    public void setChatImportService(ChatImportService chatImportService) {
-//        this.chatImportService = chatImportService;
-//    }
-//    @Autowired
-//    public void setMessageImportService(MessageImportService messageImportService) {
-//        this.messageImportService = messageImportService;
-//    }
-//    @Autowired
-//    public void setLoginService(LoginService loginService) {
-//        this.loginService = loginService;
-//    }
-//    @Autowired
-//    public void setUserMessageCountService(UserMessageCountService userMessageCountService) {
-//        this.userMessageCountService = userMessageCountService;
-//    }
-
     @RequestMapping(value = "/api/v1/statistics/countofusermessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
