@@ -47,7 +47,7 @@ public class ChatInfo implements Serializable {
     public ChatInfo() {
     }
 
-    public ChatInfo(long chatId, String title, int messageCount, long lastMessageDate) {
+    public ChatInfo(long chatId, String title, long messageCount, long lastMessageDate) {
         this.chatId = chatId;
         this.title = title;
         this.messageCount = messageCount;

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SessionServiceImpl implements SessionService {
 
     private SessionDAO sessionDAO;
+
     @Autowired
     public SessionServiceImpl(SessionDAO sessionDAO) {
         this.sessionDAO = sessionDAO;

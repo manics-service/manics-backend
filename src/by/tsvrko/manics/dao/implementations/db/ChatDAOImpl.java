@@ -48,7 +48,6 @@ public class ChatDAOImpl implements ChatDAO {
 
         Session session = null;
         User user = sessionService.getUserSessionByToken(token).getUser();
-
         try {
             session = openSession();
             session.beginTransaction();

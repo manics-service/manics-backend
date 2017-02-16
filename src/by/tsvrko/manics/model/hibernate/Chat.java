@@ -28,16 +28,11 @@ public class Chat implements Serializable{
     @Column(name = "name")
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Message> messageList;
-
-    public Chat(long chatId, String title) {
-        this.chatId = chatId;
-        this.title = title;
-    }
 
     public int getId() {
         return id;

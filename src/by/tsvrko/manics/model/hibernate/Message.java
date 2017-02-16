@@ -11,7 +11,6 @@ import java.io.Serializable;
 /**
  * Created main.by tsvrko on 1/5/2017.
  */
-
 @Entity
 @Table(name = "message", catalog = "manics", uniqueConstraints = {
         @UniqueConstraint(columnNames = "id")})
@@ -34,7 +33,7 @@ public class Message implements Comparable<Message>, Serializable{
     @Column(name = "date")
     private long date;
 
-    @ManyToOne (fetch = FetchType.EAGER)
+    @ManyToOne (fetch = FetchType.LAZY)
     private Chat chat;
 
 

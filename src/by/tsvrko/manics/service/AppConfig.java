@@ -1,46 +1,34 @@
 package by.tsvrko.manics.service;
 
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import java.sql.SQLException;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created main.by tsvrko on 1/25/2017.
  */
+
 @Configuration
-@EnableTransactionManagement
 @EnableAutoConfiguration
+@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = {"by.tsvrko.manics"})
+@EntityScan(basePackages = {"by.tsvrko.manics.model.hibernate"})
 public class AppConfig {
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan( "by.tsvrko.manics" );
-        return sessionFactory;
-    }
-
-    @Bean(name = "dataSource")
-    public BasicDataSource dataSource() {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/manics");
-        ds.setUsername("root");
-        ds.setPassword("123");
-        return ds;
+    public static HibernateJpaSessionFactoryBean sessionFactory() {
+        return new HibernateJpaSessionFactoryBean();
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() throws SQLException {
-        return new JpaTransactionManager();
+    public static JpaTransactionManager transactionManager(){
+        return  new JpaTransactionManager();
     }
+
 
 }

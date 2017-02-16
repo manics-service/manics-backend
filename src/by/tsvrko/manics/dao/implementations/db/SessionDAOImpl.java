@@ -22,7 +22,6 @@ public class SessionDAOImpl implements SessionDAO {
     private SessionFactory sessionFactory;
     private UserService userService;
 
-    @Autowired
     public SessionDAOImpl(SessionFactory sessionFactory, UserService userService) {
         this.sessionFactory = sessionFactory;
         this.userService = userService;

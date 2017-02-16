@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Created main.by tsvrko on 11/22/2016.
  */
-
 @Entity
 @Table(name = "user", catalog = "manics", uniqueConstraints = {
         @UniqueConstraint(columnNames = "id"),
@@ -37,7 +36,7 @@ public class User implements Serializable {
     @OneToOne(fetch = FetchType.EAGER,mappedBy = "user")
     private UserSession userSession;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Chat> list;
 
     public int getId() {
