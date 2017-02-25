@@ -4,13 +4,15 @@ import by.tsvrko.manics.model.controller.Status;
 import by.tsvrko.manics.model.controller.StatusEnum;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.User;
-import by.tsvrko.manics.model.statistics.UserMessageCount;
+import by.tsvrko.manics.model.statistics.DayActivity;
+import by.tsvrko.manics.model.statistics.MessageCount;
 import by.tsvrko.manics.service.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
 import by.tsvrko.manics.service.interfaces.db.SessionService;
-import by.tsvrko.manics.service.interfaces.statistics.UserMessageCountService;
+import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
+import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,24 +27,54 @@ public class AppController {
     private ChatImportService chatImportService;
     private MessageImportService messageImportService;
     private LoginService loginService;
-    private UserMessageCountService userMessageCountService;
+    private MessageCountService messageCountService;
+    private DayActivityService dayActivityService;
 
     @Autowired
-    public AppController(SessionService sessionService, ChatImportService chatImportService, MessageImportService messageImportService, LoginService loginService, UserMessageCountService userMessageCountService) {
+    public void setSessionService(SessionService sessionService) {
         this.sessionService = sessionService;
+    }
+    @Autowired
+    public void setChatImportService(ChatImportService chatImportService) {
         this.chatImportService = chatImportService;
+    }
+    @Autowired
+    public void setMessageImportService(MessageImportService messageImportService) {
         this.messageImportService = messageImportService;
+    }
+    @Autowired
+    public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
-        this.userMessageCountService = userMessageCountService;
+    }
+    @Autowired
+    public void setMessageCountService(MessageCountService messageCountService) {
+        this.messageCountService = messageCountService;
+    }
+    @Autowired
+    public void setDayActivityService(DayActivityService dayActivityService) {
+        this.dayActivityService = dayActivityService;
     }
 
-    @RequestMapping(value = "/api/v1/statistics/countofusermessages.json",
+
+
+    @RequestMapping(value = "/api/v1/statistics/countofmessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<UserMessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat) {
-        return userMessageCountService.getChatStatistics(chat);
+    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat) {
+        return messageCountService.getMessageCount(chat);
     }
+
+    @RequestMapping(value = "/api/v1/statistics/dayactivity.json",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chat) {
+        return dayActivityService.getDayActivity(chat);
+    }
+
+
+
 
     @RequestMapping(value = "/api/v1/data/chats.json",
             method = RequestMethod.POST,

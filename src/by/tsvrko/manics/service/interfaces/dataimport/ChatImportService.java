@@ -11,5 +11,5 @@ public interface ChatImportService {
 
     List<ChatInfo> getListOfChats(String token) ;
 
-    List<Integer> getChatUsersIds(ChatInfo chat);
+    List<Integer> getChatUsersIds(long chatId);
 }

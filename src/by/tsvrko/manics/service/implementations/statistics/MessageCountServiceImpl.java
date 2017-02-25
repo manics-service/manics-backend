@@ -2,11 +2,11 @@ package by.tsvrko.manics.service.implementations.statistics;
 
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
-import by.tsvrko.manics.model.statistics.UserMessageCount;
+import by.tsvrko.manics.model.statistics.MessageCount;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.UserImportService;
 import by.tsvrko.manics.service.interfaces.db.MessageService;
-import by.tsvrko.manics.service.interfaces.statistics.UserMessageCountService;
+import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,35 +18,35 @@ import java.util.List;
  */
 
 @Service
-public class UserMessageCountServiceImpl implements UserMessageCountService{
+public class MessageCountServiceImpl implements MessageCountService {
 
     private ChatImportService chatImportService;
     private UserImportService userImportService;
     private MessageService messageService;
 
     @Autowired
-    public UserMessageCountServiceImpl(ChatImportService chatImportService, UserImportService userImportService, MessageService messageService) {
+    public MessageCountServiceImpl(ChatImportService chatImportService, UserImportService userImportService, MessageService messageService) {
         this.chatImportService = chatImportService;
         this.userImportService = userImportService;
         this.messageService = messageService;
     }
 
     @Override
-    public List <UserMessageCount> getChatStatistics (ChatInfo chat){
+    public List <MessageCount> getMessageCount(ChatInfo chat){
 
-        List <UserMessageCount> statList = new ArrayList<>();
-        List<Integer> chatUserIds= chatImportService.getChatUsersIds(chat);
+        List <MessageCount> statList = new ArrayList<>();
+        List<Integer> chatUserIds= chatImportService.getChatUsersIds(chat.getChatId());
         List<UserInfo> userInfoList = userImportService.getUsers(chatUserIds);
 
         for(UserInfo userInfo : userInfoList){
 
-            UserMessageCount userMessageCount = new UserMessageCount();
-            userMessageCount.setUserInfo(userInfo);
-            userMessageCount.setMessageCount(messageService.getMessages(userInfo,chat.getChatId()).size());
-            statList.add(userMessageCount);
+            MessageCount messageCount = new MessageCount();
+            messageCount.setUserInfo(userInfo);
+            messageCount.setMessageCount(messageService.getMessages(userInfo.getId(),chat.getChatId()).size());
+            statList.add(messageCount);
 
         }
-        statList.sort(UserMessageCount::compareTo);
+        statList.sort(MessageCount::compareTo);
         return statList;
     }
 }

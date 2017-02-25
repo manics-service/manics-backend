@@ -2,9 +2,7 @@ package by.tsvrko.manics.service.implementations.db;
 
 import by.tsvrko.manics.dao.implementations.dataimport.MessageImportVKImpl;
 import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
-import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.service.interfaces.db.MessageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +29,13 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public List<Message> getMessages(UserInfo userInfo, long chatId) {
-        return messageDAO.getByUserInfo(userInfo,chatId);
+    public List<Message> getMessages(long userId, long chatId) {
+        return messageDAO.getByUser(userId,chatId);
     }
 
     @Override
-    public List<Message> getMessages(Chat chat) {
-        return messageDAO.getByChat(chat);
+    public List<Message> getMessages(long chatId) {
+        return messageDAO.getByChat(chatId);
     }
 
     @Override

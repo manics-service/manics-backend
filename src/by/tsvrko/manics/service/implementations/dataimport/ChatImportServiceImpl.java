@@ -29,7 +29,7 @@ public class ChatImportServiceImpl implements ChatImportService{
     }
 
     @Override
-    public  List<Integer> getChatUsersIds(ChatInfo chat) {
-        return chatImportDAO.getUsers(chat);
+    public  List<Integer> getChatUsersIds(long chatId) {
+        return chatImportDAO.getChatUsers(chatId);
     }
 }

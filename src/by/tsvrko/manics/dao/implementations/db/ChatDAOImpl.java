@@ -51,7 +51,7 @@ public class ChatDAOImpl implements ChatDAO {
         try {
             session = openSession();
             session.beginTransaction();
-            List<Chat> userChats = getByUser(user);
+            List<Chat> userChats = getByUser(user.getId());
             Iterator iterator = userChats.iterator();
             boolean marker=false;
             while (iterator.hasNext())
@@ -130,7 +130,7 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public List<Chat> getByUser(User user) {
+    public List<Chat> getByUser(long userId) {
         Session session = null;
         List<Chat> list = new ArrayList<>();
          try {
@@ -142,7 +142,7 @@ public class ChatDAOImpl implements ChatDAO {
             Root<Chat> from = criteria.from(Chat.class);
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("user"), user.getId()));
+            criteria.where(builder.equal(from.get("user"), userId));
 
             list = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();

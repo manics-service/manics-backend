@@ -17,5 +17,5 @@ public interface ChatService {
 
     boolean deleteChat(Chat chat);
 
-    List<Chat> getChats(User user);
+    List<Chat> getChats(long userId);
 }

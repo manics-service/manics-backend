@@ -1,14 +1,12 @@
 package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
-import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
 import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,19 +20,13 @@ import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 /**
  * Created main.by tsvrko on 1/4/2017.
  */
+
 @Repository
 public class ChatImportVKImpl implements ChatImportVK {
 
     private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
     private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
-
-    private MessageImportVK messageImportVK;
-
-    @Autowired
-    public ChatImportVKImpl(MessageImportVK messageImportVK) {
-        this.messageImportVK = messageImportVK;
-    }
 
     @Override
     public List<ChatInfo> getChats(String token) {
@@ -74,7 +66,8 @@ public class ChatImportVKImpl implements ChatImportVK {
                     try {
                         chatInfo.setImage50(jsonChat.get("photo_50").toString());
                         chatInfo.setImage100(jsonChat.get("photo_100").toString());
-                        chatInfo.setImage200(jsonChat.get("photo_200").toString());}
+                        chatInfo.setImage200(jsonChat.get("photo_200").toString());
+                    }
                     catch (NullPointerException e){
                         chatInfo.setImage50("null");
                         chatInfo.setImage100("null");
@@ -90,9 +83,9 @@ public class ChatImportVKImpl implements ChatImportVK {
 
     @Override
 
-    public List<Integer> getUsers(ChatInfo chatInfo) {
+    public List<Integer> getChatUsers(long chatId) {
         List<Integer> list = new ArrayList<>();
-        String text  = getUsers(chatInfo.getChatId());
+        String text  = getUsers(chatId);
         JSONArray jsonUsersArray = parseUsersJSON(text);
         for (Object aJsonUsersArray : jsonUsersArray) {
             list.add(Integer.valueOf(aJsonUsersArray.toString()));

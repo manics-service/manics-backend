@@ -42,7 +42,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public List<Chat> getChats(User user) {
-        return chatDAO.getByUser(user);
+    public List<Chat> getChats(long userId) {
+        return chatDAO.getByUser(userId);
     }
 }

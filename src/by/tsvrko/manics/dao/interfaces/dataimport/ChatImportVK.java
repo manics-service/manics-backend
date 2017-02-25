@@ -11,5 +11,5 @@ public interface ChatImportVK {
 
     List<ChatInfo> getChats(String token);
 
-    List <Integer> getUsers(ChatInfo chatInfo);
+    List <Integer> getChatUsers(long chatId);
 }

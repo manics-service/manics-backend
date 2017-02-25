@@ -19,7 +19,7 @@ public interface ChatDAO {
 
      boolean deleteChat(Chat chat);
 
-     List<Chat> getByUser(User user);
+     List<Chat> getByUser(long userId);
 
 
 }
