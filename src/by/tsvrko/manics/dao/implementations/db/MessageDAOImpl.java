@@ -42,7 +42,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
     private static Logger log = Logger.getLogger(MessageDAOImpl.class.getName());
 
-    public boolean addMessages(ArrayList<Message> list, long chatId){
+    public boolean addAll(ArrayList<Message> list, long chatId){
 
         Session session = null;
         Chat chat = chatService.getChatById(chatId);
@@ -50,7 +50,7 @@ public class MessageDAOImpl implements MessageDAO{
         try {
             session = openSession();
             session.beginTransaction();
-            List<Message> dbMessageList = getMessages(chat);
+            List<Message> dbMessageList = getByChat(chat);
 
             for(int i=0;i<list.size();i++){
                 Message message = list.get(i);
@@ -78,7 +78,7 @@ public class MessageDAOImpl implements MessageDAO{
 
 
     @Override
-    public List<Message> getMessages(Chat chat) {
+    public List<Message> getByChat(Chat chat) {
         Session session = null;
         List<Message> list = new ArrayList<>();
         try {
@@ -109,7 +109,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public List<Message> getMessagesByUser(UserInfo userInfo, long chatId){
+    public List<Message> getByUserInfo(UserInfo userInfo, long chatId){
 
         Chat dbChat= chatService.getChatById(chatId);
         if (dbChat!=null){

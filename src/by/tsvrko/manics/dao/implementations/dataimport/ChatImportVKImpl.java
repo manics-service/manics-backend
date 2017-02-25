@@ -64,14 +64,22 @@ public class ChatImportVKImpl implements ChatImportVK {
             for (Object aJsonChatsArray : jsonChatsArray) {
                 JSONObject jsonChat = (JSONObject) aJsonChatsArray;
 
-                if (jsonChat.containsKey("chat_id")) {
+                if (jsonChat.containsKey("chat_id")&&jsonChat.containsKey("users_count")) {
 
                     ChatInfo chatInfo = new ChatInfo();
                     chatInfo.setChatId(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chatInfo.setTitle(jsonChat.get("title").toString());
-                    List <Number> list = messageImportVK.getChatInfo(chatInfo.getChatId());
-                    chatInfo.setMessageCount((long)list.get(0));
-                    chatInfo.setLastMessageDate((long)(list.get(1)));
+                    chatInfo.setLastMessageDate(Long.valueOf(jsonChat.get("date").toString()));
+                    chatInfo.setUserCount(Integer.valueOf(jsonChat.get("users_count").toString()));
+                    try {
+                        chatInfo.setImage50(jsonChat.get("photo_50").toString());
+                        chatInfo.setImage100(jsonChat.get("photo_100").toString());
+                        chatInfo.setImage200(jsonChat.get("photo_200").toString());}
+                    catch (NullPointerException e){
+                        chatInfo.setImage50("null");
+                        chatInfo.setImage100("null");
+                        chatInfo.setImage200("null");}
+
                     chatInfoList.add(chatInfo);
                 }
             }

@@ -16,18 +16,18 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name = "session", catalog = "manics")
+@Table(name = "SESSION")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonIdentityReference(alwaysAsId = true)
 public class UserSession implements Serializable {
 
     @Id
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name="ID", unique=true, nullable=false)
     @GeneratedValue(generator="gen")
     @GenericGenerator(name="gen", strategy="foreign", parameters=@Parameter(name="property", value="user"))
     private int id;
 
-    @Column(name = "session")
+    @Column(name = "SESSION")
     private String session;
 
     @OneToOne(fetch = FetchType.EAGER)

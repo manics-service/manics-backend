@@ -8,4 +8,6 @@ import by.tsvrko.manics.model.hibernate.User;
 public interface UserService {
 
     User getUserByLogin(String login);
+
+    boolean addUser(User user);
 }

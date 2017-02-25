@@ -45,7 +45,6 @@ public final class ContentImportUtil {
     private static HttpResponse connectResponse(URIBuilder uriBuilder) {
 
         URI uri = null;
-
         try {
             uri = uriBuilder.build();
         } catch (URISyntaxException e) {
@@ -59,9 +58,8 @@ public final class ContentImportUtil {
         try {
             response = client.execute(request);
         } catch (IOException e) {
-            log.debug("request on this uri can't be executed");
+            log.debug("request can't be executed");
         }
-
         return response;
     }
 

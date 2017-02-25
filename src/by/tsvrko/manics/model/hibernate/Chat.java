@@ -12,26 +12,27 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "chat", catalog = "manics", uniqueConstraints = {
+@Table(name = "CHAT", uniqueConstraints = {
         @UniqueConstraint(columnNames = "id")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Chat implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private int id;
 
-    @Column(name = "chat_id")
+    @Column(name = "CHAT_ID")
     private long chatId;
 
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Message> messageList;
 
     public int getId() {

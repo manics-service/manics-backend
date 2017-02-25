@@ -45,7 +45,7 @@ public class AppController {
     }
 
     @RequestMapping(value = "/api/v1/data/chats.json",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
     public List<ChatInfo> getChats(@CookieValue("session") String token) {

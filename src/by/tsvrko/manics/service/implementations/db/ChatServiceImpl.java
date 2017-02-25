@@ -33,7 +33,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public Chat getChatById(long chatId){
-        return chatDAO.getChatById(chatId);
+        return chatDAO.getByChatId(chatId);
 
     }
     @Override
@@ -43,6 +43,6 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<Chat> getChats(User user) {
-        return chatDAO.getChats(user);
+        return chatDAO.getByUser(user);
     }
 }

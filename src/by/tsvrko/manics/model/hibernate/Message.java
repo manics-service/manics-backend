@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created main.by tsvrko on 1/5/2017.
  */
 @Entity
-@Table(name = "message", catalog = "manics", uniqueConstraints = {
+@Table(name = "MESSAGE", uniqueConstraints = {
         @UniqueConstraint(columnNames = "id")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonIdentityReference(alwaysAsId = true)
@@ -21,16 +21,16 @@ public class Message implements Comparable<Message>, Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "ID")
     private int id;
 
-    @Column(name = "user_id")
+    @Column(name = "USER_ID")
     private String userId;
 
-    @Column(name = "body")
+    @Column(name = "BODY")
     private String body;
 
-    @Column(name = "date")
+    @Column(name = "DATE")
     private long date;
 
     @ManyToOne (fetch = FetchType.LAZY)

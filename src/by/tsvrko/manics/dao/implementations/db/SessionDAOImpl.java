@@ -63,7 +63,7 @@ public class SessionDAOImpl implements SessionDAO {
 
 
     @Override
-    public UserSession getUserSessionByToken(String token) {
+    public UserSession getByToken(String token) {
         Session session = null;
         UserSession userSession = new UserSession();
         try {

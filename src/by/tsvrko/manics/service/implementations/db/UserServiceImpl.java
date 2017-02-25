@@ -20,7 +20,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User getUserByLogin(String login) {
-        return userDAO.getUserByLogin(login);
+        return userDAO.getByLogin(login);
     }
+
+    @Override
+    public boolean addUser(User user) {
+        return userDAO.addUser(user);
+    }
+
 
 }

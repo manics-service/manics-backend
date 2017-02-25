@@ -27,6 +27,6 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public UserSession getUserSessionByToken(String token){
-        return  sessionDAO.getUserSessionByToken(token);
+        return  sessionDAO.getByToken(token);
     }
 }
