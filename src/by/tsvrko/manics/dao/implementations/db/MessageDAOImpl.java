@@ -50,7 +50,7 @@ public class MessageDAOImpl implements MessageDAO{
         try {
             session = openSession();
             session.beginTransaction();
-            List<Message> dbMessageList = getByChat(chatId);
+            List<Message> dbMessageList = getByChat(chat.getId());
 
             for(int i=0;i<list.size();i++){
                 Message message = list.get(i);
@@ -79,7 +79,7 @@ public class MessageDAOImpl implements MessageDAO{
 
 
     @Override
-    public List<Message> getByChat(long chatId) {
+    public List<Message> getByChat(int id) {
         Session session = null;
         List<Message> list = new ArrayList<>();
         try {
@@ -91,7 +91,7 @@ public class MessageDAOImpl implements MessageDAO{
             Root<Message> from = criteria.from(Message.class);
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("chat"),chatId));
+            criteria.where(builder.equal(from.get("chat"),id));
 
             list = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();

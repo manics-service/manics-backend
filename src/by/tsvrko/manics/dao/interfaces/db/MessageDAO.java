@@ -15,7 +15,7 @@ public interface MessageDAO {
 
    boolean addAll(ArrayList<Message> list, long chatId);
 
-   List<Message> getByChat(long chatId);
+   List<Message> getByChat(int id);
 
    List<Message> getByUser(long userId, long chatId) ;
 }

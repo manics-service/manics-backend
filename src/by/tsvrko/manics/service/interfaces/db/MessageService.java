@@ -14,7 +14,7 @@ public interface MessageService {
 
     List<Message> getMessages(long userId, long chatId);
 
-    List<Message> getMessages(long chatId);
+    List<Message> getMessages(int id);
 
     boolean addMessages(ArrayList<Message> list, long chatId);
 }
