@@ -59,6 +59,7 @@ public class MessageDAOImpl implements MessageDAO{
                     message.setChat(chat);
                     message.setBody(encodeText(message.getBody()));
                     session.save(message);
+
                 }
                 chat.setMessageList(list);
             }
