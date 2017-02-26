@@ -7,7 +7,7 @@ import java.util.UUID;
  */
 public final class ServiceUtil {
 
-    public static String generateToken() {
+    public static String generateSession() {
             return UUID.randomUUID().toString();
     }
 }

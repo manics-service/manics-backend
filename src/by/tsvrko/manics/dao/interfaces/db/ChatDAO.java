@@ -2,9 +2,6 @@ package by.tsvrko.manics.dao.interfaces.db;
 
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
-import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.model.hibernate.User;
-import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
@@ -13,13 +10,13 @@ import java.util.List;
  */
 public interface ChatDAO {
 
-     boolean addChat(ChatInfo chatInfo, String token);
+     boolean addChat(ChatInfo chatInfo, String session);
 
      Chat getByChatId(long chatId);
 
      boolean deleteChat(Chat chat);
 
-     List<Chat> getByUser(long userId);
+     List<Chat> getBySession(String session);
 
 
 }

@@ -38,7 +38,7 @@
 //    }
 //
 ////    @Test
-////    public void getByUser() throws Exception {
+////    public void getBySession() throws Exception {
 ////        ResponseEntity<ChatInfo> response = template.getForEntity(base.toString(),
 ////                ChatInfo.class);
 ////        assertSame(response.getBody(), ChatInfo chatinfo);

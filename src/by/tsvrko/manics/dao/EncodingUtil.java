@@ -1,6 +1,5 @@
 package by.tsvrko.manics.dao;
 
-import by.tsvrko.manics.dao.implementations.db.UserDAOImpl;
 import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -11,7 +10,7 @@ import java.util.Base64;
  */
 public final class EncodingUtil {
 
-   private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
+   private static Logger log = Logger.getLogger(EncodingUtil.class.getName());
 
     public static String encodeText(String messageBody) {
 

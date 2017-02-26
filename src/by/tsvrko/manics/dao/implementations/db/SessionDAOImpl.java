@@ -1,14 +1,11 @@
 package by.tsvrko.manics.dao.implementations.db;
 
 import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
-import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
-import by.tsvrko.manics.service.interfaces.db.UserService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -20,20 +17,17 @@ import javax.persistence.criteria.Root;
 public class SessionDAOImpl implements SessionDAO {
 
     private SessionFactory sessionFactory;
-    private UserService userService;
-
-    public SessionDAOImpl(SessionFactory sessionFactory, UserService userService) {
+    public SessionDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-        this.userService = userService;
     }
 
     private Session openSession() {
         return sessionFactory.openSession();
     }
-    private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
+    private static Logger log = Logger.getLogger(SessionDAOImpl.class.getName());
 
     @Override
-    public boolean addUserSession(String session_id, User userInfo) {
+    public boolean addUserSession(String session_id) {
 
         Session session = null;
 
@@ -41,16 +35,11 @@ public class SessionDAOImpl implements SessionDAO {
 
             session = openSession();
             session.beginTransaction();
-            User user = userService.getUserByLogin(userInfo.getLogin());
-            UserSession userSession = user.getUserSession();
-            if(userSession==null){
-                userSession = new UserSession();
-                userSession.setUser(user);
-            }
-            userSession.setSession(session_id);
-            session.saveOrUpdate(userSession);
+            UserSession userSession = new UserSession();
+                userSession.setSession(session_id);
+                session.saveOrUpdate(userSession);
+                session.getTransaction().commit();
 
-            session.getTransaction().commit();
         } catch (HibernateException e) {
             log.debug("can't add user to database", e);
         } finally {
@@ -63,9 +52,9 @@ public class SessionDAOImpl implements SessionDAO {
 
 
     @Override
-    public UserSession getByToken(String token) {
+    public UserSession getSession(String userSession) {
         Session session = null;
-        UserSession userSession = new UserSession();
+        UserSession dbUserSession = new UserSession();
         try {
             session = openSession();
             session.beginTransaction();
@@ -75,9 +64,9 @@ public class SessionDAOImpl implements SessionDAO {
             Root<UserSession> from = criteria.from(UserSession.class);
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("session"),token));
+            criteria.where(builder.equal(from.get("session"),userSession));
 
-            userSession = session.createQuery(criteria).getSingleResult();
+            dbUserSession = session.createQuery(criteria).getSingleResult();
             session.getTransaction().commit();
 
         } catch (HibernateException e) {
@@ -90,6 +79,6 @@ public class SessionDAOImpl implements SessionDAO {
                 session.close();
             }
         }
-        return userSession;
+        return dbUserSession;
     }
 }

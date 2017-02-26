@@ -2,7 +2,6 @@ package by.tsvrko.manics.service.interfaces.db;
 
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
-import by.tsvrko.manics.model.hibernate.User;
 
 import java.util.List;
 
@@ -17,5 +16,5 @@ public interface ChatService {
 
     boolean deleteChat(Chat chat);
 
-    List<Chat> getChats(long userId);
+    List<Chat> getChats(String userSession);
 }

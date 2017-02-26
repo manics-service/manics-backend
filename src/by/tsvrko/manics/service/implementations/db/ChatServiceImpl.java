@@ -3,7 +3,6 @@ package by.tsvrko.manics.service.implementations.db;
 import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
-import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.service.interfaces.db.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public List<Chat> getChats(long userId) {
-        return chatDAO.getByUser(userId);
+    public List<Chat> getChats(String userSession) {
+        return chatDAO.getBySession(userSession);
     }
 }

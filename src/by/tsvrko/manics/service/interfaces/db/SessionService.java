@@ -1,6 +1,5 @@
 package by.tsvrko.manics.service.interfaces.db;
 
-import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
 
 /**
@@ -8,7 +7,7 @@ import by.tsvrko.manics.model.hibernate.UserSession;
  */
 public interface SessionService {
 
-    String addSession(String token, User user);
+    String addSession(String token);
 
     UserSession getUserSessionByToken(String token);
 }

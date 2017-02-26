@@ -3,10 +3,8 @@ package by.tsvrko.manics.controller;
 import by.tsvrko.manics.model.controller.Status;
 import by.tsvrko.manics.model.controller.StatusEnum;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
-import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
-import by.tsvrko.manics.service.LoginService;
 import by.tsvrko.manics.service.ServiceUtil;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
@@ -26,7 +24,6 @@ public class AppController {
     private SessionService sessionService;
     private ChatImportService chatImportService;
     private MessageImportService messageImportService;
-    private LoginService loginService;
     private MessageCountService messageCountService;
     private DayActivityService dayActivityService;
 
@@ -43,10 +40,6 @@ public class AppController {
         this.messageImportService = messageImportService;
     }
     @Autowired
-    public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
-    }
-    @Autowired
     public void setMessageCountService(MessageCountService messageCountService) {
         this.messageCountService = messageCountService;
     }
@@ -55,9 +48,7 @@ public class AppController {
         this.dayActivityService = dayActivityService;
     }
 
-
-
-    @RequestMapping(value = "/api/v1/statistics/countofmessages.json",
+    @RequestMapping(value = "/api/v1/stats/countofmessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -65,7 +56,8 @@ public class AppController {
         return messageCountService.getMessageCount(chat);
     }
 
-    @RequestMapping(value = "/api/v1/statistics/dayactivity.json",
+
+    @RequestMapping(value = "/api/v1/stats/dayactivity.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
@@ -108,23 +100,12 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public Status authenticateUser(@RequestBody User user, HttpServletResponse response) {
+    public boolean authenticateUser(@RequestBody String token, HttpServletResponse response) {
+        String session = ServiceUtil.generateSession();
+        sessionService.addSession(session);
+        response.addCookie(new Cookie("session", session));
 
-        Status responseStatus = new Status();
-        if (loginService.authenticateUser(user)){
-            String token = ServiceUtil.generateToken();
-            sessionService.addSession(token, user);
-            responseStatus.setStatusCode("200");
-            responseStatus.setDescription(StatusEnum.OK);
-            response.addCookie(new Cookie("session", token));
-            return responseStatus;
-        }
-        else{
-            responseStatus.setStatusCode("401");
-            responseStatus.setDescription(StatusEnum.UNAUTHORIZED);
-            return responseStatus;
-        }
-
+        return true;
 
     }
 }

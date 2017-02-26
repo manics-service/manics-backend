@@ -48,6 +48,7 @@ public class DayActivityServiceImpl implements DayActivityService{
             int messMorning = 0;
             int messDay = 0;
             int messEvening = 0;
+
             for(Message message:messageList){
 
                 Time time = new Time(message.getDate());

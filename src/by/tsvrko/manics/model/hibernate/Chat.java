@@ -29,8 +29,8 @@ public class Chat implements Serializable{
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="USER_ID")
-    private User user;
+    @JoinColumn(name="SESSION_ID")
+    private UserSession userSession;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Message> messageList;
@@ -59,20 +59,20 @@ public class Chat implements Serializable{
         this.title = title;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Message> getMessageList() {
         return messageList;
     }
 
     public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
+    }
+
+    public UserSession getUserSession() {
+        return userSession;
+    }
+
+    public void setUserSession(UserSession userSession) {
+        this.userSession = userSession;
     }
 
     public Chat() {
@@ -85,31 +85,14 @@ public class Chat implements Serializable{
 
         Chat chat = (Chat) o;
 
-        if (id != chat.id) return false;
         if (chatId != chat.chatId) return false;
-        if (!title.equals(chat.title)) return false;
-        if (!user.equals(chat.user)) return false;
-        return messageList.equals(chat.messageList);
+        return title.equals(chat.title);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (int) (chatId ^ (chatId >>> 32));
+        int result = (int) (chatId ^ (chatId >>> 32));
         result = 31 * result + title.hashCode();
-        result = 31 * result + user.hashCode();
-        result = 31 * result + messageList.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ChatInfo{" +
-                "id=" + id +
-                ", chat_id=" + chatId +
-                ", title='" + title + '\'' +
-                ", user=" + user +
-                ", messageList=" + messageList +
-                '}';
     }
 }

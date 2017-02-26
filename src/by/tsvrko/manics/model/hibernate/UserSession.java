@@ -20,19 +20,13 @@ import java.io.Serializable;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @JsonIdentityReference(alwaysAsId = true)
 public class UserSession implements Serializable {
-
     @Id
-    @Column(name="ID", unique=true, nullable=false)
-    @GeneratedValue(generator="gen")
-    @GenericGenerator(name="gen", strategy="foreign", parameters=@Parameter(name="property", value="user"))
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private int id;
 
     @Column(name = "SESSION")
     private String session;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @PrimaryKeyJoinColumn
-    private User user;
 
     public int getId() {
         return id;
@@ -48,14 +42,6 @@ public class UserSession implements Serializable {
 
     public void setSession(String session_id) {
         this.session = session_id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public UserSession(String session) {

@@ -1,7 +1,6 @@
 package by.tsvrko.manics.service.implementations.db;
 
 import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
-import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
 import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,13 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public String addSession(String token, User user) {
-        sessionDAO.addUserSession(token, user);
+    public String addSession(String token) {
+        sessionDAO.addUserSession(token);
         return token;
     }
 
     @Override
     public UserSession getUserSessionByToken(String token){
-        return  sessionDAO.getByToken(token);
+        return  sessionDAO.getSession(token);
     }
 }
