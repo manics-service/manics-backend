@@ -29,7 +29,7 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public List<Message> getMessages(long userId, long chatId) {
+    public List<Message> getMessages(String userId, long chatId) {
         return messageDAO.getByUser(userId,chatId);
     }
 

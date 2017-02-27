@@ -2,36 +2,31 @@ package by.tsvrko.manics.controller;
 
 import by.tsvrko.manics.model.controller.Status;
 import by.tsvrko.manics.model.controller.StatusEnum;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
-import by.tsvrko.manics.service.ServiceUtil;
+import by.tsvrko.manics.service.interfaces.auth.AuthService;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
-import by.tsvrko.manics.service.interfaces.db.SessionService;
 import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
 import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
 public class AppController {
 
-    private SessionService sessionService;
     private ChatImportService chatImportService;
     private MessageImportService messageImportService;
     private MessageCountService messageCountService;
     private DayActivityService dayActivityService;
+    private AuthService authService;
 
-    @Autowired
-    public void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
-    @Autowired
+
+     @Autowired
     public void setChatImportService(ChatImportService chatImportService) {
         this.chatImportService = chatImportService;
     }
@@ -48,12 +43,26 @@ public class AppController {
         this.dayActivityService = dayActivityService;
     }
 
+    @Autowired
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @RequestMapping(value = "/api/v1/authentication",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public AuthInfo authenticateUser(@RequestBody AuthInfo authInfo) {
+        return authService.authenticateUser(authInfo);
+    }
+
+
     @RequestMapping(value = "/api/v1/stats/countofmessages.json",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat) {
-        return messageCountService.getMessageCount(chat);
+    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat, AuthInfo authInfo) {
+        return messageCountService.getMessageCount(chat,authInfo);
     }
 
 
@@ -61,11 +70,9 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chat) {
-        return dayActivityService.getDayActivity(chat);
+    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chat, AuthInfo authInfo) {
+        return dayActivityService.getDayActivity(chat,authInfo);
     }
-
-
 
 
     @RequestMapping(value = "/api/v1/data/chats.json",
@@ -96,17 +103,6 @@ public class AppController {
 
     }
 
-    @RequestMapping(value = "/api/v1/login",
-            method = RequestMethod.POST,
-            headers = {"Content-type=application/json"})
-    @ResponseBody
-    public boolean authenticateUser(@RequestBody String token, HttpServletResponse response) {
-        String session = ServiceUtil.generateSession();
-        sessionService.addSession(session);
-        response.addCookie(new Cookie("session", session));
 
-        return true;
-
-    }
 }
 

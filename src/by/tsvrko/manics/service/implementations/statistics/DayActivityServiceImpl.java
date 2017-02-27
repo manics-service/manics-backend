@@ -1,11 +1,12 @@
 package by.tsvrko.manics.service.implementations.statistics;
 
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
-import by.tsvrko.manics.service.interfaces.dataimport.UserImportService;
+import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
 import by.tsvrko.manics.service.interfaces.db.MessageService;
 import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,20 @@ import java.util.List;
 public class DayActivityServiceImpl implements DayActivityService{
 
     private ChatImportService chatImportService;
-    private UserImportService userImportService;
+    private UserInfoService userInfoService;
     private MessageService messageService;
 
     @Autowired
-    public DayActivityServiceImpl(ChatImportService chatImportService, UserImportService userImportService, MessageService messageService) {
+    public DayActivityServiceImpl(ChatImportService chatImportService, UserInfoService userInfoService, MessageService messageService) {
         this.chatImportService = chatImportService;
-        this.userImportService = userImportService;
+        this.userInfoService = userInfoService;
         this.messageService = messageService;
     }
 
     @Override
-    public List<DayActivity> getDayActivity(ChatInfo info) {
+    public List<DayActivity> getDayActivity(ChatInfo info, AuthInfo authInfo) {
         List<Integer> chatUserIds= chatImportService.getChatUsersIds(info.getChatId());
-        List<UserInfo> userInfoList = userImportService.getUsers(chatUserIds);
+        List<UserInfo> userInfoList = userInfoService.getUsers(chatUserIds,authInfo);
         List<DayActivity> dayActivityList = new ArrayList<>();
 
         for(UserInfo userInfo : userInfoList){

@@ -1,5 +1,6 @@
 package by.tsvrko.manics.service.interfaces.statistics;
 
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.statistics.MessageCount;
 
@@ -10,5 +11,5 @@ import java.util.List;
  */
 public interface MessageCountService {
 
-    List<MessageCount> getMessageCount(ChatInfo chat);
+    List<MessageCount> getMessageCount(ChatInfo chat, AuthInfo authInfo);
 }

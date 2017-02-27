@@ -1,9 +1,6 @@
 package by.tsvrko.manics.dao.interfaces.db;
 
-import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
-import by.tsvrko.manics.model.dataimport.UserInfo;
-import org.springframework.data.repository.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,5 +14,5 @@ public interface MessageDAO {
 
    List<Message> getByChat(int id);
 
-   List<Message> getByUser(long userId, long chatId) ;
+   List<Message> getByUser(String userId, long chatId) ;
 }

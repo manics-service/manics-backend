@@ -2,6 +2,7 @@ package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
 import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
@@ -29,13 +30,13 @@ public class UserImportVKImpl implements UserImportVK {
     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
     @Override
-    public List<UserInfo> getUsers(List<Integer> list) {
+    public List<UserInfo> getUsers(List<Integer> list, AuthInfo authInfo) {
         List<UserInfo> userInfoList = new ArrayList<>();
         String text;
-        for(Integer i:list){
+        for(int i:list){
             while (true) {
                 try{
-                    text = getUserName(i);
+                    text = getUserName(authInfo.getToken(),i);
                     if (!text.contains("Too many requests per second")) break;}
                 catch (TooManyRequestsToApiException e1) {
                     try {
@@ -51,7 +52,7 @@ public class UserImportVKImpl implements UserImportVK {
             for(Object object:jsonUserInfoArray)   {
                 JSONObject jsonMessage = (JSONObject)object;
                 UserInfo userInfo = new UserInfo();
-                userInfo.setId(Integer.valueOf(jsonMessage.get("id").toString()));
+                userInfo.setId(jsonMessage.get("id").toString());
                 userInfo.setFirstName(jsonMessage.get("first_name").toString());
                 userInfo.setLastName(jsonMessage.get("last_name").toString());
                 userInfoList.add(userInfo);
@@ -60,14 +61,40 @@ public class UserImportVKImpl implements UserImportVK {
         return userInfoList;
     }
 
-    private String getUserName(int user_id) throws TooManyRequestsToApiException {
+    @Override
+    public UserInfo getUser(String token) {
+        UserInfo userInfo =new UserInfo();
+        String text = getDefaultUserName(token);
+        JSONArray jsonUserInfoArray = parseUserJSON(text);
+
+        for(Object object:jsonUserInfoArray)   {
+            JSONObject jsonMessage = (JSONObject)object;
+            userInfo.setId(jsonMessage.get("id").toString());
+            userInfo.setFirstName(jsonMessage.get("first_name").toString());
+            userInfo.setLastName(jsonMessage.get("last_name").toString());
+
+        }
+        return userInfo;
+    }
+
+    private String getUserName(String token, int user_id) throws TooManyRequestsToApiException {
 
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/users.get")
                 .setParameter("user_id",String.valueOf(user_id))
-                .setParameter("access_token", ACCESS_TOKEN)
+                .setParameter("access_token", token)
                 .setParameter("v","5.62");
         return readContent(uriBuilder);
     }
+
+    private String getDefaultUserName(String token)  {
+
+        URIBuilder uriBuilder = new URIBuilder();
+        uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/users.get")
+                .setParameter("access_token", token)
+                .setParameter("v","5.62");
+        return readContent(uriBuilder);
+    }
+
 
 }

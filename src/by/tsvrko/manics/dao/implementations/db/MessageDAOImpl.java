@@ -1,7 +1,6 @@
 package by.tsvrko.manics.dao.implementations.db;
 
 import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
-import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.service.interfaces.db.ChatService;
@@ -110,7 +109,7 @@ public class MessageDAOImpl implements MessageDAO{
     }
 
     @Override
-    public List<Message> getByUser(long userId, long chatId){
+    public List<Message> getByUser(String userId, long chatId){
 
         Chat dbChat= chatService.getChatById(chatId);
         if (dbChat!=null){

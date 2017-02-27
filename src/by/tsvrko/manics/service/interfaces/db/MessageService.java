@@ -1,7 +1,5 @@
 package by.tsvrko.manics.service.interfaces.db;
 
-import by.tsvrko.manics.model.dataimport.UserInfo;
-import by.tsvrko.manics.model.hibernate.Chat;
 import by.tsvrko.manics.model.hibernate.Message;
 
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public interface MessageService {
 
-    List<Message> getMessages(long userId, long chatId);
+    List<Message> getMessages(String userId, long chatId);
 
     List<Message> getMessages(int id);
 

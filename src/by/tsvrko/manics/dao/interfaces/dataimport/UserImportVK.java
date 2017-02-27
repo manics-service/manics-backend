@@ -1,5 +1,6 @@
 package by.tsvrko.manics.dao.interfaces.dataimport;
 
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 
 import java.util.List;
@@ -9,5 +10,7 @@ import java.util.List;
  */
 public interface UserImportVK {
 
-    List <UserInfo> getUsers (List<Integer> list);
+    List <UserInfo> getUsers (List<Integer> list, AuthInfo authInfo);
+
+    UserInfo getUser(String token);
 }
