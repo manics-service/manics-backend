@@ -36,7 +36,7 @@ public class MessageCountServiceImpl implements MessageCountService {
     public List <MessageCount> getMessageCount(ChatInfo chat, AuthInfo authInfo){
 
         List <MessageCount> statList = new ArrayList<>();
-        List<Integer> chatUserIds= chatImportService.getChatUsersIds(chat.getChatId());
+        List<Integer> chatUserIds= chatImportService.getChatUsersIds(chat.getChatId(),authInfo);
         List<UserInfo> userInfoList = userInfoService.getUsers(chatUserIds,authInfo);
 
         for(UserInfo userInfo : userInfoList){

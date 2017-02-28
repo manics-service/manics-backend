@@ -3,6 +3,7 @@ package by.tsvrko.manics.dao.implementations.db;
 import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.User;
 import by.tsvrko.manics.model.hibernate.UserSession;
 import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.log4j.Logger;
@@ -38,19 +39,20 @@ public class ChatDAOImpl implements ChatDAO {
         this.sessionService = sessionService;
     }
 
-   private Session openSession() {
+    private Session openSession() {
         return sessionFactory.openSession();
     }
     private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
 
     @Override
-    public boolean addChat(ChatInfo chatInfo, String token){
+
+    public boolean addChat(ChatInfo chatInfo, String userSession){
 
         Session session = null;
         try {
             session = openSession();
             session.beginTransaction();
-            List<Chat> userChats = getBySession(token);
+            List<Chat> userChats = getBySession(userSession);
             boolean marker = false;
 
             if (userChats.size()!=0) {
@@ -64,12 +66,15 @@ public class ChatDAOImpl implements ChatDAO {
                 }
             }
             if (!marker){
-                UserSession userSession = sessionService.getUserSessionByToken(token);
+
+                User user = sessionService.getByValue(userSession).getUser();
                 Chat chat = new Chat();
-                chat.setUserSession(userSession);
+                chat.setUser(user);
                 chat.setChatId(chatInfo.getChatId());
                 chat.setTitle(encodeText(chatInfo.getTitle()));
-                session.save(chat);}
+                session.save(chat);
+
+            }
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.debug("can't add user to database", e);
@@ -132,10 +137,10 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     public List<Chat> getBySession(String userSession) {
-        UserSession dbUserSession = sessionService.getUserSessionByToken(userSession);
+        User dbUser = sessionService.getByValue(userSession).getUser();
         Session session = null;
         List<Chat> list = new ArrayList<>();
-         try {
+        try {
             session = openSession();
             session.beginTransaction();
 
@@ -144,7 +149,7 @@ public class ChatDAOImpl implements ChatDAO {
             Root<Chat> from = criteria.from(Chat.class);
 
             criteria.select(from);
-            criteria.where(builder.equal(from.get("userSession"), dbUserSession.getId()));
+            criteria.where(builder.equal(from.get("user"), dbUser.getId()));
 
             list = session.createQuery(criteria).getResultList();
             session.getTransaction().commit();

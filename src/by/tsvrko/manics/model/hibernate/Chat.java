@@ -29,8 +29,8 @@ public class Chat implements Serializable{
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="SESSION_ID")
-    private UserSession userSession;
+    @JoinColumn(name= "USER_ID")
+    private User user;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Message> messageList;
@@ -67,12 +67,12 @@ public class Chat implements Serializable{
         this.messageList = messageList;
     }
 
-    public UserSession getUserSession() {
-        return userSession;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserSession(UserSession userSession) {
-        this.userSession = userSession;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Chat() {

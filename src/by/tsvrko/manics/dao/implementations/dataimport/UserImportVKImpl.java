@@ -2,12 +2,15 @@ package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
 import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
 import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import static by.tsvrko.manics.dao.ParseJSONUtil.*;
@@ -25,12 +28,21 @@ import static by.tsvrko.manics.dao.ContentImportUtil.readContent;
 @Repository
 public class UserImportVKImpl implements UserImportVK {
 
-    private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
-    private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
-    private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
+     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
+    private SessionService sessionService;
+
+    @Autowired
+    public UserImportVKImpl(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
 
     @Override
     public List<UserInfo> getUsers(List<Integer> list, AuthInfo authInfo) {
+
+        if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
+            throw new UserIsNotAuthorizedException("User isn't authorized");
+        }
+
         List<UserInfo> userInfoList = new ArrayList<>();
         String text;
         for(int i:list){
@@ -62,9 +74,9 @@ public class UserImportVKImpl implements UserImportVK {
     }
 
     @Override
-    public UserInfo getUser(String token) {
+    public UserInfo getUser(AuthInfo authInfo) {
         UserInfo userInfo =new UserInfo();
-        String text = getDefaultUserName(token);
+        String text = getDefaultUserName(authInfo.getToken());
         JSONArray jsonUserInfoArray = parseUserJSON(text);
 
         for(Object object:jsonUserInfoArray)   {

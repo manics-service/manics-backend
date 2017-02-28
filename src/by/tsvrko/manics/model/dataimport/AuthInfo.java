@@ -34,4 +34,13 @@ public class AuthInfo implements Serializable {
     public void setSession(String session) {
         this.session = session;
     }
+
+    public AuthInfo(String token, SourceType type, String session) {
+        this.token = token;
+        this.type = type;
+        this.session = session;
+    }
+
+    public AuthInfo() {
+    }
 }

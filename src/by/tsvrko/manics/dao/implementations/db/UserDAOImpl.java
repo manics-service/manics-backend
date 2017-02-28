@@ -3,6 +3,7 @@ package by.tsvrko.manics.dao.implementations.db;
 import by.tsvrko.manics.dao.interfaces.db.UserDAO;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -26,12 +27,20 @@ public class UserDAOImpl  implements UserDAO {
     @Autowired
     public UserDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+
     }
+
 
     private Session openSession() {
         return sessionFactory.openSession();
     }
     private static Logger log = Logger.getLogger(SessionDAOImpl.class.getName());
+
+    public User getBySession(String session) {
+        return null;
+    }
+
+
 
     @Override
     public User getByIdentifier(String userId) {
@@ -47,6 +56,37 @@ public class UserDAOImpl  implements UserDAO {
 
             criteria.select(from);
             criteria.where(builder.equal(from.get("identifier"),userId));
+
+            dbUser = session.createQuery(criteria).getSingleResult();
+            session.getTransaction().commit();
+
+        } catch (HibernateException e) {
+            log.debug("can't get user from database", e);
+        }catch(NoResultException e){
+            log.debug("user not found", e);
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return dbUser;
+    }
+
+
+    public User getByDbId(int id) {
+        Session session = null;
+        User dbUser = new User();
+        try {
+            session = openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<User> criteria = builder.createQuery(User.class);
+            Root<User> from = criteria.from(User.class);
+
+            criteria.select(from);
+            criteria.where(builder.equal(from.get("id"),id));
 
             dbUser = session.createQuery(criteria).getSingleResult();
             session.getTransaction().commit();

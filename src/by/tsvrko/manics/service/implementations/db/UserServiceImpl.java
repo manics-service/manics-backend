@@ -31,4 +31,5 @@ public class UserServiceImpl implements UserService {
     public boolean addUser(UserInfo userInfo) {
         return userDAO.addUser(userInfo);
     }
+
 }

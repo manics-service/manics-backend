@@ -20,7 +20,8 @@ import javax.persistence.criteria.Root;
 public class SessionDAOImpl implements SessionDAO {
 
     private SessionFactory sessionFactory;
-    private UserService userService;
+   private UserService userService;
+
 
     @Autowired
     public SessionDAOImpl(SessionFactory sessionFactory, UserService userService) {

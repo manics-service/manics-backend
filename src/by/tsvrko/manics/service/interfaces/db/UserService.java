@@ -11,4 +11,5 @@ public interface UserService {
     User getUserByIdentifier(String userId);
 
     boolean addUser(UserInfo userInfo);
+
 }

@@ -1,5 +1,6 @@
 package by.tsvrko.manics.service.interfaces.dataimport;
 
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 
 /**
@@ -7,5 +8,5 @@ import by.tsvrko.manics.model.dataimport.ChatInfo;
  */
 public interface MessageImportService {
 
-    boolean getChatMessages(ChatInfo chat, String token) ;
+    boolean getChatMessages(ChatInfo chat, AuthInfo authInfo) ;
 }

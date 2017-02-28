@@ -4,6 +4,7 @@ import by.tsvrko.manics.model.controller.Status;
 import by.tsvrko.manics.model.controller.StatusEnum;
 import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.RequestInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
 import by.tsvrko.manics.service.interfaces.auth.AuthService;
@@ -48,6 +49,8 @@ public class AppController {
         this.authService = authService;
     }
 
+
+
     @RequestMapping(value = "/api/v1/authentication",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
@@ -61,8 +64,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chat, AuthInfo authInfo) {
-        return messageCountService.getMessageCount(chat,authInfo);
+    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chatInfo, AuthInfo authInfo) {
+        return messageCountService.getMessageCount(chatInfo,authInfo);
     }
 
 
@@ -70,8 +73,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chat, AuthInfo authInfo) {
-        return dayActivityService.getDayActivity(chat,authInfo);
+    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chatInfo, AuthInfo authInfo) {
+        return dayActivityService.getDayActivity(chatInfo,authInfo);
     }
 
 
@@ -79,8 +82,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<ChatInfo> getChats(@CookieValue("session") String token) {
-        return chatImportService.getListOfChats(token);
+    public List<ChatInfo> getChats(@RequestBody AuthInfo authInfo) {
+        return chatImportService.getListOfChats(authInfo);
     }
 
 
@@ -88,9 +91,11 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public Status getMessages(@RequestBody ChatInfo chat, @CookieValue("session") String token) {
+    public Status getMessages(@RequestBody RequestInfo requestInfo) {
         Status responseStatus = new Status();
-        if (messageImportService.getChatMessages(chat, token)){
+        ChatInfo chatInfo = requestInfo.getChatInfo();
+        AuthInfo authInfo = requestInfo.getAuthInfo();
+        if (messageImportService.getChatMessages(chatInfo, authInfo)){
             responseStatus.setStatusCode("200");
             responseStatus.setDescription(StatusEnum.OK);
             return responseStatus;

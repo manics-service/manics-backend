@@ -29,7 +29,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo getUser(String token) {
-        return userImportDAO.getUser(token);
+    public UserInfo getUser(AuthInfo authInfo) {
+        return userImportDAO.getUser(authInfo);
     }
 }

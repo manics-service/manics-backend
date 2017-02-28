@@ -30,9 +30,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthInfo authenticateUser(AuthInfo info) {
+    public AuthInfo authenticateUser(AuthInfo authInfo) {
 
-        UserInfo userInfo = userInfoService.getUser(info.getToken());
+        UserInfo userInfo = userInfoService.getUser(authInfo);
         User user = userService.getUserByIdentifier(userInfo.getId());
         if (user.getId()==0){
             userService.addUser(userInfo);
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         String session = UUID.randomUUID().toString();
         sessionService.addSession(session,userInfo.getId());
 
-        info.setSession(session);
-        return info;
+        authInfo.setSession(session);
+        return authInfo;
     }
 }

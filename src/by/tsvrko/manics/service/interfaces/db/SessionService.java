@@ -10,5 +10,6 @@ public interface SessionService {
 
     String addSession(String token, String userId);
 
-    UserSession getUserSessionByToken(String token);
+    UserSession getByValue(String token);
+
 }

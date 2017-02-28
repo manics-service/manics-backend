@@ -11,4 +11,5 @@ public interface UserDAO {
     boolean addUser (UserInfo userInfo);
 
     User getByIdentifier(String userId);
+
 }

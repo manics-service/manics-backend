@@ -2,10 +2,13 @@ package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
 import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.service.interfaces.db.ChatService;
 import by.tsvrko.manics.service.interfaces.db.MessageService;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -14,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 import static by.tsvrko.manics.dao.ContentImportUtil.*;
 import static by.tsvrko.manics.dao.ParseJSONUtil.*;
@@ -27,34 +28,39 @@ import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 @Repository
 public class MessageImportVKImpl implements MessageImportVK {
 
-    private static final ResourceBundle CONFIG_BUNDLE = ResourceBundle.getBundle("VKapi");
-    private static final String ACCESS_TOKEN = CONFIG_BUNDLE.getString("access.token");
     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
 
     private MessageService messageService;
     private ChatService chatService;
+    private SessionService sessionService;
 
     @Autowired
-    public MessageImportVKImpl(MessageService messageService, ChatService chatService) {
+    public MessageImportVKImpl(MessageService messageService, ChatService chatService, SessionService sessionService) {
         this.messageService = messageService;
         this.chatService = chatService;
+        this.sessionService = sessionService;
     }
 
     @Override
-    public boolean getMessages(ChatInfo chat, String token) {
+    public boolean getMessages(ChatInfo chatInfo, AuthInfo authInfo) {
 
-        chatService.addChat(chat,token);
+        if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
+            throw new UserIsNotAuthorizedException("User isn't authorized");
+        }
+
+
+        chatService.addChat(chatInfo,authInfo.getSession());
 
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
-        long chatId = chat.getChatId();
-        long count = parseMessageCount(getCountOfMessages(chatId));
+        long chatId = chatInfo.getChatId();
+        long count = parseMessageCount(getCountOfMessages(chatId,authInfo.getToken()));
 
         while (offset < count) {
             String text;
             while (true) {
                 try{
-                    text = getChatMessages(chatId, offset);
+                    text = getChatMessages(chatId, offset, authInfo.getToken());
                     if (!text.contains("Too many requests per second")) break;}
                 catch (TooManyRequestsToApiException e){
                     try {
@@ -83,47 +89,24 @@ public class MessageImportVKImpl implements MessageImportVK {
         return true;
     }
 
-    @Override
-    public List <Number> getChatInfo(long chatId) {
-        int offset =0;
-        String text;
-
-        while (true) {
-            try {
-                text = getChatMessages(chatId, offset);
-                if (!text.contains("Too many requests per second")) break;
-            }
-            catch (TooManyRequestsToApiException e) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e1) {
-                    log.debug("InterruptedException in current thread", e1);
-                    Thread.currentThread().interrupt();
-                }
-            }
-        }
-
-        return parseChatInfo(text);
-    }
-
-    private String getCountOfMessages(long chatId) {
+    private String getCountOfMessages(long chatId, String token) {
 
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
                 .setParameter("peer_id", peer_id)
-                .setParameter("access_token", ACCESS_TOKEN)
+                .setParameter("access_token", token)
                 .setParameter("v", "5.60");
         return readContent(uriBuilder);
     }
 
-    private String getChatMessages(long chatId, int offset) throws TooManyRequestsToApiException {
+    private String getChatMessages(long chatId, int offset,String token ) throws TooManyRequestsToApiException {
 
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
                 .setParameter("peer_id", peer_id)
-                .setParameter("access_token", ACCESS_TOKEN)
+                .setParameter("access_token", token)
                 .setParameter("count", "200").setParameter("offset", String.valueOf(offset))
                 .setParameter("v", "5.60");
         return readContent(uriBuilder);

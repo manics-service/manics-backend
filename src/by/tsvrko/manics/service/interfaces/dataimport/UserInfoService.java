@@ -12,6 +12,6 @@ public interface UserInfoService {
 
     List<UserInfo> getUsers(List<Integer> list, AuthInfo authInfo);
 
-    UserInfo getUser(String token);
+    UserInfo getUser(AuthInfo authInfo);
 
 }

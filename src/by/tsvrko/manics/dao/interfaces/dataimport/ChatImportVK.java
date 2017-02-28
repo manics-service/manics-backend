@@ -1,5 +1,6 @@
 package by.tsvrko.manics.dao.interfaces.dataimport;
 
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface ChatImportVK {
 
-    List<ChatInfo> getChats(String token);
+    List<ChatInfo> getChats(AuthInfo authInfo);
 
-    List <Integer> getChatUsers(long chatId);
+    List <Integer> getChatUsers(long chatId,AuthInfo authInfo);
 }

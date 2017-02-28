@@ -36,7 +36,7 @@ public class DayActivityServiceImpl implements DayActivityService{
 
     @Override
     public List<DayActivity> getDayActivity(ChatInfo info, AuthInfo authInfo) {
-        List<Integer> chatUserIds= chatImportService.getChatUsersIds(info.getChatId());
+        List<Integer> chatUserIds= chatImportService.getChatUsersIds(info.getChatId(), authInfo);
         List<UserInfo> userInfoList = userInfoService.getUsers(chatUserIds,authInfo);
         List<DayActivity> dayActivityList = new ArrayList<>();
 
