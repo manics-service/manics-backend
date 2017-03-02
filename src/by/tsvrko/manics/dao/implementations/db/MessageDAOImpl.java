@@ -148,7 +148,46 @@ public class MessageDAOImpl implements MessageDAO{
         }
     }
 
+    @Override
+    public List<Message> getByUserDate(String userId, long chatId, long date) {
 
+        Chat dbChat= chatService.getChatById(chatId);
+        if (dbChat!=null){
+            Session session = null;
+            List <Message> messageList = new ArrayList<>();
+            try {
+                session = openSession();
+                session.beginTransaction();
+
+                CriteriaBuilder builder = session.getCriteriaBuilder();
+                CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
+                Root<Message> from = criteria.from(Message.class);
+
+
+                criteria.select(from);
+                criteria.where(builder.equal(from.get("userId"), userId),builder.equal(from.get("chat"),dbChat.getId()),builder.lessThanOrEqualTo(from.get("date"),date));
+
+                messageList = session.createQuery(criteria).getResultList();
+                session.getTransaction().commit();
+
+            } catch (HibernateException e) {
+                log.debug("can't get userInfo from database", e);
+            }catch(NoResultException e){
+                log.debug("userInfo not found", e);
+
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+            return messageList;
+        }
+        else
+        {
+            return new ArrayList<>();
+        }
+
+    }
 }
 
 

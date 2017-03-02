@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface MessageService {
 
-    List<Message> getMessages(String userId, long chatId);
+    List<Message> getMessagesByUser(String userId, long chatId);
 
-    List<Message> getMessages(int id);
+    List<Message> getMessagesByUserDate(String userId, long chatId, long date);
 
     boolean addMessages(ArrayList<Message> list, long chatId);
 }

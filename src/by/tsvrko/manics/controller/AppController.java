@@ -7,11 +7,13 @@ import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.dataimport.RequestInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
+import by.tsvrko.manics.model.statistics.PeriodActivity;
 import by.tsvrko.manics.service.interfaces.auth.AuthService;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
 import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
 import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
+import by.tsvrko.manics.service.interfaces.statistics.PeriodActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +26,10 @@ public class AppController {
     private MessageImportService messageImportService;
     private MessageCountService messageCountService;
     private DayActivityService dayActivityService;
+    private PeriodActivityService periodActivityService;
     private AuthService authService;
 
-
-     @Autowired
+    @Autowired
     public void setChatImportService(ChatImportService chatImportService) {
         this.chatImportService = chatImportService;
     }
@@ -49,14 +51,17 @@ public class AppController {
         this.authService = authService;
     }
 
-
+    @Autowired
+    public void setPeriodActivityService(PeriodActivityService periodActivityService) {
+        this.periodActivityService = periodActivityService;
+    }
 
     @RequestMapping(value = "/api/v1/authentication",
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public AuthInfo authenticateUser(@RequestBody AuthInfo authInfo) {
-        return authService.authenticateUser(authInfo);
+    public AuthInfo authenticateUser(@RequestBody RequestInfo requestInfo) {
+        return authService.authenticateUser(requestInfo.getAuthInfo());
     }
 
 
@@ -64,8 +69,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<MessageCount> getUserCountOfMessages(@RequestBody ChatInfo chatInfo, AuthInfo authInfo) {
-        return messageCountService.getMessageCount(chatInfo,authInfo);
+    public List<MessageCount> getUserCountOfMessages(@RequestBody RequestInfo requestInfo) {
+        return messageCountService.getStatistics(requestInfo.getChatInfo(),requestInfo.getAuthInfo());
     }
 
 
@@ -73,8 +78,16 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<DayActivity> getUserDayActivity(@RequestBody ChatInfo chatInfo, AuthInfo authInfo) {
-        return dayActivityService.getDayActivity(chatInfo,authInfo);
+    public List<DayActivity> getUserDayActivity(@RequestBody RequestInfo requestInfo) {
+        return dayActivityService.getStatistics(requestInfo.getChatInfo(),requestInfo.getAuthInfo());
+    }
+
+    @RequestMapping(value = "/api/v1/stats/periodactivity.json",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public List<PeriodActivity> getUserPeriodActivity(@RequestBody RequestInfo requestInfo) {
+        return periodActivityService.getStatistics(requestInfo.getChatInfo(),requestInfo.getAuthInfo(),requestInfo.getDate());
     }
 
 
@@ -82,8 +95,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<ChatInfo> getChats(@RequestBody AuthInfo authInfo) {
-        return chatImportService.getListOfChats(authInfo);
+    public List<ChatInfo> getChats(@RequestBody RequestInfo requestInfo) {
+        return chatImportService.getListOfChats(requestInfo.getAuthInfo());
     }
 
 
@@ -92,9 +105,11 @@ public class AppController {
             headers = {"Content-type=application/json"})
     @ResponseBody
     public Status getMessages(@RequestBody RequestInfo requestInfo) {
+
         Status responseStatus = new Status();
         ChatInfo chatInfo = requestInfo.getChatInfo();
         AuthInfo authInfo = requestInfo.getAuthInfo();
+
         if (messageImportService.getChatMessages(chatInfo, authInfo)){
             responseStatus.setStatusCode("200");
             responseStatus.setDescription(StatusEnum.OK);

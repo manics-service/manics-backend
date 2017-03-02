@@ -3,14 +3,15 @@ package by.tsvrko.manics.service.interfaces.statistics;
 import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
+import by.tsvrko.manics.model.statistics.PeriodActivity;
 
 import java.util.List;
 
 /**
- * Created by tsvrko on 2/26/2017.
+ * Created by tsvrko on 2/28/2017.
  */
-public interface DayActivityService {
+public interface PeriodActivityService {
 
-    List<DayActivity> getStatistics(ChatInfo info, AuthInfo authInfo);
+    List<PeriodActivity> getStatistics (ChatInfo chatInfo,AuthInfo authInfo, long date);
 
 }

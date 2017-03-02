@@ -47,8 +47,6 @@ public class MessageImportVKImpl implements MessageImportVK {
         if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
             throw new UserIsNotAuthorizedException("User isn't authorized");
         }
-
-
         chatService.addChat(chatInfo,authInfo.getSession());
 
         ArrayList<Message> messagesList = new ArrayList<>();
@@ -96,7 +94,7 @@ public class MessageImportVKImpl implements MessageImportVK {
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
                 .setParameter("peer_id", peer_id)
                 .setParameter("access_token", token)
-                .setParameter("v", "5.60");
+                .setParameter("v", "5.62");
         return readContent(uriBuilder);
     }
 
@@ -108,7 +106,7 @@ public class MessageImportVKImpl implements MessageImportVK {
                 .setParameter("peer_id", peer_id)
                 .setParameter("access_token", token)
                 .setParameter("count", "200").setParameter("offset", String.valueOf(offset))
-                .setParameter("v", "5.60");
+                .setParameter("v", "5.62");
         return readContent(uriBuilder);
     }
 

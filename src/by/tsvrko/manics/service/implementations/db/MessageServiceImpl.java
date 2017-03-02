@@ -29,13 +29,8 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public List<Message> getMessages(String userId, long chatId) {
+    public List<Message> getMessagesByUser(String userId, long chatId) {
         return messageDAO.getByUser(userId,chatId);
-    }
-
-    @Override
-    public List<Message> getMessages(int id) {
-        return messageDAO.getByChat(id);
     }
 
     @Override
@@ -44,4 +39,8 @@ public class MessageServiceImpl implements MessageService{
         return true;
     }
 
+    @Override
+    public List<Message> getMessagesByUserDate(String userId, long chatId, long date) {
+        return messageDAO.getByUserDate(userId, chatId, date);
+    }
 }

@@ -9,6 +9,7 @@ public class RequestInfo implements Serializable{
 
     private AuthInfo authInfo;
     private ChatInfo chatInfo;
+    private long date;
 
     public AuthInfo getAuthInfo() {
         return authInfo;
@@ -26,9 +27,18 @@ public class RequestInfo implements Serializable{
         this.chatInfo = chatInfo;
     }
 
-    public RequestInfo(AuthInfo authInfo, ChatInfo chatInfo) {
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public RequestInfo(AuthInfo authInfo, ChatInfo chatInfo, long date) {
         this.authInfo = authInfo;
         this.chatInfo = chatInfo;
+        this.date = date;
     }
 
     public RequestInfo() {

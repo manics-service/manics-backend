@@ -15,4 +15,7 @@ public interface MessageDAO {
    List<Message> getByChat(int id);
 
    List<Message> getByUser(String userId, long chatId) ;
+
+   List<Message> getByUserDate(String userId, long chatId, long date) ;
+
 }

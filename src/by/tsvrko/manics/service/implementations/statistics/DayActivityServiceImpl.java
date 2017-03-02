@@ -5,16 +5,13 @@ import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.statistics.DayActivity;
-import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
-import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
-import by.tsvrko.manics.service.interfaces.db.MessageService;
 import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,27 +20,16 @@ import java.util.List;
 @Service
 public class DayActivityServiceImpl implements DayActivityService{
 
-    private ChatImportService chatImportService;
-    private UserInfoService userInfoService;
-    private MessageService messageService;
-
-    @Autowired
-    public DayActivityServiceImpl(ChatImportService chatImportService, UserInfoService userInfoService, MessageService messageService) {
-        this.chatImportService = chatImportService;
-        this.userInfoService = userInfoService;
-        this.messageService = messageService;
-    }
 
     @Override
-    public List<DayActivity> getDayActivity(ChatInfo info, AuthInfo authInfo) {
-        List<Integer> chatUserIds= chatImportService.getChatUsersIds(info.getChatId(), authInfo);
-        List<UserInfo> userInfoList = userInfoService.getUsers(chatUserIds,authInfo);
+    public List<DayActivity> getStatistics(ChatInfo chatInfo, AuthInfo authInfo) {
+        List<UserInfo> userInfoList =StatUtil.getUserInfo(chatInfo.getChatId(),authInfo);
         List<DayActivity> dayActivityList = new ArrayList<>();
 
         for(UserInfo userInfo : userInfoList){
             DayActivity dayActivity= new DayActivity();
             dayActivity.setUserInfo(userInfo);
-            List<Message> messageList = messageService.getMessages(userInfo.getId(),info.getChatId());
+            List<Message> messageList = StatUtil.getUserMessages(userInfo.getId(), chatInfo.getChatId());
 
             int messNight = 0;
             int messMorning = 0;
@@ -52,7 +38,7 @@ public class DayActivityServiceImpl implements DayActivityService{
 
             for(Message message:messageList){
 
-                Time time = new Time(message.getDate());
+                Time time = new Time(message.getDate()*1000);
                 LocalTime localTime = time.toLocalTime();
                 int hour =  localTime.getHour();
                 if (hour>=0&&hour<6){
@@ -68,6 +54,7 @@ public class DayActivityServiceImpl implements DayActivityService{
                     messEvening++;
                 }
             }
+
             dayActivity.setMessNight(messNight);
             dayActivity.setMessDay(messDay);
             dayActivity.setMessEvening(messEvening);
@@ -78,4 +65,5 @@ public class DayActivityServiceImpl implements DayActivityService{
 
         return dayActivityList;
     }
+
 }
