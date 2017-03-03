@@ -6,19 +6,13 @@ import by.tsvrko.manics.model.dataimport.MessageInfo;
 import by.tsvrko.manics.model.dataimport.UserInfo;
 import by.tsvrko.manics.model.hibernate.Message;
 import by.tsvrko.manics.model.statistics.PeriodActivity;
-import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
-import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
-import by.tsvrko.manics.service.interfaces.db.MessageService;
 import by.tsvrko.manics.service.interfaces.statistics.PeriodActivityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoField;
 import java.util.*;
 
 /**

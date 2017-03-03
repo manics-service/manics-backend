@@ -5,12 +5,14 @@ import by.tsvrko.manics.model.controller.StatusEnum;
 import by.tsvrko.manics.model.dataimport.AuthInfo;
 import by.tsvrko.manics.model.dataimport.ChatInfo;
 import by.tsvrko.manics.model.dataimport.RequestInfo;
+import by.tsvrko.manics.model.statistics.AmountOfInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
 import by.tsvrko.manics.model.statistics.PeriodActivity;
 import by.tsvrko.manics.service.interfaces.auth.AuthService;
 import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import by.tsvrko.manics.service.interfaces.dataimport.MessageImportService;
+import by.tsvrko.manics.service.interfaces.statistics.AmountOfInfoService;
 import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
 import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
 import by.tsvrko.manics.service.interfaces.statistics.PeriodActivityService;
@@ -28,6 +30,8 @@ public class AppController {
     private DayActivityService dayActivityService;
     private PeriodActivityService periodActivityService;
     private AuthService authService;
+    private AmountOfInfoService amountOfInfoService;
+
 
     @Autowired
     public void setChatImportService(ChatImportService chatImportService) {
@@ -45,7 +49,6 @@ public class AppController {
     public void setDayActivityService(DayActivityService dayActivityService) {
         this.dayActivityService = dayActivityService;
     }
-
     @Autowired
     public void setAuthService(AuthService authService) {
         this.authService = authService;
@@ -54,6 +57,10 @@ public class AppController {
     @Autowired
     public void setPeriodActivityService(PeriodActivityService periodActivityService) {
         this.periodActivityService = periodActivityService;
+    }
+    @Autowired
+    public void setAmountOfInfoService(AmountOfInfoService amountOfInfoService) {
+        this.amountOfInfoService = amountOfInfoService;
     }
 
     @RequestMapping(value = "/api/v1/authentication",
@@ -88,6 +95,14 @@ public class AppController {
     @ResponseBody
     public List<PeriodActivity> getUserPeriodActivity(@RequestBody RequestInfo requestInfo) {
         return periodActivityService.getStatistics(requestInfo.getChatInfo(),requestInfo.getAuthInfo(),requestInfo.getDate());
+    }
+
+    @RequestMapping(value = "/api/v1/stats/infoamount.json",
+            method = RequestMethod.POST,
+            headers = {"Content-type=application/json"})
+    @ResponseBody
+    public List<AmountOfInfo> getUserInfoAmount(@RequestBody RequestInfo requestInfo) {
+        return amountOfInfoService.getStatistics(requestInfo.getChatInfo(),requestInfo.getAuthInfo());
     }
 
 
