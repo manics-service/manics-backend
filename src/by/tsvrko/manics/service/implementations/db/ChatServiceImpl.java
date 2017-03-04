@@ -36,12 +36,9 @@ public class ChatServiceImpl implements ChatService{
 
     }
     @Override
-    public boolean deleteChat(Chat chat) {
-        return chatDAO.deleteChat(chat);
+    public boolean deleteChat(long chatId) {
+        return chatDAO.deleteChat(chatId);
     }
 
-    @Override
-    public List<Chat> getChats(String userSession) {
-        return chatDAO.getBySession(userSession);
-    }
+
 }

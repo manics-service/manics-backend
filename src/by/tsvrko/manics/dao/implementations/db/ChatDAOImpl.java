@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import static by.tsvrko.manics.dao.EncodingUtil.*;
 
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,6 +33,8 @@ public class ChatDAOImpl implements ChatDAO {
 
     private SessionFactory sessionFactory;
     private SessionService sessionService;
+
+
 
     @Autowired
     public ChatDAOImpl(SessionFactory sessionFactory, SessionService sessionService) {
@@ -87,12 +90,16 @@ public class ChatDAOImpl implements ChatDAO {
     }
 
     @Override
-    public boolean deleteChat(Chat chat){
+    public boolean deleteChat(long chatId){
         Session session = null;
         try {
+
             session = openSession();
             session.beginTransaction();
-            session.delete(chat);
+            getByChatId(chatId);
+            Chat chat = getByChatId(chatId);
+            session.merge(chat);
+            session.delete( chat);
             session.getTransaction().commit();
 
         } catch (HibernateException e) {

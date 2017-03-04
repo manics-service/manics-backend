@@ -132,4 +132,32 @@ public class UserDAOImpl  implements UserDAO {
         }
         return true;
     }
+    @Override
+    public boolean persistUser(UserInfo userInfo) {
+        Session session = null;
+        User user = new User();
+        try {
+            session = openSession();
+            session.beginTransaction();
+
+            user.setId(9999999);
+            user.setIdentifier(userInfo.getId());
+            user.setFirstName(userInfo.getFirstName());
+            user.setLastName(userInfo.getLastName());
+            session.save(user);
+
+            session.getTransaction().commit();
+
+        } catch (HibernateException e) {
+            log.debug("can't get user from database", e);
+        }catch(NoResultException e){
+            log.debug("user not found", e);
+
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return true;
+    }
 }

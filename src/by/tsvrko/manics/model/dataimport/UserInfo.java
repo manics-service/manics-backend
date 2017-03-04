@@ -34,4 +34,13 @@ public class UserInfo implements Serializable{
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public UserInfo(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public UserInfo() {
+    }
 }

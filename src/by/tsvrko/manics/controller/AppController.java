@@ -67,8 +67,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public AuthInfo authenticateUser(@RequestBody RequestInfo requestInfo) {
-        return authService.authenticateUser(requestInfo.getAuthInfo());
+    public AuthInfo authenticateUser(@RequestBody AuthInfo authInfo) {
+        return authService.authenticateUser(authInfo);
     }
 
 
@@ -110,8 +110,8 @@ public class AppController {
             method = RequestMethod.POST,
             headers = {"Content-type=application/json"})
     @ResponseBody
-    public List<ChatInfo> getChats(@RequestBody RequestInfo requestInfo) {
-        return chatImportService.getListOfChats(requestInfo.getAuthInfo());
+    public List<ChatInfo> getChats(@RequestBody AuthInfo authInfo) {
+        return chatImportService.getListOfChats(authInfo);
     }
 
 

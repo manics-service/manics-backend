@@ -14,7 +14,6 @@ public interface ChatService {
 
     Chat getChatById(long chatId);
 
-    boolean deleteChat(Chat chat);
+    boolean deleteChat(long chatId);
 
-    List<Chat> getChats(String userSession);
 }

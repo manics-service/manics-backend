@@ -14,7 +14,7 @@ public interface ChatDAO {
 
      Chat getByChatId(long chatId);
 
-     boolean deleteChat(Chat chat);
+     boolean deleteChat(long chatId);
 
      List<Chat> getBySession(String session);
 
