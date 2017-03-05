@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.service;
+package by.tsvrko.manics.service;
 
 import java.util.UUID;
 

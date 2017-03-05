@@ -1,7 +1,7 @@
-package main.java.by.tsvrko.manics.dao.interfaces.db;
+package by.tsvrko.manics.dao.interfaces.db;
 
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.hibernate.Chat;
 
 import java.util.List;
 

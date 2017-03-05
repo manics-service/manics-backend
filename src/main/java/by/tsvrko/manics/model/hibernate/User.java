@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.model.hibernate;
+package by.tsvrko.manics.model.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;

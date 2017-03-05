@@ -1,11 +1,11 @@
-package main.java.by.tsvrko.manics.dao.implementations.dataimport;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
-import main.java.by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
-import main.java.by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.service.interfaces.db.SessionService;
+import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
+import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -13,11 +13,11 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import static main.java.by.tsvrko.manics.dao.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.java.by.tsvrko.manics.dao.ContentImportUtil.readContent;
+import static by.tsvrko.manics.dao.ContentImportUtil.readContent;
 
 /**
  * Created main.main.java.by tsvrko on 1/20/2017.

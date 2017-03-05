@@ -1,7 +1,7 @@
-package main.java.by.tsvrko.manics.dao.interfaces.dataimport;
+package by.tsvrko.manics.dao.interfaces.dataimport;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
 
 import java.util.List;
 

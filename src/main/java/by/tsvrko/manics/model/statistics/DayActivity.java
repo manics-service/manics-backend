@@ -1,6 +1,6 @@
-package main.java.by.tsvrko.manics.model.statistics;
+package by.tsvrko.manics.model.statistics;
 
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 
 import java.io.Serializable;
 

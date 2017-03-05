@@ -1,6 +1,6 @@
 package main.java.by.tsvrko.manics.dao.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.ChatDAO;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

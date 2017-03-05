@@ -1,7 +1,7 @@
 package main.java.by.tsvrko.manics.dao.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.SessionDAO;
-import main.java.by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
+import by.tsvrko.manics.model.hibernate.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

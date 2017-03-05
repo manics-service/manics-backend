@@ -1,9 +1,9 @@
-package main.java.by.tsvrko.manics.service.implementations.db;
+package by.tsvrko.manics.service.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.ChatDAO;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Chat;
-import main.java.by.tsvrko.manics.service.interfaces.db.ChatService;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

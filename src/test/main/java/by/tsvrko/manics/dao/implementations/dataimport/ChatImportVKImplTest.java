@@ -1,11 +1,11 @@
 package main.java.by.tsvrko.manics.dao.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
-import main.java.by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
+import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class ChatImportVKImplTest {
     @Before
     public  void setUp() throws Exception {
         authInfo.setSession("7bcafa02-0b7d-45ae-ae3a-c68c0b874871");
-        authInfo.setToken("e5e926df72a91c92d176b52b43865093bc60099c12409ae28a2e05fe98629db09fbed59be898a55adf3ce");
+        authInfo.setToken("cf0a4e065ffe83f3332ddc0af4c84548d003257953e83cb5bae80cb3ec33662b2893adb499a8e0db6aef2");
     }
 
     @Test(expected = UserIsNotAuthorizedException.class )
@@ -70,9 +70,6 @@ public class ChatImportVKImplTest {
     @Test
     public void getChatNotExistUsers() throws Exception {
         long chatId = 999;
-        AuthInfo authInfo = new AuthInfo();
-        authInfo.setSession("7bcafa02-0b7d-45ae-ae3a-c68c0b874871");
-        authInfo.setToken("e5e926df72a91c92d176b52b43865093bc60099c12409ae28a2e05fe98629db09fbed59be898a55adf3ce");
         List<Integer> userList = chatImportVK.getChatUsers(chatId,authInfo);
         UserInfo user  = userImportVK.getUser(authInfo);
         assertEquals(user.getId(),userList.get(0).toString());

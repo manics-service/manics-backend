@@ -1,11 +1,11 @@
-package main.java.by.tsvrko.manics.service.implementations.statistics;
+package by.tsvrko.manics.service.implementations.statistics;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Message;
-import main.java.by.tsvrko.manics.model.statistics.DayActivity;
-import main.java.by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.model.statistics.DayActivity;
+import by.tsvrko.manics.service.interfaces.statistics.DayActivityService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;

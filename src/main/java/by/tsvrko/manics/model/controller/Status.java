@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.model.controller;
+package by.tsvrko.manics.model.controller;
 
 /**
  * Created main.main.java.by tsvrko on 12/23/2016.

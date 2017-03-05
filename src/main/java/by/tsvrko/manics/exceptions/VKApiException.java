@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.exceptions;
+package by.tsvrko.manics.exceptions;
 
 /**
  * Created main.main.java.by irats on 1/4/2017.

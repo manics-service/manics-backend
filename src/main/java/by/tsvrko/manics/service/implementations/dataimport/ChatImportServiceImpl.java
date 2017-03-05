@@ -1,9 +1,9 @@
-package main.java.by.tsvrko.manics.service.implementations.dataimport;
+package by.tsvrko.manics.service.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
+import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

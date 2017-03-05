@@ -1,6 +1,6 @@
-package main.java.by.tsvrko.manics.dao;
+package by.tsvrko.manics.dao;
 
-import main.java.by.tsvrko.manics.dao.implementations.dataimport.ChatImportVKImpl;
+import by.tsvrko.manics.dao.implementations.dataimport.ChatImportVKImpl;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

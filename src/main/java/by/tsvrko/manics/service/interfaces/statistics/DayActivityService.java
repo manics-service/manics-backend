@@ -1,8 +1,8 @@
-package main.java.by.tsvrko.manics.service.interfaces.statistics;
+package by.tsvrko.manics.service.interfaces.statistics;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.statistics.DayActivity;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.statistics.DayActivity;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.exceptions;
+package by.tsvrko.manics.exceptions;
 
 import org.jetbrains.annotations.NonNls;
 

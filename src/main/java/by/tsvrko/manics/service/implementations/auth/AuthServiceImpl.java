@@ -1,12 +1,12 @@
-package main.java.by.tsvrko.manics.service.implementations.auth;
+package by.tsvrko.manics.service.implementations.auth;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.model.hibernate.User;
-import main.java.by.tsvrko.manics.service.interfaces.auth.AuthService;
-import main.java.by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
-import main.java.by.tsvrko.manics.service.interfaces.db.SessionService;
-import main.java.by.tsvrko.manics.service.interfaces.db.UserService;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.service.interfaces.auth.AuthService;
+import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
+import by.tsvrko.manics.service.interfaces.db.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

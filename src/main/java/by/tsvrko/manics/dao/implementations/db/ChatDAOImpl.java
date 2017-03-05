@@ -1,10 +1,10 @@
-package main.java.by.tsvrko.manics.dao.implementations.db;
+package by.tsvrko.manics.dao.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.ChatDAO;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Chat;
-import main.java.by.tsvrko.manics.model.hibernate.User;
-import main.java.by.tsvrko.manics.service.interfaces.db.SessionService;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -12,7 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import static main.java.by.tsvrko.manics.dao.EncodingUtil.*;
+import static by.tsvrko.manics.dao.EncodingUtil.*;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;

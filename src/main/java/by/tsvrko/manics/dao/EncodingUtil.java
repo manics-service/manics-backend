@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.dao;
+package by.tsvrko.manics.dao;
 
 import org.apache.log4j.Logger;
 

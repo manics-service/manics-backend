@@ -1,9 +1,9 @@
-package main.java.by.tsvrko.manics.service.implementations.db;
+package by.tsvrko.manics.service.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.implementations.dataimport.MessageImportVKImpl;
-import main.java.by.tsvrko.manics.dao.interfaces.db.MessageDAO;
-import main.java.by.tsvrko.manics.model.hibernate.Message;
-import main.java.by.tsvrko.manics.service.interfaces.db.MessageService;
+import by.tsvrko.manics.dao.implementations.dataimport.MessageImportVKImpl;
+import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
+import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.service.interfaces.db.MessageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

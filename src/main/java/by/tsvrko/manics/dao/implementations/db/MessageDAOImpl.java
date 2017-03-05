@@ -1,9 +1,10 @@
-package main.java.by.tsvrko.manics.dao.implementations.db;
+package by.tsvrko.manics.dao.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.MessageDAO;
-import main.java.by.tsvrko.manics.model.hibernate.Chat;
-import main.java.by.tsvrko.manics.model.hibernate.Message;
-import main.java.by.tsvrko.manics.service.interfaces.db.ChatService;
+
+import by.tsvrko.manics.dao.interfaces.db.MessageDAO;
+import by.tsvrko.manics.model.hibernate.Chat;
+import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,7 +16,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import static main.java.by.tsvrko.manics.dao.EncodingUtil.*;
+import static by.tsvrko.manics.dao.EncodingUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
 
 
 @Repository
-public class MessageDAOImpl implements MessageDAO{
+public class MessageDAOImpl implements MessageDAO {
 
     private ChatService chatService;
     private SessionFactory sessionFactory;

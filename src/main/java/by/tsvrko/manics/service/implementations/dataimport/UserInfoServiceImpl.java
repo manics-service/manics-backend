@@ -1,9 +1,9 @@
-package main.java.by.tsvrko.manics.service.implementations.dataimport;
+package by.tsvrko.manics.service.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
+import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

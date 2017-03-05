@@ -1,8 +1,8 @@
-package main.java.by.tsvrko.manics.dao.implementations.db;
+package by.tsvrko.manics.dao.implementations.db;
 
-import main.java.by.tsvrko.manics.dao.interfaces.db.UserDAO;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.model.hibernate.User;
+import by.tsvrko.manics.dao.interfaces.db.UserDAO;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.hibernate.User;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

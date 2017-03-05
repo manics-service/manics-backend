@@ -1,12 +1,12 @@
 package main.java.by.tsvrko.manics.dao.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
-import main.java.by.tsvrko.manics.dao.interfaces.db.ChatDAO;
-import main.java.by.tsvrko.manics.dao.interfaces.db.SessionDAO;
-import main.java.by.tsvrko.manics.dao.interfaces.db.UserDAO;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
+import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
+import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
+import by.tsvrko.manics.dao.interfaces.db.UserDAO;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

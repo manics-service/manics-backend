@@ -1,11 +1,11 @@
-package main.java.by.tsvrko.manics.service.implementations.statistics;
+package by.tsvrko.manics.service.implementations.statistics;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Message;
-import main.java.by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
-import main.java.by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
-import main.java.by.tsvrko.manics.service.interfaces.db.MessageService;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.service.interfaces.dataimport.ChatImportService;
+import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
+import by.tsvrko.manics.service.interfaces.db.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

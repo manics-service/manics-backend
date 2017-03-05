@@ -1,6 +1,6 @@
-package main.java.by.tsvrko.manics.service.interfaces.auth;
+package by.tsvrko.manics.service.interfaces.auth;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
 
 /**
  * Created main.java.by tsvrko on 2/27/2017.

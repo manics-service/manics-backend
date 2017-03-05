@@ -1,10 +1,10 @@
-package main.java.by.tsvrko.manics.service.implementations.statistics;
+package by.tsvrko.manics.service.implementations.statistics;
 
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.dataimport.UserInfo;
-import main.java.by.tsvrko.manics.model.statistics.MessageCount;
-import main.java.by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.dataimport.UserInfo;
+import by.tsvrko.manics.model.statistics.MessageCount;
+import by.tsvrko.manics.service.interfaces.statistics.MessageCountService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

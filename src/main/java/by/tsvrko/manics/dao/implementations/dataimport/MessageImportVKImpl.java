@@ -1,14 +1,14 @@
-package main.java.by.tsvrko.manics.dao.implementations.dataimport;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
-import main.java.by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
-import main.java.by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
-import main.java.by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
-import main.java.by.tsvrko.manics.model.dataimport.AuthInfo;
-import main.java.by.tsvrko.manics.model.dataimport.ChatInfo;
-import main.java.by.tsvrko.manics.model.hibernate.Message;
-import main.java.by.tsvrko.manics.service.interfaces.db.ChatService;
-import main.java.by.tsvrko.manics.service.interfaces.db.MessageService;
-import main.java.by.tsvrko.manics.service.interfaces.db.SessionService;
+import by.tsvrko.manics.dao.interfaces.dataimport.MessageImportVK;
+import by.tsvrko.manics.exceptions.TooManyRequestsToApiException;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
+import by.tsvrko.manics.model.dataimport.AuthInfo;
+import by.tsvrko.manics.model.dataimport.ChatInfo;
+import by.tsvrko.manics.model.hibernate.Message;
+import by.tsvrko.manics.service.interfaces.db.ChatService;
+import by.tsvrko.manics.service.interfaces.db.MessageService;
+import by.tsvrko.manics.service.interfaces.db.SessionService;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -16,10 +16,13 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-import static main.java.by.tsvrko.manics.dao.ContentImportUtil.*;
-import static main.java.by.tsvrko.manics.dao.ParseJSONUtil.*;
+import static by.tsvrko.manics.dao.ContentImportUtil.*;
+import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 
 /**
  * Created main.main.java.by tsvrko on 1/5/2017.
@@ -83,7 +86,10 @@ public class MessageImportVKImpl implements MessageImportVK {
             offset += 200;
         }
         messagesList.sort(Message::compareTo);
+        Instant instant = Instant.now();
         messageService.addMessages(messagesList,chatId);
+        Instant instant2 = Instant.now();
+        System.out.println("delta="+ ChronoUnit.MILLIS.between(instant, instant2));
         return true;
     }
 

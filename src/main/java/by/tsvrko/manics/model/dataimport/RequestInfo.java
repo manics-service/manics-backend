@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.model.dataimport;
+package by.tsvrko.manics.model.dataimport;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.service;
+package by.tsvrko.manics.service;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"main.java.by.tsvrko.manics"})
-@EntityScan(basePackages = {"main.java.by.tsvrko.manics.model.hibernate"})
+@EnableJpaRepositories(basePackages = {"by.tsvrko.manics"})
+@EntityScan(basePackages = {"by.tsvrko.manics.model.hibernate"})
 public class AppConfig {
 
     @Bean
