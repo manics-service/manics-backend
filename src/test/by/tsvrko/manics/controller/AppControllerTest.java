@@ -1,15 +1,22 @@
 package by.tsvrko.manics.controller;
 
-import by.tsvrko.manics.dao.interfaces.db.ChatDAO;
-import by.tsvrko.manics.model.dataimport.AuthInfo;
-import by.tsvrko.manics.model.dataimport.ChatInfo;
-import by.tsvrko.manics.model.dataimport.SourceType;
+import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
+import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
+import by.tsvrko.manics.model.dataimport.*;
+import by.tsvrko.manics.model.statistics.AmountOfInfo;
+import by.tsvrko.manics.model.statistics.DayActivity;
+import by.tsvrko.manics.model.statistics.MessageCount;
+import by.tsvrko.manics.model.statistics.PeriodActivity;
+import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -17,39 +24,132 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.HttpCookie;
+import java.time.Instant;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
 import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
- * Created main.java.by tsvrko on 2/17/2017.
+ * Created by tsvrko on 3/6/2017.
  */
 
-
-//Doesn't work yet
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureTestDatabase
 public class AppControllerTest {
+
+    @Autowired
+    private UserInfoService userInfoService;
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static TestRestTemplate restTemplate = new TestRestTemplate();
+    private static AuthInfo authInfo = new AuthInfo();
+    private static ChatInfo chatInfo = new ChatInfo();
+    private static RequestInfo requestInfo = new RequestInfo();
 
-    private TestRestTemplate restTemplate = new TestRestTemplate();
-    private AuthInfo authInfo = new AuthInfo();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
+
         authInfo.setToken("cf0a4e065ffe83f3332ddc0af4c84548d003257953e83cb5bae80cb3ec33662b2893adb499a8e0db6aef2");
-        authInfo.setSession("7bcafa02-0b7d-45ae-ae3a-c68c0b874871");
+        authInfo.setSession("f0378648-22c5-4993-85e0-e65daefe2002");
         authInfo.setType(SourceType.VK);
+
+        chatInfo.setChatId(187);
+        chatInfo.setTitle("Null");
+
+        requestInfo.setAuthInfo(authInfo);
+        requestInfo.setChatInfo(chatInfo);
 
     }
 
     @Test
+    public void authenticateUser() throws Exception {
+        HttpEntity<String> httpEntity =  setHttpInfo(authInfo);
+        AuthInfo apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/authentication.json", httpEntity, AuthInfo.class, Collections.EMPTY_MAP);
+        assertNotNull(apiResponse.getSession());
+
+    }
+
+    @Test
+    public void getUserCountOfMessages() throws Exception {
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        List<MessageCount> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/stats/countofmessages.json", httpEntity, ArrayList.class, Collections.EMPTY_MAP);
+        assertNotNull(apiResponse);
+    }
+
+    @Test
+    public void getUserCountOfMessagesNoSession() throws Exception {
+        requestInfo.getAuthInfo().setSession("");
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        Map<String, String> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/stats/countofmessages.json", httpEntity, Map.class, Collections.EMPTY_MAP);
+        assertEquals(UserIsNotAuthorizedException.class.getName(),apiResponse.get("exception"));
+    }
+
+
+    @Test
+    public void getUserDayActivity() throws Exception {
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        List<DayActivity> apiResponse =
+                restTemplate.postForObject("http://localhost:8080//api/v1/stats/dayactivity.json", httpEntity, ArrayList.class, Collections.EMPTY_MAP);
+        assertNotNull(apiResponse);
+    }
+
+    @Test
+    public void getUserDayActivityNoSession() throws Exception {
+        requestInfo.getAuthInfo().setSession("");
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        Map<String, String> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/stats/dayactivity.json", httpEntity, Map.class, Collections.EMPTY_MAP);
+        assertEquals(UserIsNotAuthorizedException.class.getName(),apiResponse.get("exception"));
+    }
+
+
+    @Test
+    public void getUserPeriodActivity() throws Exception {
+        requestInfo.setDate(Instant.now().toEpochMilli());
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        List<PeriodActivity> apiResponse =
+                restTemplate.postForObject("http://localhost:8080//api/v1/stats/periodactivity.json", httpEntity, ArrayList.class, Collections.EMPTY_MAP);
+        assertNotNull(apiResponse);
+    }
+
+    @Test
+    public void getUserPeriodActivityNoSession() throws Exception {
+        requestInfo.setDate(Instant.now().toEpochMilli());
+        requestInfo.getAuthInfo().setSession("");
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        Map<String, String> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/stats/periodactivity.json", httpEntity, Map.class, Collections.EMPTY_MAP);
+        assertEquals(UserIsNotAuthorizedException.class.getName(),apiResponse.get("exception"));
+    }
+
+    @Test
+    public void getUserInfoAmount() throws Exception {
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        List<AmountOfInfo> apiResponse =
+                restTemplate.postForObject("http://localhost:8080//api/v1/stats/infoamount.json", httpEntity, ArrayList.class, Collections.EMPTY_MAP);
+        assertNotNull(apiResponse);
+    }
+
+    @Test
+    public void getUserInfoAmountNoSession() throws Exception {
+        requestInfo.getAuthInfo().setSession("");
+        HttpEntity<String> httpEntity =  setHttpInfo(requestInfo);
+        Map<String, String> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/stats/infoamount.json", httpEntity, Map.class, Collections.EMPTY_MAP);
+        assertEquals(UserIsNotAuthorizedException.class.getName(),apiResponse.get("exception"));
+    }
+
+    @Test
     public void testGetChats() throws JsonProcessingException {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> httpEntity =
-                new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(authInfo), requestHeaders);
+        HttpEntity<String> httpEntity =  setHttpInfo(authInfo);
         List<ChatInfo> apiResponse =
                 restTemplate.postForObject("http://localhost:8080/api/v1/data/chats.json", httpEntity, ArrayList.class, Collections.EMPTY_MAP);
         assertNotNull(apiResponse);
@@ -57,18 +157,26 @@ public class AppControllerTest {
     }
 
     @Test
-    public void getUserCountOfMessages() throws Exception {
+    public void testGetChatsNoSession() throws JsonProcessingException {
+        authInfo.setSession("");
+        HttpEntity<String> httpEntity =  setHttpInfo(authInfo);
+        Map<String, String> apiResponse =
+                restTemplate.postForObject("http://localhost:8080/api/v1/data/chats.json", httpEntity, Map.class, Collections.EMPTY_MAP);
+        assertEquals(UserIsNotAuthorizedException.class.getName(),apiResponse.get("exception"));
 
     }
+
 
     @Test
     public void getMessages() throws Exception {
 
     }
 
-    @Test
-    public void authenticateUser() throws Exception {
 
+    private static HttpEntity<String> setHttpInfo(Object entity) throws JsonProcessingException {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(OBJECT_MAPPER.writeValueAsString(entity), requestHeaders);
     }
 
 }

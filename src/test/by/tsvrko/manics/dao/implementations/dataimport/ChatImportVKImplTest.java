@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.dao.implementations.dataimport;
+package by.tsvrko.manics.dao.implementations.dataimport;
 
 import by.tsvrko.manics.dao.interfaces.dataimport.ChatImportVK;
 import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;

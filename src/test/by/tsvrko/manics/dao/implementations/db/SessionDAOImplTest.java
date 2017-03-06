@@ -1,4 +1,4 @@
-package main.java.by.tsvrko.manics.dao.implementations.db;
+package by.tsvrko.manics.dao.implementations.db;
 
 import by.tsvrko.manics.dao.interfaces.db.SessionDAO;
 import by.tsvrko.manics.model.hibernate.User;
