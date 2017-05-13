@@ -32,7 +32,6 @@ import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 public class MessageImportVKImpl implements MessageImportVK {
 
     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
-
     private MessageService messageService;
     private ChatService chatService;
     private SessionService sessionService;
@@ -46,17 +45,14 @@ public class MessageImportVKImpl implements MessageImportVK {
 
     @Override
     public boolean getMessages(ChatInfo chatInfo, AuthInfo authInfo) {
-
         if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
             throw new UserIsNotAuthorizedException("User isn't authorized");
         }
         chatService.addChat(chatInfo,authInfo.getSession());
-
         ArrayList<Message> messagesList = new ArrayList<>();
         int offset = 0;
         long chatId = chatInfo.getChatId();
         long count = parseMessageCount(getCountOfMessages(chatId,authInfo.getToken()));
-
         while (offset < count) {
             String text;
             while (true) {
@@ -71,9 +67,7 @@ public class MessageImportVKImpl implements MessageImportVK {
                         Thread.currentThread().interrupt();
                     }}
             }
-
             JSONArray jsonMessagesArray = parseMessagesJSON(text);
-
             for (Object aJsonMessagesArray : jsonMessagesArray) {
                 JSONObject jsonMessage = (JSONObject) aJsonMessagesArray;
                 Message message = new Message();
@@ -94,7 +88,6 @@ public class MessageImportVKImpl implements MessageImportVK {
     }
 
     private String getCountOfMessages(long chatId, String token) {
-
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")
@@ -105,7 +98,6 @@ public class MessageImportVKImpl implements MessageImportVK {
     }
 
     private String getChatMessages(long chatId, int offset,String token ) throws TooManyRequestsToApiException {
-
         String peer_id = String.valueOf(chatId+2000000000);
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getHistory")

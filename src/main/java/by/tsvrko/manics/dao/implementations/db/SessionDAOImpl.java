@@ -18,42 +18,31 @@ import javax.persistence.criteria.Root;
 
 @Repository
 public class SessionDAOImpl implements SessionDAO {
-
     private SessionFactory sessionFactory;
    private UserService userService;
-
-
     @Autowired
     public SessionDAOImpl(SessionFactory sessionFactory, UserService userService) {
         this.sessionFactory = sessionFactory;
         this.userService = userService;
     }
-
     private Session openSession() {
         return sessionFactory.openSession();
     }
     private static Logger log = Logger.getLogger(SessionDAOImpl.class.getName());
-
     @Override
     public boolean addUserSession(String session_id, String userId) {
-
         Session session = null;
-
         try {
-
             session = openSession();
             session.beginTransaction();
             User user = userService.getUserByIdentifier(userId);
             UserSession userSession = user.getUserSession();
-
             if(userSession==null){
                 userSession = new UserSession();
                 userSession.setUser(user);
             }
-
             userSession.setSession(session_id);
             session.saveOrUpdate(userSession);
-
             session.getTransaction().commit();
         } catch (HibernateException e) {
             log.debug("can't add user to database", e);
@@ -65,7 +54,6 @@ public class SessionDAOImpl implements SessionDAO {
         return true;
     }
 
-
     @Override
     public UserSession getSession(String userSession) {
         Session session = null;
@@ -73,22 +61,17 @@ public class SessionDAOImpl implements SessionDAO {
         try {
             session = openSession();
             session.beginTransaction();
-
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<UserSession> criteria = builder.createQuery(UserSession.class);
             Root<UserSession> from = criteria.from(UserSession.class);
-
             criteria.select(from);
             criteria.where(builder.equal(from.get("session"),userSession));
-
             dbUserSession = session.createQuery(criteria).getSingleResult();
             session.getTransaction().commit();
-
         } catch (HibernateException e) {
             log.debug("can't get user from database", e);
         }catch(NoResultException e){
             log.debug("user not found", e);
-
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();

@@ -55,7 +55,6 @@ public final class ParseJSONUtil {
         List<Number> chatInfo = new ArrayList<>();
         long messageCount;
         long lastMessageDate;
-
         try{
             messageCount = parseMessageCount(text);
             JSONArray itemsArray =  parseMessagesJSON(text);

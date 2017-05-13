@@ -29,14 +29,5 @@ public class SessionDAOImplTest {
         assertNotNull(user);
     }
 
-    @Test
-    public void addUserSession() throws Exception {
-
-    }
-
-    @Test
-    public void getSession() throws Exception {
-
-    }
 
 }

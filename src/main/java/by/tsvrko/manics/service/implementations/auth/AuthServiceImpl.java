@@ -22,7 +22,6 @@ public class AuthServiceImpl implements AuthService {
     private SessionService sessionService;
     private UserInfoService userInfoService;
 
-    @Autowired
     public AuthServiceImpl(UserService userService, SessionService sessionService, UserInfoService userInfoService) {
         this.userService = userService;
         this.sessionService = sessionService;
@@ -31,7 +30,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthInfo authenticateUser(AuthInfo authInfo) {
-
         UserInfo userInfo = userInfoService.getUser(authInfo);
         User user = userService.getUserByIdentifier(userInfo.getId());
         if (user.getId()==0){
@@ -39,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
         }
         String session = UUID.randomUUID().toString();
         sessionService.addSession(session,userInfo.getId());
-
         authInfo.setSession(session);
         return authInfo;
     }

@@ -21,7 +21,6 @@ public final class StatUtil {
     private static UserInfoService userInfoService;
     private static MessageService messageService;
 
-    @Autowired
     public StatUtil(ChatImportService chatImportService1, UserInfoService userInfoService1, MessageService messageService1) {
         chatImportService = chatImportService1;
         userInfoService = userInfoService1;

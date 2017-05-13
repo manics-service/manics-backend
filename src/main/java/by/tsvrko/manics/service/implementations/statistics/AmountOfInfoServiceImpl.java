@@ -24,21 +24,17 @@ public class AmountOfInfoServiceImpl implements AmountOfInfoService {
 
         List <AmountOfInfo> statList = new ArrayList<>();
         List<UserInfo> userInfoList =StatUtil.getUserInfo(chatInfo.getChatId(),authInfo);
-
         for(UserInfo userInfo : userInfoList){
             List<Message> messageList = StatUtil.getUserMessages(userInfo.getId(), chatInfo.getChatId());
             int messageCount = messageList.size();
             int textLength = 0;
-
             for(Message message: messageList){
                 textLength += EncodingUtil.decodeText(message.getBody()).length();
             }
-
             int infoAmount = textLength/messageCount;
             AmountOfInfo amountOfInfo = new AmountOfInfo();
             amountOfInfo.setUserInfo(userInfo);
             amountOfInfo.setInfoAmount(infoAmount);
-
             statList.add(amountOfInfo);
         }
         statList.sort(AmountOfInfo::compareTo);

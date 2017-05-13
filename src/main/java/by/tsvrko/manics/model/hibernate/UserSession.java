@@ -64,10 +64,4 @@ public class UserSession implements Serializable {
 
     public UserSession() {
     }
-
-    public UserSession(String session, User user) {
-        this.session = session;
-        this.user = user;
-    }
-
 }

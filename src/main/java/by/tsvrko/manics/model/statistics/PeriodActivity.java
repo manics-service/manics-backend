@@ -31,11 +31,6 @@ public class PeriodActivity implements Serializable{
         this.messageInfoList = messageInfoList;
     }
 
-    public PeriodActivity(UserInfo userInfo, List<MessageInfo> messageInfoList) {
-        this.userInfo = userInfo;
-        this.messageInfoList = messageInfoList;
-    }
-
     public PeriodActivity() {
     }
 }

@@ -29,33 +29,25 @@ import java.util.List;
 @Repository
 public class ChatDAOImpl implements ChatDAO {
 
+    private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
     private SessionFactory sessionFactory;
     private SessionService sessionService;
-
-
-
     @Autowired
     public ChatDAOImpl(SessionFactory sessionFactory, SessionService sessionService) {
         this.sessionFactory = sessionFactory;
         this.sessionService = sessionService;
     }
-
     private Session openSession() {
         return sessionFactory.openSession();
     }
-    private static Logger log = Logger.getLogger(ChatDAOImpl.class.getName());
-
     @Override
-
     public boolean addChat(ChatInfo chatInfo, String userSession){
-
         Session session = null;
         try {
             session = openSession();
             session.beginTransaction();
             List<Chat> userChats = getBySession(userSession);
             boolean marker = false;
-
             if (userChats.size()!=0) {
                 Iterator iterator = userChats.iterator();
                 while (iterator.hasNext()) {
@@ -67,14 +59,12 @@ public class ChatDAOImpl implements ChatDAO {
                 }
             }
             if (!marker){
-
                 User user = sessionService.getByValue(userSession).getUser();
                 Chat chat = new Chat();
                 chat.setUser(user);
                 chat.setChatId(chatInfo.getChatId());
                 chat.setTitle(encodeText(chatInfo.getTitle()));
                 session.save(chat);
-
             }
             session.getTransaction().commit();
         } catch (HibernateException e) {

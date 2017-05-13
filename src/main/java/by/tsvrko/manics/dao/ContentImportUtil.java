@@ -26,9 +26,7 @@ public final class ContentImportUtil {
 
         HttpResponse response = ContentImportUtil.connectResponse(uriBuilder);
         Integer status = response.getStatusLine().getStatusCode();
-
         String text = "";
-
         if (status == 200) {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -43,18 +41,15 @@ public final class ContentImportUtil {
     }
 
     private static HttpResponse connectResponse(URIBuilder uriBuilder) {
-
         URI uri = null;
         try {
             uri = uriBuilder.build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(uri);
         HttpResponse response = null;
-
         try {
             response = client.execute(request);
         } catch (IOException e) {
@@ -62,6 +57,5 @@ public final class ContentImportUtil {
         }
         return response;
     }
-
 }
 

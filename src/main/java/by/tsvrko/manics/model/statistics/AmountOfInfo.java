@@ -29,11 +29,6 @@ public class AmountOfInfo implements Serializable,Comparable<AmountOfInfo> {
         this.infoAmount = infoAmount;
     }
 
-    public AmountOfInfo(UserInfo userInfo, int infoAmount) {
-        this.userInfo = userInfo;
-        this.infoAmount = infoAmount;
-    }
-
     public AmountOfInfo() {
     }
 

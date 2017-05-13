@@ -26,22 +26,17 @@ import static by.tsvrko.manics.dao.ContentImportUtil.readContent;
 
 @Repository
 public class UserImportVKImpl implements UserImportVK {
-
-     private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
+    private static Logger log = Logger.getLogger(MessageImportVKImpl.class.getName());
     private SessionService sessionService;
-
     @Autowired
     public UserImportVKImpl(SessionService sessionService) {
         this.sessionService = sessionService;
     }
-
     @Override
     public List<UserInfo> getUsers(List<Integer> list, AuthInfo authInfo) {
-
         if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
             throw new UserIsNotAuthorizedException("User isn't authorized");
         }
-
         List<UserInfo> userInfoList = new ArrayList<>();
         String text;
         for(int i:list){
@@ -58,7 +53,6 @@ public class UserImportVKImpl implements UserImportVK {
                     }
                 }
             }
-
             JSONArray jsonUserInfoArray = parseUserJSON(text);
             for(Object object:jsonUserInfoArray)   {
                 JSONObject jsonMessage = (JSONObject)object;
@@ -68,7 +62,6 @@ public class UserImportVKImpl implements UserImportVK {
                 userInfo.setLastName(jsonMessage.get("last_name").toString());
                 userInfoList.add(userInfo);
             }}
-
         return userInfoList;
     }
 
@@ -77,7 +70,6 @@ public class UserImportVKImpl implements UserImportVK {
         UserInfo userInfo =new UserInfo();
         String text = getDefaultUserName(authInfo.getToken());
         JSONArray jsonUserInfoArray = parseUserJSON(text);
-
         for(Object object:jsonUserInfoArray)   {
             JSONObject jsonMessage = (JSONObject)object;
             userInfo.setId(jsonMessage.get("id").toString());
@@ -89,7 +81,6 @@ public class UserImportVKImpl implements UserImportVK {
     }
 
     private String getUserName(String token, int user_id) throws TooManyRequestsToApiException {
-
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/users.get")
                 .setParameter("user_id",String.valueOf(user_id))
@@ -99,13 +90,10 @@ public class UserImportVKImpl implements UserImportVK {
     }
 
     private String getDefaultUserName(String token)  {
-
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/users.get")
                 .setParameter("access_token", token)
                 .setParameter("v","5.62");
         return readContent(uriBuilder);
     }
-
-
 }

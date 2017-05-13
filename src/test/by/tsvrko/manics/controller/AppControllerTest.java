@@ -1,12 +1,12 @@
 package by.tsvrko.manics.controller;
 
-import by.tsvrko.manics.dao.interfaces.dataimport.UserImportVK;
 import by.tsvrko.manics.exceptions.UserIsNotAuthorizedException;
 import by.tsvrko.manics.model.dataimport.*;
 import by.tsvrko.manics.model.statistics.AmountOfInfo;
 import by.tsvrko.manics.model.statistics.DayActivity;
 import by.tsvrko.manics.model.statistics.MessageCount;
 import by.tsvrko.manics.model.statistics.PeriodActivity;
+import by.tsvrko.manics.service.interfaces.auth.AuthService;
 import by.tsvrko.manics.service.interfaces.dataimport.UserInfoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,9 +15,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,12 +24,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
 import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Created by tsvrko on 3/6/2017.
@@ -38,7 +35,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase
 public class AppControllerTest {
 
     @Autowired
@@ -53,18 +49,27 @@ public class AppControllerTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-
         authInfo.setToken("cf0a4e065ffe83f3332ddc0af4c84548d003257953e83cb5bae80cb3ec33662b2893adb499a8e0db6aef2");
-        authInfo.setSession("f0378648-22c5-4993-85e0-e65daefe2002");
+        authInfo.setSession("7bcafa02-0b7d-45ae-ae3a-c68c0b874871");
         authInfo.setType(SourceType.VK);
-
         chatInfo.setChatId(187);
         chatInfo.setTitle("Null");
-
         requestInfo.setAuthInfo(authInfo);
         requestInfo.setChatInfo(chatInfo);
-
     }
+    @MockBean
+    private AuthService authService;
+
+    @Before
+    public void setup() {
+        AuthInfo authInfo1 = new AuthInfo();
+        AuthInfo authInfo2=new AuthInfo();
+        authInfo2.setSession("1");
+        given(this.authService.authenticateUser(authInfo1)
+        ).willReturn(authInfo2);
+    }
+
+
 
     @Test
     public void authenticateUser() throws Exception {
@@ -72,7 +77,6 @@ public class AppControllerTest {
         AuthInfo apiResponse =
                 restTemplate.postForObject("http://localhost:8080/api/v1/authentication.json", httpEntity, AuthInfo.class, Collections.EMPTY_MAP);
         assertNotNull(apiResponse.getSession());
-
     }
 
     @Test

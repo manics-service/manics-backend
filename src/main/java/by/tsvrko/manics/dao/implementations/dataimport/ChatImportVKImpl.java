@@ -10,6 +10,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -26,26 +27,21 @@ import static by.tsvrko.manics.dao.ParseJSONUtil.*;
 @Repository
 public class ChatImportVKImpl implements ChatImportVK {
 
+    private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
     private SessionService sessionService;
-
+    @Autowired
     public ChatImportVKImpl(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
-    private static Logger log = Logger.getLogger(ChatImportVKImpl.class.getName());
-
     @Override
     public List<ChatInfo> getChats(AuthInfo authInfo) {
-
         if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
            throw new UserIsNotAuthorizedException("User isn't authorized");
         }
-
         List<ChatInfo> chatInfoList = new ArrayList<>();
-
         int offset = 0;
         long count = parseChatsCount(getChatsCount(authInfo.getToken()));
-
         while (offset < count) {
             String text;
             while (true) {
@@ -65,9 +61,7 @@ public class ChatImportVKImpl implements ChatImportVK {
             JSONArray jsonChatsArray = parseChatsJSON(text);
             for (Object aJsonChatsArray : jsonChatsArray) {
                 JSONObject jsonChat = (JSONObject) aJsonChatsArray;
-
                 if (jsonChat.containsKey("chat_id")&&jsonChat.containsKey("users_count")) {
-
                     ChatInfo chatInfo = new ChatInfo();
                     chatInfo.setChatId(Long.valueOf(jsonChat.get("chat_id").toString()));
                     chatInfo.setTitle(jsonChat.get("title").toString());
@@ -93,11 +87,9 @@ public class ChatImportVKImpl implements ChatImportVK {
 
     @Override
     public List<Integer> getChatUsers(long chatId, AuthInfo authInfo) {
-
         if (sessionService.getByValue(authInfo.getSession()).getUser()==null){
             throw new UserIsNotAuthorizedException("User isn't authorized");
         }
-
         List<Integer> list = new ArrayList<>();
         String text  = getUsers(chatId,authInfo.getToken());
         JSONArray jsonUsersArray = parseUsersJSON(text);
@@ -108,7 +100,6 @@ public class ChatImportVKImpl implements ChatImportVK {
     }
 
     private String getChatsCount(String token) {
-
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getDialogs")
                 .setParameter("access_token", token)
@@ -117,7 +108,6 @@ public class ChatImportVKImpl implements ChatImportVK {
     }
 
     private String getChats(int offset, String token) throws TooManyRequestsToApiException {
-
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getDialogs")
                 .setParameter("access_token", token)
@@ -126,7 +116,6 @@ public class ChatImportVKImpl implements ChatImportVK {
     }
 
     private String getUsers(long chat_id, String token){
-
         URIBuilder uriBuilder = new URIBuilder();
         uriBuilder.setScheme("https").setHost("api.vk.com").setPath("/method/messages.getChat")
                 .setParameter("chat_id",String.valueOf(chat_id))

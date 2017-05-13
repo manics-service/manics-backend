@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 public class ChatImportServiceImpl implements ChatImportService{
 
-
     private ChatImportVK chatImportDAO;
 
     @Autowired

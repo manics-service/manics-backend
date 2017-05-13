@@ -8,8 +8,6 @@ import by.tsvrko.manics.model.hibernate.User;
  */
 public interface UserDAO {
 
-    boolean persistUser(UserInfo userInfo);
-
     boolean addUser (UserInfo userInfo);
 
     User getByIdentifier(String userId);

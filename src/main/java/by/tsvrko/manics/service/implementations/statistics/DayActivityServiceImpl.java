@@ -24,19 +24,15 @@ public class DayActivityServiceImpl implements DayActivityService{
     public List<DayActivity> getStatistics(ChatInfo chatInfo, AuthInfo authInfo) {
         List<UserInfo> userInfoList =StatUtil.getUserInfo(chatInfo.getChatId(),authInfo);
         List<DayActivity> dayActivityList = new ArrayList<>();
-
         for(UserInfo userInfo : userInfoList){
             DayActivity dayActivity= new DayActivity();
             dayActivity.setUserInfo(userInfo);
             List<Message> messageList = StatUtil.getUserMessages(userInfo.getId(), chatInfo.getChatId());
-
             int messNight = 0;
             int messMorning = 0;
             int messDay = 0;
             int messEvening = 0;
-
             for(Message message:messageList){
-
                 Time time = new Time(message.getDate()*1000);
                 LocalTime localTime = time.toLocalTime();
                 int hour =  localTime.getHour();
@@ -53,16 +49,12 @@ public class DayActivityServiceImpl implements DayActivityService{
                     messEvening++;
                 }
             }
-
             dayActivity.setMessNight(messNight);
             dayActivity.setMessDay(messDay);
             dayActivity.setMessEvening(messEvening);
             dayActivity.setMessMorning(messMorning);
-
             dayActivityList.add(dayActivity);
         }
-
         return dayActivityList;
     }
-
 }

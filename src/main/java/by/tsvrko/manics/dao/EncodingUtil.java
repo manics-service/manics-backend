@@ -13,19 +13,16 @@ public final class EncodingUtil {
    private static Logger log = Logger.getLogger(EncodingUtil.class.getName());
 
     public static String encodeText(String messageBody) {
-
         byte[] data = new byte[0];
         try {
             data = messageBody.getBytes("UTF-8");
         } catch (UnsupportedEncodingException e) {
             log.debug("can't encode string message body", e);
         }
-
         return Base64.getEncoder().encodeToString(data);
     }
 
     public static String decodeText(String messageBody) {
-
     byte[] data = Base64.getDecoder().decode(messageBody);
         String newStringWithEmojis = null;
         try {

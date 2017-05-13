@@ -21,42 +21,35 @@ import java.util.*;
 @Service
 public class PeriodActivityServiceImpl implements PeriodActivityService {
 
+
+
     @Override
     public List<PeriodActivity> getStatistics(ChatInfo chatInfo, AuthInfo authInfo, long date) {
-
         List<PeriodActivity> periodActivities = new ArrayList<>();
         List<UserInfo> userInfoList =StatUtil.getUserInfo(chatInfo.getChatId(),authInfo);
-
-        Time time = new Time(date*1000);
-
         for(UserInfo userInfo : userInfoList){
             PeriodActivity periodActivity = new PeriodActivity();
             periodActivity.setUserInfo(userInfo);
             List<MessageInfo> messageInfoList = new ArrayList<>();
             List<Message> messageList = StatUtil.getUserMessagesOnDate(userInfo.getId(), chatInfo.getChatId(),date);
-
-            LocalDate date1 =
+            LocalDate messageDate =
                     Instant.ofEpochMilli(messageList.get(0).getDate()*1000).atZone(ZoneId.systemDefault()).toLocalDate();
             int dayMessageCount = 0;
-
             for(int i=0;i<=messageList.size()-1;i++)
             {
-
                 Message message = messageList.get(i);
-                LocalDate date2 =
+                LocalDate currentDate =
                         Instant.ofEpochMilli(message.getDate()*1000).atZone(ZoneId.systemDefault()).toLocalDate();
-                if(date2.getDayOfMonth()==date1.getDayOfMonth()){
+                if(currentDate.getDayOfMonth()==messageDate.getDayOfMonth()){
                     dayMessageCount++;
                 }
                 else {
                     messageInfoList.add(new MessageInfo(message.getDate(),dayMessageCount));
                     i += dayMessageCount;
                     dayMessageCount = 0;
-                    date1 = Instant.ofEpochMilli(message.getDate()*1000).atZone(ZoneId.systemDefault()).toLocalDate();
+                    messageDate = Instant.ofEpochMilli(message.getDate()*1000).atZone(ZoneId.systemDefault()).toLocalDate();
                 }
-
             }
-
             periodActivity.setMessageInfoList(messageInfoList);
             periodActivities.add(periodActivity);
         }
