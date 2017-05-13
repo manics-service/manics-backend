@@ -57,17 +57,6 @@ public class AppControllerTest {
         requestInfo.setAuthInfo(authInfo);
         requestInfo.setChatInfo(chatInfo);
     }
-    @MockBean
-    private AuthService authService;
-
-    @Before
-    public void setup() {
-        AuthInfo authInfo1 = new AuthInfo();
-        AuthInfo authInfo2=new AuthInfo();
-        authInfo2.setSession("1");
-        given(this.authService.authenticateUser(authInfo1)
-        ).willReturn(authInfo2);
-    }
 
 
 
